@@ -1,7 +1,7 @@
 <template>
   <div id="sort">
     <div class="topNav">
-      <div class="leftIcon">
+      <div class="leftIcon" @click="goback">
         <van-icon name="arrow-left" />
       </div>
       <van-search
@@ -52,7 +52,9 @@ export default {
     },
     onClick(name, title) {
       this.$toast(title);
-     
+    },
+    goback(){
+      this.$router.back(-1)
     }
   },
   components:{

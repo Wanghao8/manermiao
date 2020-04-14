@@ -2,7 +2,7 @@
   <div id="app">
     <router-view />
 
-    <van-tabbar active-color="#B01585" inactive-color="#666" route>
+    <van-tabbar  active-color="#B01585" inactive-color="#666" route>
       <van-tabbar-item replace to="/home">
         <span>商品首页</span>
         <template #icon="props">

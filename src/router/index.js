@@ -5,6 +5,8 @@ import Sort from '../components/Sort.vue'
 import Mine from '../components/Mine.vue'
 import Cart from '../components/Cart.vue'
 import Content from '../components/Content.vue'
+import SellCenter from '../components/SellCenter.vue'
+import RechargeRecord from '../components/RechargeRecord.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -37,6 +39,16 @@ export default new Router({
       path: '/mine',
       name: 'mine',
       component: Mine
+    },
+    {
+      path: '/sellCenter',
+      name: 'sellCenter',
+      component: SellCenter
+    },
+    {
+      path: '/rechargeRecord',
+      name: 'rechargeRecord',
+      component: RechargeRecord
     },
     
 

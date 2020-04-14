@@ -1,22 +1,230 @@
 <template>
-  <div>
-      cart
+  <div id="cart">
+    <van-nav-bar
+      title="购物车"
+      :right-text="operate"
+      left-arrow
+      @click-left="onClickLeft"
+      @click-right="onClickRight"
+    />
+
+    <van-checkbox-group v-model="result" ref="checkboxGroup">
+      <div class="goods-list-box">
+        <van-checkbox checked-color="#FF02FE" name="a"></van-checkbox>
+        <img
+          class="goods-img"
+          src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
+          alt
+        />
+        <div class="goods-list-right">
+          <div class="goods-list-right-title fz13">妙而曼红参阿胶五谷素食餐，科学食料···</div>
+          <div class="goods-list-right-format">
+            <div class="goods-list-right-format-txt fz11 col9">20袋装</div>
+            <div class="goods-list-right-format-icon iconfont">&#xe60b;</div>
+          </div>
+          <div class="goods-list-right-price-num">
+            <div class="goods-list-right-price fz13 red">￥139</div>
+            <div class="goods-list-right-num">
+              <van-stepper v-model="value" input-width="20px" button-size="16px" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="goods-list-box">
+        <van-checkbox checked-color="#FF02FE" name="b"></van-checkbox>
+        <img
+          class="goods-img"
+          src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
+          alt
+        />
+        <div class="goods-list-right">
+          <div class="goods-list-right-title fz13">妙而曼红参阿胶五谷素食餐，科学食料···</div>
+          <div class="goods-list-right-format">
+            <div class="goods-list-right-format-txt fz11 col9">20袋装</div>
+            <div class="goods-list-right-format-icon iconfont">&#xe60b;</div>
+          </div>
+          <div class="goods-list-right-price-num">
+            <div class="goods-list-right-price fz13 red">￥139</div>
+            <div class="goods-list-right-num">
+              <van-stepper v-model="value" input-width="20px" button-size="16px" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </van-checkbox-group>
+
+    <div class="bottom-allcheck-box">
+      <div class="bottom-allcheck-left">
+        <van-checkbox
+          checked-color="#FF02FE"
+          class="all-checked"
+          v-model="allChecked"
+          @click="checkAll"
+        ></van-checkbox>
+        <div class="fz10 col3">全选</div>
+      </div>
+      <div class="bottom-allcheck-right">
+        <div v-show="!isDelete" class="total-txt fz10">
+          合计：
+          <span class="red">￥0</span>
+        </div>
+        <div v-show="!isDelete" class="pay-button fz10">结算（0）</div>
+        <div v-show="isDelete" class="delete-button">删除</div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
+      result: [],
+      value: 0,
+      allChecked: false,
+      isDelete: false,
+      operate: "编辑"
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
+    onClickLeft() {
+      this.$router.back(-1);
+    },
+    onClickRight() {
+      if (!this.isDelete) {
+        this.isDelete = true;
+        this.operate = "完成";
+      } else {
+        this.isDelete = false;
+        this.operate = "编辑";
+      }
+    },
+    checkAll() {
+      if (!this.allChecked) {
+        this.$refs.checkboxGroup.toggleAll(true);
+      } else {
+        this.$refs.checkboxGroup.toggleAll();
+      }
+    }
   }
 };
 </script>
 
 <style scoped>
-
+.fz10 {
+  font-size: 10px;
+}
+.fz13 {
+  font-size: 13px;
+}
+.fz11 {
+  font-size: 11px;
+}
+.fz12 {
+  font-size: 12px;
+}
+.col3 {
+  color: #333;
+}
+.col9 {
+  color: #999;
+}
+.red {
+  color: #c1181a;
+}
+.marginleft8 {
+  margin-left: 8px;
+}
+#cart {
+  background-color: #e6e3e4;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+}
+.van-nav-bar {
+  width: 100% !important;
+  background-color: #ff48bd;
+}
+.van-nav-bar >>> .van-icon {
+  color: #fff !important;
+}
+.van-nav-bar >>> .van-nav-bar__title {
+  color: #fff;
+  font-size: 16px;
+}
+.van-nav-bar >>> .van-nav-bar__text {
+  font-size: 13px;
+  color: #fff;
+}
+.goods-list-box {
+  display: flex;
+  background-color: #fff;
+  margin: 3%;
+  padding: 12px;
+}
+.goods-img {
+  width: 100px;
+  height: 100px;
+  margin: 0 13px 0 0;
+}
+.van-checkbox >>> .van-checkbox__icon {
+  margin-right: 13px;
+}
+.goods-list-right-format {
+  display: flex;
+  align-items: center;
+  background-color: #e6e3e4;
+  width: 26%;
+  padding: 5px 10px;
+  margin-top: 7px;
+}
+.goods-list-right-price-num {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.goods-list-right-price-num {
+  margin-top: 25px;
+}
+.bottom-allcheck-box {
+  position: fixed;
+  bottom: 50px;
+  width: 94%;
+  padding: 3%;
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+}
+.bottom-allcheck-left,
+.bottom-allcheck-right {
+  display: flex;
+  align-items: center;
+}
+.pay-button {
+  background-color: #ff48bd;
+  color: #fff;
+  border-radius: 25px;
+  width: 65px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  margin-left: 10px;
+}
+.delete-button {
+  width: 65px;
+  height: 25px;
+  line-height: 25px;
+  border: 1px solid #d6559a;
+  color: #ff49bd;
+  border-radius: 25px;
+  text-align: center;
+  font-size: 10px;
+  margin-left: 9px;
+}
+.all-checked {
+  margin-left: 12px;
+}
 </style>

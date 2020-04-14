@@ -6,10 +6,10 @@ import router from './router'
 import Vant from 'vant'
 import 'vant/lib/index.css';
 import '../static/iconfont.css';
-import { Lazyload,Toast } from 'vant';
+import { Lazyload,Toast,RadioGroup, Radio } from 'vant';
 
 
-Vue.use(Vant).use(Lazyload).use(Toast)
+Vue.use(Vant).use(Lazyload).use(Toast).use(RadioGroup).use(Radio)
 
 Vue.config.productionTip = false
 
