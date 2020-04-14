@@ -177,7 +177,7 @@ export default {
   display: flex;
   align-items: center;
   background-color: #e6e3e4;
-  width: 26%;
+  width: 30%;
   padding: 5px 10px;
   margin-top: 7px;
 }
@@ -215,8 +215,8 @@ export default {
 }
 .delete-button {
   width: 65px;
-  height: 25px;
-  line-height: 25px;
+  height: 23px;
+  line-height: 23px;
   border: 1px solid #d6559a;
   color: #ff49bd;
   border-radius: 25px;

@@ -18,12 +18,12 @@ export default new Router({
     {
       path: '/home',
       name: 'home',
-      component: Home
+      component: Home, meta: { navShow: true, }
     },
     {
       path: '/sort',
       name: 'sort',
-      component: Sort,
+      component: Sort, meta: { navShow: true, },
       children:[{
         path:'content',
         name:'content',
@@ -33,12 +33,12 @@ export default new Router({
     {
       path: '/cart',
       name: 'cart',
-      component: Cart
+      component: Cart, meta: { navShow: true, }
     },
     {
       path: '/mine',
       name: 'mine',
-      component: Mine
+      component: Mine, meta: { navShow: true, }
     },
     {
       path: '/sellCenter',

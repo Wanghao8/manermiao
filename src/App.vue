@@ -2,32 +2,38 @@
   <div id="app">
     <router-view />
 
-    <van-tabbar  active-color="#B01585" inactive-color="#666" route>
-      <van-tabbar-item replace to="/home">
-        <span>商品首页</span>
-        <template #icon="props">
-          <img :src="props.active ? icon.active1 : icon.inactive1" />
-        </template>
-      </van-tabbar-item>
-      <van-tabbar-item replace to="/sort">
-        <span>商品分类</span>
-        <template #icon="props">
-          <img :src="props.active ? icon.active2 : icon.inactive2" />
-        </template>
-      </van-tabbar-item>
-      <van-tabbar-item replace to="/cart">
-        <span>购物车</span>
-        <template #icon="props">
-          <img :src="props.active ? icon.active3 : icon.inactive3" />
-        </template>
-      </van-tabbar-item>
-      <van-tabbar-item replace to="/mine">
-        <span>个人中心</span>
-        <template #icon="props">
-          <img :src="props.active ? icon.active4 : icon.inactive4" />
-        </template>
-      </van-tabbar-item>
-    </van-tabbar>
+    <div
+      class="tabbar"
+      v-show="$route.meta.navShow"
+      :class="$route.meta.navShow ? 'container-bot' : ''"
+    >
+      <van-tabbar active-color="#B01585" inactive-color="#666" route>
+        <van-tabbar-item replace to="/home">
+          <span>商品首页</span>
+          <template #icon="props">
+            <img :src="props.active ? icon.active1 : icon.inactive1" />
+          </template>
+        </van-tabbar-item>
+        <van-tabbar-item replace to="/sort">
+          <span>商品分类</span>
+          <template #icon="props">
+            <img :src="props.active ? icon.active2 : icon.inactive2" />
+          </template>
+        </van-tabbar-item>
+        <van-tabbar-item replace to="/cart">
+          <span>购物车</span>
+          <template #icon="props">
+            <img :src="props.active ? icon.active3 : icon.inactive3" />
+          </template>
+        </van-tabbar-item>
+        <van-tabbar-item replace to="/mine">
+          <span>个人中心</span>
+          <template #icon="props">
+            <img :src="props.active ? icon.active4 : icon.inactive4" />
+          </template>
+        </van-tabbar-item>
+      </van-tabbar>
+    </div>
   </div>
 </template>
 

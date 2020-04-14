@@ -121,12 +121,11 @@ export default {
   methods: {
     navigate() {
       console.log(123);
-      this.$router.replace({ path: "/list" });
+      this.$router.push({ path: "/list" });
     },
     gotoDetail() {
       console.log("123detail");
-      this.$router.replace({ path: "/detail" });
-      // this.$router.replace({ path: "/detail" });
+      this.$router.push({ path: "/detail" });
     }
   }
 };
