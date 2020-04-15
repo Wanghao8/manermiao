@@ -114,7 +114,8 @@ export default {
       searchContent: "",
       images: [
         "../../static/image/homeSwiper1.jpg",
-        "../../static/image/homeSwiper2.jpg"
+        "../../static/image/homeSwiper2.jpg",
+        "../../static/image/homeSwiper3.jpg",
       ]
     };
   },
@@ -134,7 +135,7 @@ export default {
 <style scoped>
 #Home {
   background-color: #f1f1f1;
-  overflow: hidden;
+  overflow: auto;
   height: 100%;
   width: 100%;
   position: absolute;
@@ -182,6 +183,7 @@ export default {
   margin-top: 44px;
   overflow: hidden;
 }
+.van-swipe-item{height: 160px;}
 .van-field__left-icon {
   width: 0;
 }

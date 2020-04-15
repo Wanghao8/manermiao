@@ -35,19 +35,19 @@
           </div>
         </div>
         <div class="mylist-icon-box">
-          <div class="mylist-icon-pending-pay">
+          <div class="mylist-icon-pending-pay" @click="toMyOrder(0)">
             <div class="mylist-icon-pending-pay-icon iconfont">&#xe669;</div>
             <div class="mylist-icon-pending-pay-txt">待付款</div>
           </div>
-          <div class="mylist-icon-pending-delivery">
+          <div class="mylist-icon-pending-delivery" @click="toMyOrder(1)">
             <div class="mylist-icon-pending-delivery-icon iconfont">&#xe600;</div>
             <div class="mylist-icon-pending-delivery-txt">待发货</div>
           </div>
-          <div class="mylist-icon-pending-received">
+          <div class="mylist-icon-pending-received" @click="toMyOrder(2)">
             <div class="mylist-icon-pending-received-icon iconfont">&#xe63e;</div>
             <div class="mylist-icon-pending-received-txt">待收货</div>
           </div>
-          <div class="mylist-icon-return">
+          <div class="mylist-icon-return" @click="toMyOrder(3)">
             <div class="mylist-icon-return-icon iconfont">&#xe607;</div>
             <div class="mylist-icon-return-txt">退换货</div>
           </div>
@@ -71,11 +71,11 @@
           <img src="../../static/image/chongzhi.png" class="info-center-icon-pay-record-icon" />
           <div class="info-center-icon-pay-record-txt">充值记录</div>
         </div>
-        <div class="info-center-icon-buy-record">
+        <div class="info-center-icon-buy-record" @click="toBuyRecord">
           <img src="../../static/image/goumai.png" class="info-center-icon-buy-record-icon" />
           <div class="info-center-icon-buy-record-txt">购买记录</div>
         </div>
-        <div class="info-center-icon-location">
+        <div class="info-center-icon-location" @click="toMyAddress">
           <img src="../../static/image/dizhi.png" class="info-center-icon-location-icon" />
           <div class="info-center-icon-location-txt">我的地址</div>
         </div>
@@ -103,6 +103,15 @@ export default {
     },
     toRechargeRecord() {
       this.$router.push("rechargeRecord");
+    },
+    toBuyRecord(){
+      this.$router.push("buyRecord");
+    },
+    toMyAddress(){
+      this.$router.push("myAddress");
+    },
+    toMyOrder(e){
+      this.$router.push({name:"myOrder",params:{index:e}});
     }
   }
 };
@@ -117,7 +126,7 @@ export default {
 }
 #mine {
   background-color: #e4e4e4;
-  overflow: hidden;
+  overflow: auto;
   height: 100%;
   width: 100%;
   position: absolute;

@@ -56,7 +56,7 @@
     <div class="grid-icon iconfont pink">&#xe629;</div>
     <div class="grid-txt">推荐人</div>
   </van-grid-item>
-  <van-grid-item>
+  <van-grid-item @click="toQR">
     <div class="grid-icon iconfont pink">&#xe651;</div>
     <div class="grid-txt">我的二维码</div>
   </van-grid-item>
@@ -91,6 +91,9 @@ export default {
     toWithdraw(){
       this.$router.push('')
     },
+    toQR(){
+      this.$router.push('spreadQRcode')
+    }
   }
 };
 </script>
@@ -100,7 +103,7 @@ export default {
 .fz16{font-size: 16px;}
 #sellCenter {
   background-color: #e4e4e4;
-  overflow: hidden;
+  overflow: auto;
   height: 100%;
   width: 100%;
   position: absolute;
