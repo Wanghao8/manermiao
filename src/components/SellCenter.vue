@@ -44,7 +44,7 @@
     <div class="grid-icon iconfont pink">&#xe61c;</div>
     <div class="grid-txt">升级时间</div>
   </van-grid-item>
-  <van-grid-item>
+  <van-grid-item @click="toUpgradeRule">
     <div class="grid-icon iconfont pink">&#xe63c;</div>
     <div class="grid-txt">升级规则</div>
   </van-grid-item>
@@ -93,7 +93,10 @@ export default {
     },
     toQR(){
       this.$router.push('spreadQRcode')
-    }
+    },
+    toUpgradeRule(){
+this.$router.push('upgradeRule')
+    },
   }
 };
 </script>

@@ -12,6 +12,9 @@ import BuyRecord from '../components/BuyRecord.vue'
 import EditAddress from '../components/EditAddress.vue'
 import MyOrder from '../components/MyOrder.vue'
 import SpreadQRcode from '../components/SpreadQRcode.vue'
+import UpgradeRule from '../components/UpgradeRule.vue'
+import SignupCenter from '../components/SignupCenter.vue'
+import Meeting from '../components/Meeting.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -79,6 +82,21 @@ export default new Router({
       path: '/spreadQRcode',
       name: 'spreadQRcode',
       component: SpreadQRcode
+    },
+    {
+      path: '/upgradeRule',
+      name: 'upgradeRule',
+      component: UpgradeRule
+    },
+    {
+      path: '/signupCenter',
+      name: 'signupCenter',
+      component: SignupCenter
+    },
+    {
+      path: '/meeting',
+      name: 'meeting',
+      component: Meeting
     },
     
 
