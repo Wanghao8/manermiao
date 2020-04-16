@@ -86,7 +86,7 @@ export default {
       this.$router.push('')
     },
     toMyteam(){
-      this.$router.push('')
+      this.$router.push('myTeam')
     },
     toWithdraw(){
       this.$router.push('')

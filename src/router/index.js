@@ -15,6 +15,9 @@ import SpreadQRcode from '../components/SpreadQRcode.vue'
 import UpgradeRule from '../components/UpgradeRule.vue'
 import SignupCenter from '../components/SignupCenter.vue'
 import Meeting from '../components/Meeting.vue'
+import MyTeam from '../components/MyTeam.vue'
+import Registered from '../components/Registered.vue'
+import Pay from '../components/Pay.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -97,6 +100,21 @@ export default new Router({
       path: '/meeting',
       name: 'meeting',
       component: Meeting
+    },
+    {
+      path: '/myTeam',
+      name: 'myTeam',
+      component: MyTeam
+    },
+    {
+      path: '/registered',
+      name: 'registered',
+      component: Registered
+    },
+    {
+      path: '/pay',
+      name: 'pay',
+      component: Pay
     },
     
 

@@ -1,6 +1,6 @@
 <template>
   <div id="Home">
-    <div class="topNav">
+    <!-- <div class="topNav">
       <div class="leftIcon">
         <van-icon name="chat-o" size="16" />
         <div class="botword">消息</div>
@@ -21,7 +21,7 @@
         <van-icon name="apps-o" size="16" />
         <div class="botword">列表</div>
       </div>
-    </div>
+    </div> -->
     
     <div class="swiperbox">
       <van-swipe :autoplay="3000" indicator-color="#FE18FB">
@@ -115,7 +115,7 @@ export default {
       images: [
         "../../static/image/homeSwiper1.jpg",
         "../../static/image/homeSwiper2.jpg",
-        "../../static/image/homeSwiper3.jpg",
+        "../../static/image/homeSwiper3.png",
       ]
     };
   },
@@ -180,7 +180,7 @@ export default {
 }
 .swiperbox {
   background-color: #fff;
-  margin-top: 44px;
+  /* margin-top: 44px; */
   overflow: hidden;
 }
 .van-swipe-item{height: 160px;}
