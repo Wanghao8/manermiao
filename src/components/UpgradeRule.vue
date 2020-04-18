@@ -45,27 +45,6 @@ export default {
 </script>
 
 <style  scoped>
-.fz18 {
-  font-size: 18px;
-}
-.fz14 {
-  font-size: 14px;
-}
-.fz10 {
-  font-size: 10px;
-}
-.fz12 {
-  font-size: 12px;
-}
-.bold {
-  font-weight: bold;
-}
-.col3 {
-  color: #333;
-}
-.white {
-  color: #fff;
-}
 #upgradeRule {
   overflow: auto;
   height: 100%;
@@ -108,6 +87,7 @@ export default {
   color: #d860ad;
   text-align: center;
   line-height: 17px;
+  margin-left: 5px;
 }
 .status {
   margin-left: 12px;

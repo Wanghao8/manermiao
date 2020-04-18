@@ -127,29 +127,8 @@ export default {
 </script>
 
 <style scoped>
-.fz16 {
-  font-size: 16px;
-}
-.fz30 {
-  font-size: 30px;
-}
-.fz12 {
-  font-size: 12px;
-}
-.fz10 {
-  font-size: 10px;
-}
 .col24 {
   color: #242424;
-}
-.pink {
-  color: #fc59c1;
-}
-.col9 {
-  color: #999;
-}
-.bold {
-  font-weight: bold;
 }
 #buyRecord {
   background-color: #e6e3e6;

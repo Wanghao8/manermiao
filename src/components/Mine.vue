@@ -5,10 +5,6 @@
         <img class="back-img" src="../../static/image/mine-back.png" alt />
         <van-nav-bar
           title="个人中心"
-          right-text="编辑"
-          left-arrow
-          @click-left="onClickLeft"
-          @click-right="onClickRight"
         />
         <div class="top-nav"></div>
         <img
@@ -24,7 +20,7 @@
           <div class="exp">经验：12345</div>
           <div class="level">等级2/5</div>
         </div>
-        <div class="mylist-list">
+        <div class="mylist-list" @click="toMyOrder(0)">
           <div class="mylist-list-left">
             <div class="mylist-list-left-icon iconfont col6">&#xe62e;</div>
             <div class="mylist-list-left-title col3">我的订单</div>
@@ -118,12 +114,10 @@ export default {
 </script>
 
 <style scoped>
-.col3 {
-  color: #333;
+[class*=van-hairline]::after{
+  border: none;
 }
-.col6 {
-  color: #666;
-}
+.van-progress>>>.van-progress__pivot{display: none;}
 #mine {
   background-color: #e4e4e4;
   overflow: auto;
@@ -208,7 +202,7 @@ export default {
 .mylist-list {
   justify-content: space-between;
   width: 96%;
-  padding: 12px;
+  padding: 15px;
 }
 .mylist-list-left-title {
   font-size: 14px;

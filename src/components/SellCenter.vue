@@ -2,10 +2,8 @@
   <div id="sellCenter">
     <van-nav-bar
       title="分销中心"
-      right-text="编辑"
       left-arrow
       @click-left="onClickLeft"
-      @click-right="onClickRight"
     />
     <div class="top-info-box">
       <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1351835355,520411539&fm=26&gp=0.jpg" alt class="user-avatar" />
@@ -30,7 +28,7 @@
     </div>
     <div class="number-box fz16">
       <div class="total-num fz16">累计佣金：￥5000.00</div>
-      <div class="last-withdraw">
+      <div class="last-withdraw" @click="toWithdraw">
         <div class="last-withdraw-left fz16">可提现余额：<span class="pink">￥2000.00</span></div>
         <div class="last-withdraw-right">
           <div class="last-withdraw-right-txt pink fz16">提现</div>
@@ -79,17 +77,14 @@ export default {
     onClickLeft() {
       this.$router.back(-1);
     },
-    onClickRight() {
-      this.$router.push('');
-    },
     toMyorder(){
-      this.$router.push('')
+      this.$router.push('myOrder')
     },
     toMyteam(){
       this.$router.push('myTeam')
     },
     toWithdraw(){
-      this.$router.push('')
+      this.$router.push('withdraw')
     },
     toQR(){
       this.$router.push('spreadQRcode')
@@ -134,4 +129,5 @@ this.$router.push('upgradeRule')
 .grid-box>>>.van-grid{border-radius: 5px;}
 .grid-txt{font-size: 14px;margin-top: 7px;}
 .grid-icon{font-size: 24px;border-radius: 5px;}
+.grid-box>>>.van-grid-item__content--center{border-radius: 5px;}
 </style>

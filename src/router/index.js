@@ -18,6 +18,7 @@ import Meeting from '../components/Meeting.vue'
 import MyTeam from '../components/MyTeam.vue'
 import Registered from '../components/Registered.vue'
 import Pay from '../components/Pay.vue'
+import Withdraw from '../components/Withdraw.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -115,6 +116,11 @@ export default new Router({
       path: '/pay',
       name: 'pay',
       component: Pay
+    },
+    {
+      path: '/withdraw',
+      name: 'withdraw',
+      component: Withdraw
     },
     
 

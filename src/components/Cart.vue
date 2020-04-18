@@ -3,42 +3,19 @@
     <van-nav-bar
       title="购物车"
       :right-text="operate"
-      left-arrow
-      @click-left="onClickLeft"
       @click-right="onClickRight"
     />
 
-    <van-checkbox-group v-model="result" ref="checkboxGroup">
+    <van-checkbox-group v-model="choosed" ref="checkboxGroup">
       <div class="goods-list-box">
-        <van-checkbox checked-color="#FF02FE" name="a"></van-checkbox>
+        <van-checkbox @click="chooseGoods" checked-color="#FF02FE" name="a"></van-checkbox>
         <img
           class="goods-img"
           src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
           alt
         />
         <div class="goods-list-right">
-          <div class="goods-list-right-title fz13">妙而曼红参阿胶五谷素食餐，科学食料···</div>
-          <div class="goods-list-right-format">
-            <div class="goods-list-right-format-txt fz11 col9">20袋装</div>
-            <div class="goods-list-right-format-icon iconfont">&#xe60b;</div>
-          </div>
-          <div class="goods-list-right-price-num">
-            <div class="goods-list-right-price fz13 red">￥139</div>
-            <div class="goods-list-right-num">
-              <van-stepper v-model="value" input-width="20px" button-size="16px" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="goods-list-box">
-        <van-checkbox checked-color="#FF02FE" name="b"></van-checkbox>
-        <img
-          class="goods-img"
-          src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-          alt
-        />
-        <div class="goods-list-right">
-          <div class="goods-list-right-title fz13">妙而曼红参阿胶五谷素食餐，科学食料···</div>
+          <div class="goods-list-right-title fz13">妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料</div>
           <div class="goods-list-right-format">
             <div class="goods-list-right-format-txt fz11 col9">20袋装</div>
             <div class="goods-list-right-format-icon iconfont">&#xe60b;</div>
@@ -68,7 +45,7 @@
           合计：
           <span class="red">￥0</span>
         </div>
-        <div v-show="!isDelete" class="pay-button fz10">结算（0）</div>
+        <div v-show="!isDelete" class="pay-button fz10">结算（{{choosed.length}}）</div>
         <div v-show="isDelete" class="delete-button">删除</div>
       </div>
     </div>
@@ -78,14 +55,26 @@
 export default {
   data() {
     return {
-      result: [],
+      choosed: [],
       value: 0,
       allChecked: false,
       isDelete: false,
-      operate: "编辑"
+      operate: "编辑",
+      list: [
+        {
+          goodsImg:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+            price:139,
+            description:"妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
+        }
+      ]
     };
   },
   created() {},
+  mounted() {},
+  computed: {
+    total: function() {}
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
@@ -98,6 +87,9 @@ export default {
         this.isDelete = false;
         this.operate = "编辑";
       }
+    },
+    chooseGoods(){
+      console.log(this.choosed.length,this.choosed,);
     },
     checkAll() {
       if (!this.allChecked) {
@@ -172,6 +164,13 @@ export default {
 }
 .van-checkbox >>> .van-checkbox__icon {
   margin-right: 13px;
+}
+.goods-list-right-title{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* white-space: nowrap; */
+   width: 190px; 
+   display: -webkit-box;    -webkit-line-clamp: 2;    -webkit-box-orient: vertical;
 }
 .goods-list-right-format {
   display: flex;

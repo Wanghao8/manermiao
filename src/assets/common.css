@@ -1,0 +1,45 @@
+.flexrac{display: flex;justify-content: space-around;align-items: center;}
+.flexrbc{display: flex;justify-content: space-between;align-items: center;}
+.flexrcc{display: flex;justify-content: center;align-items: center;}
+.flexr0c{display: flex;align-items: center;}
+.flexrbe{display: flex;justify-content: space-between;align-items: flex-end;}
+.flexcbc{display: flex;flex-direction: column;justify-content: space-between;align-items: center;}
+.flexcac{display: flex;flex-direction: column;justify-content: space-around;align-items: center;}
+.flexccc{display: flex;flex-direction: column;justify-content: center;align-items: center;}
+.flexc0c{display: flex;flex-direction: column;align-items: center;}
+.flexc{display: flex;flex-direction: column;}
+.flexr{display: flex;}
+
+.fz9{font-size: 9px;}
+.fz10{font-size: 10px;}
+.fz11{font-size: 11px;}
+.fz12{font-size: 12px;}
+.fz13{font-size: 13px;}
+.fz14{font-size: 14px;}
+.fz15{font-size: 15px;}
+.fz16{font-size: 16px;}
+.fz17{font-size: 17px;}
+.fz18{font-size: 18px;}
+.fz19{font-size: 19px;}
+.fz20{font-size: 20px;}
+.fz22{font-size: 22px;}
+.fz24{font-size: 24px;}
+.fz30{font-size: 30px;}
+
+
+.col3{color: #333;}
+.col6{color: #666;}
+.col9{color: #999;}
+.white{color: #fff;}
+.bgwhite{background-color: #fff;}
+.red{color: red;}
+.pink {color: #fc59c1;}
+.bold {font-weight: bold;}
+
+
+
+.two-line{
+    text-overflow: ellipsis;
+overflow: hidden;
+   display: -webkit-box;    -webkit-line-clamp: 2;    -webkit-box-orient: vertical;
+}

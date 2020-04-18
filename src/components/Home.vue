@@ -67,7 +67,7 @@
           </div>
           <div class="list-item-content-right">
             <div class="list-item-content-title">富勒烯多肽面膜</div>
-            <div class="list-item-content-detail">富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮···</div>
+            <div class="list-item-content-detail two-line">富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮</div>
           </div>
         </div>
         <div class="list-item-bottom">2020.03.06</div>
@@ -97,7 +97,7 @@
           </div>
           <div class="list-item-content-right">
             <div class="list-item-content-title">富勒烯多肽面膜</div>
-            <div class="list-item-content-detail">富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮···</div>
+            <div class="list-item-content-detail two-line">富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮</div>
           </div>
         </div>
         <div class="list-item-bottom">2020.03.06</div>

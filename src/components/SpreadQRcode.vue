@@ -24,7 +24,7 @@ export default {
         this.$toast('保存推广码')
     },
     lookTeam(){
-        this.$toast('查看我的团队')
+        this.$router.push("myTeam")
     }
   }
 };
