@@ -10,10 +10,10 @@
           />
           <div class="content-detail-box">
             <div class="content-detail-title col3 fz13">妙而曼红参阿胶五谷素1231351</div>
-            <div class="content-detail-tags flexr">
-              <div class="content-detail-tag fz9">通气血</div>
-              <div class="content-detail-tag fz9">排毒素</div>
-              <div class="content-detail-tag fz9">补能量</div>
+            <div class="content-detail-tags flexr fz9">
+              <div class="content-detail-tag fz9"><span>通气血</span></div>
+              <div class="content-detail-tag fz9"><span>排毒素</span></div>
+              <div class="content-detail-tag fz9"><span>补能量</span></div>
             </div>
             <div class="content-detail-bottom flexrbe">
               <div class="content-detail-price red fz13">￥139</div>
@@ -96,9 +96,13 @@ export default {
   height: 10px;
   border: 1px solid #ef9def;
   color: #ef9def;
-  font-size: 9px;
+  font-size: 60%;
+  -webkit-text-size-adjust:none;
   padding: 1px;
   margin-right: 2px;
   margin-bottom: 10px;
+}
+.content-detail-tag span{
+transform: scale(0.6);
 }
 </style>
