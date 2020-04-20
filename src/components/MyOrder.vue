@@ -3,6 +3,12 @@
     <van-nav-bar title="我的订单" left-arrow @click-left="onClickLeft" />
     <van-tabs v-model="orderStatus" sticky color="#ff48bd">
       <van-tab title="待付款" name="0">
+        <van-empty
+          v-if="empty"
+          class="custom-image"
+          image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+          description="我的订单是空的"
+        />
         <div class="order-list-box">
           <div class="order-list-item">
             <div class="order-list-item-top">
@@ -91,6 +97,12 @@
         </div>
       </van-tab>
       <van-tab title="待收货" name="1">
+        <van-empty
+          v-if="empty"
+          class="custom-image"
+          image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+          description="我的订单是空的"
+        />
         <div class="order-list-box">
           <div class="order-list-item">
             <div class="order-list-item-top">
@@ -137,6 +149,12 @@
         </div>
       </van-tab>
       <van-tab title="已完成" name="3">
+        <van-empty
+          v-if="empty"
+          class="custom-image"
+          image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+          description="我的订单是空的"
+        />
         <div class="order-list-box">
           <div class="order-list-item">
             <div class="order-list-item-top">
@@ -225,6 +243,12 @@
         </div>
       </van-tab>
       <van-tab title="退换货" name="2">
+        <van-empty
+          v-if="empty"
+          class="custom-image"
+          image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+          description="我的订单是空的"
+        />
         <div class="order-list-box">
           <div class="order-list-item">
             <div class="order-list-item-top">
@@ -277,6 +301,7 @@
 export default {
   data() {
     return {
+      empty: false,
       orderStatus: -1
     };
   },

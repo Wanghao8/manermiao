@@ -3,6 +3,12 @@
     <van-nav-bar title="会议信息" left-arrow @click-left="onClickLeft" />
     <van-tabs v-model="active" color="#ff48bd">
       <van-tab title="待开会议">
+        <van-empty
+          v-if="empty"
+          class="custom-image"
+          image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+          description="暂无待开会议"
+        />
         <div class="meeting-box fz12">
           <div class="meeting-time">
             <div class="meeting-time-label col3 fw400">会议时间：</div>
@@ -45,6 +51,12 @@
         </div>
       </van-tab>
       <van-tab title="历史记录">
+        <van-empty
+          v-if="empty1"
+          class="custom-image"
+          image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+          description="暂无会议历史"
+        />
         <div class="meeting-box fz12">
           <div class="meeting-time">
             <div class="meeting-time-label col3 fw400">会议时间：</div>
@@ -95,6 +107,8 @@ export default {
   props: {},
   data() {
     return {
+      empty:false,
+      empty1:false,
       active: 2
     };
   },

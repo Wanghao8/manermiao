@@ -1,35 +1,45 @@
 <template>
   <div id="content">
-    <van-grid :border="false" :column-num="2">
-      <van-grid-item v-for="value in 16" :key="value">
-        <div class="content-box">
-          <img
-            src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-            alt
-            class="goods-img"
-          />
-          <div class="content-detail-box">
-            <div class="content-detail-title col3 fz13">妙而曼红参阿胶五谷素1231351</div>
-            <div class="content-detail-tags flexr fz9">
-              <div class="content-detail-tag fz9"><span>通气血</span></div>
-              <div class="content-detail-tag fz9"><span>排毒素</span></div>
-              <div class="content-detail-tag fz9"><span>补能量</span></div>
-            </div>
-            <div class="content-detail-bottom flexrbe">
-              <div class="content-detail-price red fz13">￥139</div>
-              <div class="content-detail-cart-icon iconfont" @click="addCart(1)">&#xe668;</div>
-              <!-- <div class="content-detail-cart-icon iconfont" @click="addCart(item.id)">&#xe668;</div> -->
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <van-grid :border="false" :column-num="2">
+        <van-grid-item v-for="value in 16" :key="value">
+          <div class="content-box">
+            <img
+              src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
+              alt
+              class="goods-img"
+            />
+            <div class="content-detail-box">
+              <div class="content-detail-title col3 fz13">妙而曼红参阿胶五谷素1231351</div>
+              <div class="content-detail-tags flexr fz9">
+                <div class="content-detail-tag fz9">
+                  <span>通气血</span>
+                </div>
+                <div class="content-detail-tag fz9">
+                  <span>排毒素</span>
+                </div>
+                <div class="content-detail-tag fz9">
+                  <span>补能量</span>
+                </div>
+              </div>
+              <div class="content-detail-bottom flexrbe">
+                <div class="content-detail-price red fz13">￥139</div>
+                <div class="content-detail-cart-icon iconfont" @click="addCart(1)">&#xe668;</div>
+                <!-- <div class="content-detail-cart-icon iconfont" @click="addCart(item.id)">&#xe668;</div> -->
+              </div>
             </div>
           </div>
-        </div>
-      </van-grid-item>
-    </van-grid>
+        </van-grid-item>
+      </van-grid>
+    </van-pull-refresh>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {};
+    return {
+      isLoading: false
+    };
   },
   props: {
     packageIndex: {
@@ -40,7 +50,7 @@ export default {
   created() {},
   mounted() {
     console.log(this.packageIndex);
-    // this.jiekou()
+    this.jiekou();
   },
   methods: {
     addCart(id) {
@@ -55,6 +65,14 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    //下拉刷新操作事件
+    onRefresh() {
+      setTimeout(() => {
+        this.$toast("刷新成功");
+        this.isLoading = false;
+        this.count++;
+      }, 1000);
     }
   }
 };
@@ -97,12 +115,12 @@ export default {
   border: 1px solid #ef9def;
   color: #ef9def;
   font-size: 60%;
-  -webkit-text-size-adjust:none;
+  -webkit-text-size-adjust: none;
   padding: 1px;
   margin-right: 2px;
   margin-bottom: 10px;
 }
-.content-detail-tag span{
-transform: scale(0.6);
+.content-detail-tag span {
+  transform: scale(0.6);
 }
 </style>

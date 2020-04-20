@@ -4,9 +4,9 @@
 
     <van-address-edit
       :area-list="areaList"
-      show-postal
       show-delete
       show-set-default
+      :tel-validator="phoneRE"
       :area-columns-placeholder="['请选择', '请选择', '请选择']"
       @save="onSave"
       @delete="onDelete"
@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       navTitle: "修改地址",
-      areaList
+      areaList,
     };
   },
   created() {
@@ -34,7 +34,19 @@ export default {
     },
     onDelete() {
       this.$toast("delete");
-    }
+      this.$common.aaa()
+    },
+    phoneRE() {
+      //这里定义校验规则
+      let reg = /^1[3|4|5|7|8][0-9]{9}$/; //如果校验不通过会返回false，如果校验通过会返回true
+      //校验手机号规则
+      if (reg.test(this.$children[1].data.tel)) {
+        return true
+      } else {
+        console.log("正则失败");
+      }
+    },
+    
   }
 };
 </script>
@@ -64,7 +76,7 @@ export default {
   font-size: 13px;
   color: #fff;
 }
-.van-address-edit>>>.van-button--danger {
+.van-address-edit >>> .van-button--danger {
   background-color: #ff48bd !important;
   border: 1px solid #ff48bd !important;
 }

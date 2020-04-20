@@ -10,6 +10,12 @@
           <div class="price-num fz30">10500.00</div>
         </div>
       </div>
+      <van-empty
+        v-if="empty"
+        class="custom-image"
+        image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+        description="暂无购买记录"
+      />
       <van-collapse v-model="activeNames">
         <van-collapse-item title="2019.03.08" name="1">
           <div class="deal-detail-box">
@@ -112,8 +118,8 @@
 export default {
   data() {
     return {
-      activeNames: ["1"],
-  
+      empty:false,
+      activeNames: ["1"]
     };
   },
   created() {},
@@ -121,14 +127,19 @@ export default {
     onClickLeft() {
       this.$router.back(-1);
     }
-  },
- 
+  }
 };
 </script>
 
 <style scoped>
 .col24 {
   color: #242424;
+}
+/* .van-hairline--bottom::after {
+    border-bottom-width: 0;
+} */
+[class*=van-hairline]::after{
+  border: none;
 }
 #buyRecord {
   background-color: #e6e3e6;

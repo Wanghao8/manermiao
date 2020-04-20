@@ -1,7 +1,12 @@
 <template>
   <div id="myAddress">
     <van-nav-bar title="我的地址" left-arrow @click-left="onClickLeft" />
-
+    <van-empty
+      v-if="empty"
+      class="custom-image"
+      image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+      description="暂无地址，请添加"
+    />
     <van-address-list
       v-model="chosenAddressId"
       :list="list"
@@ -15,6 +20,7 @@
 export default {
   data() {
     return {
+      empty:false,
       chosenAddressId: "1",
       list: [
         {
@@ -29,7 +35,7 @@ export default {
           tel: "1310000000",
           address: "浙江省杭州市拱墅区莫干山路 50 号"
         }
-      ],
+      ]
     };
   },
   created() {},
@@ -39,11 +45,11 @@ export default {
     },
     onAdd() {
       this.$toast("新增地址");
-      this.$router.push({name:'editAddress',params:{id:-1}})
+      this.$router.push({ name: "editAddress", params: { id: -1 } });
     },
     onEdit(item, index) {
       this.$toast("编辑地址:" + index);
-      this.$router.push({name:'editAddress',params:{id:index}})
+      this.$router.push({ name: "editAddress", params: { id: index } });
     }
   }
 };
@@ -74,6 +80,12 @@ export default {
   font-size: 13px;
   color: #fff;
 }
-.van-address-list>>>.van-address-item .van-radio__icon--checked .van-icon{background-color: #ff48bd;border-color: #ff48bd;}
-.van-button--danger{background-color: #ff48bd;border: 1px solid #ff48bd;}
+.van-address-list >>> .van-address-item .van-radio__icon--checked .van-icon {
+  background-color: #ff48bd;
+  border-color: #ff48bd;
+}
+.van-button--danger {
+  background-color: #ff48bd;
+  border: 1px solid #ff48bd;
+}
 </style>

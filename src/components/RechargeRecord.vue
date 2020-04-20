@@ -1,6 +1,12 @@
 <template>
   <div id="rechargeRecord">
     <van-nav-bar title="充值记录" left-arrow @click-left="onClickLeft" />
+     <van-empty
+      v-if="empty"
+      class="custom-image"
+      image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+      description="暂无充值记录"
+    />
     <div class="month-record-box">
       <div class="month-record-title fz16 col9">本月</div>
       <div class="month-record-list-box">
@@ -42,7 +48,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      empty:false
+    };
   },
   created() {},
   methods: {

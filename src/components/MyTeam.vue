@@ -20,6 +20,12 @@
       </div>
     </div>
     <div class="team-menber-box">
+      <van-empty
+        v-if="empty"
+        class="custom-image"
+        image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+        description="暂无团队成员，快去邀请"
+      />
       <div class="meeting-box fz12">
         <div class="meeting-time">
           <div class="meeting-time-label col3 fw400">用户编号：</div>
@@ -98,7 +104,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      empty:false
+    };
   },
   created() {},
   methods: {

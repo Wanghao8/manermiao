@@ -35,6 +35,12 @@
         <div class="withdraw-detail-right iconfont">&#xe605;</div>
       </div>
       <van-divider />
+      <van-empty
+        v-if="empty"
+        class="custom-image"
+        image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+        description="暂无提现记录"
+      />
       <div class="withdraw-list-box">
         <div class="withdraw-list-item flexrbc">
           <div class="withdraw-list-item-left flexc">
@@ -64,7 +70,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      empty:false
+    };
   },
   created() {},
   methods: {

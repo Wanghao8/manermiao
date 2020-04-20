@@ -1,5 +1,8 @@
 <template>
   <div id="Home">
+    <van-nav-bar
+      title="首页"
+    />
     <!-- <div class="topNav">
       <div class="leftIcon">
         <van-icon name="chat-o" size="16" />
@@ -22,7 +25,6 @@
         <div class="botword">列表</div>
       </div>
     </div> -->
-    
     <div class="swiperbox">
       <van-swipe :autoplay="3000" indicator-color="#FE18FB">
         <van-swipe-item v-for="(image, index) in images" :key="index">
@@ -119,6 +121,9 @@ export default {
       ]
     };
   },
+  mounted(){
+
+  },
   methods: {
     navigate() {
       console.log(123);
@@ -127,12 +132,20 @@ export default {
     gotoDetail() {
       console.log("123detail");
       this.$router.push({ path: "/detail" });
+    },
+    getinfo(){
+      
     }
   }
 };
 </script>
 
 <style scoped>
+
+.van-nav-bar {width: 100% !important;background-color: #FF48BD;}
+.van-nav-bar >>> .van-icon {color: #fff !important;}
+.van-nav-bar >>> .van-nav-bar__title{color: #fff;font-size: 16px;}
+.van-nav-bar >>> .van-nav-bar__text{font-size: 13px;color: #fff;}
 #Home {
   background-color: #f1f1f1;
   overflow: auto;

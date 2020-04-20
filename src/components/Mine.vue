@@ -86,7 +86,9 @@ export default {
       progressRat: 48
     };
   },
-  created() {},
+  created() {
+    
+  },
   methods: {
     onClickLeft() {
       this.$toast("返回");

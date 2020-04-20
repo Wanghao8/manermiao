@@ -66,8 +66,7 @@ export default {
       this.$toast(title);
       console.log(name, title);
       this.packageIndex = name;
-      // console.log(this.$refs.detail[0],584848);
-      this.$refs.detail[0].jiekou();
+      // this.$refs.detail[name].jiekou();
       
     },
     goback() {
