@@ -1,7 +1,7 @@
 <template>
   <div id="withdraw">
     <van-nav-bar title="佣金提现" left-arrow @click-left="onClickLeft" />
-    <div class="content-box bgwhite">
+    <div class="content-box bgwhite fixed-margin">
       <div class="card-box flexcac white">
         <div class="last-money flexc0c white">
           <div class="last-money-num fz24">8690.20</div>
@@ -99,6 +99,7 @@ export default {
 .van-nav-bar {
   width: 100% !important;
   background-color: #ff48bd;
+  position: fixed;
 }
 .van-nav-bar >>> .van-icon {
   color: #fff !important;

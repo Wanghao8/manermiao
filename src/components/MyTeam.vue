@@ -1,7 +1,7 @@
 <template>
   <div id="myTeam">
     <van-nav-bar title="我的团队" left-arrow @click-left="onClickLeft" />
-    <div class="top-card-box">
+    <div class="top-card-box fixed-margin">
       <div class="top-card">
         <div class="top-cad-left">
           <img
@@ -118,24 +118,6 @@ export default {
 </script>
 
 <style scoped>
-.fz12 {
-  font-size: 12px;
-}
-.fz14 {
-  font-size: 14px;
-}
-.fz16 {
-  font-size: 16px;
-}
-.fz18 {
-  font-size: 18px;
-}
-.white {
-  color: #fff;
-}
-.col6 {
-  color: #666;
-}
 #myTeam {
   background-color: #e4e4e6;
   overflow: auto;
@@ -148,6 +130,7 @@ export default {
 .van-nav-bar {
   width: 100% !important;
   background-color: #ff48bd;
+  position: fixed;
 }
 .van-nav-bar >>> .van-icon {
   color: #fff !important;

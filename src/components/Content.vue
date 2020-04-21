@@ -52,6 +52,9 @@ export default {
     console.log(this.packageIndex);
     this.jiekou();
   },
+  destroyed() {
+    clearTimeout(this.timeout);
+  },
   methods: {
     addCart(id) {
       this.$toast("添加购物车，ID为" + id);
@@ -68,7 +71,8 @@ export default {
     },
     //下拉刷新操作事件
     onRefresh() {
-      setTimeout(() => {
+      var timeout = null;
+      timeout = setTimeout(() => {
         this.$toast("刷新成功");
         this.isLoading = false;
         this.count++;
@@ -84,7 +88,9 @@ export default {
   overflow: auto;
   height: 80vh;
   width: 100%;
-  margin-bottom: 10px;
+}
+.van-grid {
+  margin-bottom: 20px;
 }
 .van-grid >>> .van-grid-item {
   margin: 10px 0 0 10px;

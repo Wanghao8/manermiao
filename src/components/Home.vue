@@ -1,8 +1,6 @@
 <template>
   <div id="Home">
-    <van-nav-bar
-      title="首页"
-    />
+    <van-nav-bar title="首页" />
     <!-- <div class="topNav">
       <div class="leftIcon">
         <van-icon name="chat-o" size="16" />
@@ -24,10 +22,10 @@
         <van-icon name="apps-o" size="16" />
         <div class="botword">列表</div>
       </div>
-    </div> -->
+    </div>-->
     <div class="swiperbox">
       <van-swipe :autoplay="3000" indicator-color="#FE18FB">
-        <van-swipe-item v-for="(image, index) in images" :key="index">
+        <van-swipe-item v-for="(image, index) in swiperImages" :key="index">
           <img class="swiperImg" v-lazy="image" />
         </van-swipe-item>
       </van-swipe>
@@ -45,64 +43,26 @@
     </div>
 
     <div class="list-container">
-      <div class="list-item">
+      <div class="list-item" v-for="(item,index) in list" :key="index">
         <div class="list-item-top">
           <div class="list-item-top-left">
             <div class="list-avatar">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                alt
-                class="list-avatar-img"
-              />
+              <img :src="item.avatar" alt class="list-avatar-img" />
             </div>
-            <div class="list-username">好好先生</div>
+            <div class="list-username">{{item.userName}}</div>
           </div>
-          <div class="list-level">Lv.1</div>
+          <div class="list-level">{{item.userLevel}}</div>
         </div>
         <div class="list-item-content">
           <div class="list-item-content-left">
-            <img
-              src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-              alt
-              class="list-item-content-img"
-            />
+            <img :src="item.goodsImg" alt class="list-item-content-img" />
           </div>
           <div class="list-item-content-right">
-            <div class="list-item-content-title">富勒烯多肽面膜</div>
-            <div class="list-item-content-detail two-line">富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮</div>
+            <div class="list-item-content-title">{{item.goodsName}}</div>
+            <div class="list-item-content-detail two-line">{{item.goodsDesc}}</div>
           </div>
         </div>
-        <div class="list-item-bottom">2020.03.06</div>
-      </div>
-
-      <div class="list-item">
-        <div class="list-item-top">
-          <div class="list-item-top-left">
-            <div class="list-avatar">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                alt
-                class="list-avatar-img"
-              />
-            </div>
-            <div class="list-username">好好先生</div>
-          </div>
-          <div class="list-level">Lv.1</div>
-        </div>
-        <div class="list-item-content">
-          <div class="list-item-content-left">
-            <img
-              src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-              alt
-              class="list-item-content-img"
-            />
-          </div>
-          <div class="list-item-content-right">
-            <div class="list-item-content-title">富勒烯多肽面膜</div>
-            <div class="list-item-content-detail two-line">富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮</div>
-          </div>
-        </div>
-        <div class="list-item-bottom">2020.03.06</div>
+        <div class="list-item-bottom">{{item.dateTime}}</div>
       </div>
     </div>
   </div>
@@ -114,15 +74,65 @@ export default {
   data() {
     return {
       searchContent: "",
-      images: [
+      swiperImages: [
         "../../static/image/homeSwiper1.jpg",
         "../../static/image/homeSwiper2.jpg",
-        "../../static/image/homeSwiper3.png",
+        "../../static/image/homeSwiper3.png"
+      ],
+      list: [
+        {
+          userName: "好好先生",
+          avatar:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          userLevel: "Lv.1",
+          goodsImg:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          goodsName: "富勒烯多肽面膜",
+          goodsDesc:
+            "富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮",
+          dateTime: "2020.03.06"
+        },
+        {
+          userName: "好好先生",
+          avatar:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          userLevel: "Lv.1",
+          goodsImg:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          goodsName: "富勒烯多肽面膜",
+          goodsDesc:
+            "富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮",
+          dateTime: "2020.03.06"
+        },
+        {
+          userName: "好好先生",
+          avatar:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          userLevel: "Lv.1",
+          goodsImg:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          goodsName: "富勒烯多肽面膜",
+          goodsDesc:
+            "富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮",
+          dateTime: "2020.03.06"
+        },
+        {
+          userName: "好好先生",
+          avatar:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          userLevel: "Lv.1",
+          goodsImg:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          goodsName: "富勒烯多肽面膜",
+          goodsDesc:
+            "富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮",
+          dateTime: "2020.03.06"
+        }
       ]
     };
   },
-  mounted(){
-
+  mounted() {
+    this.getinfo();
   },
   methods: {
     navigate() {
@@ -133,19 +143,42 @@ export default {
       console.log("123detail");
       this.$router.push({ path: "/detail" });
     },
-    getinfo(){
-      
+    getinfo() {
+      this.$axios({
+        method: "get",
+        url: "https://yesno.wtf/api"
+        // data: {
+
+        // }
+      })
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };
 </script>
 
 <style scoped>
-
-.van-nav-bar {width: 100% !important;background-color: #FF48BD;}
-.van-nav-bar >>> .van-icon {color: #fff !important;}
-.van-nav-bar >>> .van-nav-bar__title{color: #fff;font-size: 16px;}
-.van-nav-bar >>> .van-nav-bar__text{font-size: 13px;color: #fff;}
+.van-nav-bar {
+  width: 100% !important;
+  background-color: #ff48bd;
+  position: fixed;
+}
+.van-nav-bar >>> .van-icon {
+  color: #fff !important;
+}
+.van-nav-bar >>> .van-nav-bar__title {
+  color: #fff;
+  font-size: 16px;
+}
+.van-nav-bar >>> .van-nav-bar__text {
+  font-size: 13px;
+  color: #fff;
+}
 #Home {
   background-color: #f1f1f1;
   overflow: auto;
@@ -176,7 +209,9 @@ export default {
   color: #eee;
   flex-shrink: 0;
 }
-.botword{font-size: 12px;}
+.botword {
+  font-size: 12px;
+}
 .van-search {
   flex-grow: 1;
 }
@@ -193,10 +228,12 @@ export default {
 }
 .swiperbox {
   background-color: #fff;
-  /* margin-top: 44px; */
+  margin-top: 46px;
   overflow: hidden;
 }
-.van-swipe-item{height: 160px;}
+.van-swipe-item {
+  height: 160px;
+}
 .van-field__left-icon {
   width: 0;
 }
@@ -245,6 +282,7 @@ export default {
   margin: 7px;
   overflow: hidden;
   border-radius: 5px;
+  margin-bottom: 60px;
 }
 .list-item {
   margin-bottom: 3px;
@@ -257,6 +295,7 @@ export default {
 .list-item-top {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .list-item-top-left {
   display: flex;
@@ -300,5 +339,6 @@ export default {
   font-size: 9px;
   display: flex;
   justify-content: flex-end;
+  margin-top: 5px;
 }
 </style>

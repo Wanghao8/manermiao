@@ -3,7 +3,7 @@
     <div class="container">
       <van-nav-bar title="购买记录" left-arrow @click-left="onClickLeft" />
       <div class="top-box">
-        <img src="../../static/image/buyRecordBack.jpg" alt class="backimg" />
+        <img src="../../static/image/buyRecordBack.jpg" alt class="backimg fixed-margin" />
         <div class="top-box-content">
           <div class="deal-price fz16">交易总额</div>
           <div class="divider-line"></div>
@@ -12,11 +12,11 @@
       </div>
       <van-empty
         v-if="empty"
-        class="custom-image"
+        class="custom-image fixed-margin"
         image="https://img.yzcdn.cn/vant/custom-empty-image.png"
         description="暂无购买记录"
       />
-      <van-collapse v-model="activeNames">
+      <van-collapse v-model="activeNames" class="fixed-margin">
         <van-collapse-item title="2019.03.08" name="1">
           <div class="deal-detail-box">
             <div class="deal-detail-item">
@@ -119,7 +119,7 @@ export default {
   data() {
     return {
       empty:false,
-      activeNames: ["1"]
+      activeNames: ["1"],
     };
   },
   created() {},
@@ -154,6 +154,7 @@ export default {
 .van-nav-bar {
   width: 100% !important;
   background-color: #ff48bd;
+  position: fixed;
 }
 .van-nav-bar >>> .van-icon {
   color: #fff !important;

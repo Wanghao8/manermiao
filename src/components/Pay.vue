@@ -15,6 +15,7 @@ export default {
     return {};
   },
   created() {},
+  mounted(){},
   methods: {
     onClickLeft() {
       this.$router.back(-1);

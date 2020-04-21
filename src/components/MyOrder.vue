@@ -9,7 +9,91 @@
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
           description="我的订单是空的"
         />
-        <div class="order-list-box">
+        <div class="order-list-box fixed-margin9">
+          <div class="order-list-item">
+            <div class="order-list-item-top">
+              <div class="order-list-item-top-left fz11 col3">
+                订单编号：
+                <span class="col9">C01254639522</span>
+              </div>
+              <div class="order-list-item-top-right col9 fz11">待付款</div>
+            </div>
+            <div class="order-list-item-content">
+              <img
+                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
+                alt
+                class="goods-img"
+              />
+              <div class="order-list-item-content-right">
+                <div class="order-list-item-content-right-titleprice">
+                  <div class="order-list-item-content-right-title fz13">果蔬果冻（10袋装）</div>
+                  <div class="order-list-item-content-right-price red fz12">￥1639.00</div>
+                </div>
+                <div class="order-list-item-content-right-sortnum">
+                  <div class="order-list-item-content-right-sort col9 fz10">类别：酵素果冻</div>
+                  <div class="order-list-item-content-right-num col9 fz11">
+                    X
+                    <span class="goos-num">1</span>
+                  </div>
+                </div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：2019-02-10</div>
+              </div>
+            </div>
+            <div class="order-list-item-total">
+              <div class="order-list-item-total-left col6 fz11">
+                订单合计:
+                <span class="fz11 red">￥1639.00</span>
+              </div>
+              <div class="order-list-item-total-right col6 fz11">共1件产品</div>
+            </div>
+            <van-divider />
+            <div class="order-list-item-bottom">
+              <div class="order-list-item-bottom-cancel fz13" @click="cancelOrder(1)">取消订单</div>
+              <div class="order-list-item-bottom-pay fz13" @click="toPay(1)">去支付</div>
+            </div>
+          </div>
+          <div class="order-list-item">
+            <div class="order-list-item-top">
+              <div class="order-list-item-top-left fz11 col3">
+                订单编号：
+                <span class="col9">C01254639522</span>
+              </div>
+              <div class="order-list-item-top-right col9 fz11">待付款</div>
+            </div>
+            <div class="order-list-item-content">
+              <img
+                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
+                alt
+                class="goods-img"
+              />
+              <div class="order-list-item-content-right">
+                <div class="order-list-item-content-right-titleprice">
+                  <div class="order-list-item-content-right-title fz13">果蔬果冻（10袋装）</div>
+                  <div class="order-list-item-content-right-price red fz12">￥1639.00</div>
+                </div>
+                <div class="order-list-item-content-right-sortnum">
+                  <div class="order-list-item-content-right-sort col9 fz10">类别：酵素果冻</div>
+                  <div class="order-list-item-content-right-num col9 fz11">
+                    X
+                    <span class="goos-num">1</span>
+                  </div>
+                </div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：2019-02-10</div>
+              </div>
+            </div>
+            <div class="order-list-item-total">
+              <div class="order-list-item-total-left col6 fz11">
+                订单合计:
+                <span class="fz11 red">￥1639.00</span>
+              </div>
+              <div class="order-list-item-total-right col6 fz11">共1件产品</div>
+            </div>
+            <van-divider />
+            <div class="order-list-item-bottom">
+              <div class="order-list-item-bottom-cancel fz13" @click="cancelOrder(1)">取消订单</div>
+              <div class="order-list-item-bottom-pay fz13" @click="toPay(1)">去支付</div>
+            </div>
+          </div>
           <div class="order-list-item">
             <div class="order-list-item-top">
               <div class="order-list-item-top-left fz11 col3">
@@ -342,30 +426,18 @@ export default {
 </script>
 
 <style scoped>
-.fz10 {
-  font-size: 10px;
+.van-tabs>>>.van-sticky{
+  position: fixed;
+  width: 100%;
+  top: 46px;
 }
-.fz11 {
-  font-size: 11px;
-}
-.fz12 {
-  font-size: 12px;
-}
-.fz13 {
-  font-size: 13px;
-}
-.red {
-  color: red;
-}
-.col6 {
-  color: #666;
-}
-.col9 {
-  color: #999;
+.van-tabs>>>.van-sticky--fixed{
+  top: 46px;
 }
 .pink {
   color: #ff48bd;
 }
+.custom-image{margin-top: 90px;}
 #myOrder {
   background-color: #e4e4e4;
   overflow: auto;
@@ -378,6 +450,7 @@ export default {
 .van-nav-bar {
   width: 100% !important;
   background-color: #ff48bd;
+  position: fixed;
 }
 .van-nav-bar >>> .van-icon {
   color: #fff !important;
@@ -397,6 +470,10 @@ export default {
 }
 .van-tabs >>> .van-tabs__wrap--scrollable .van-tab {
   flex: 0 0 20%;
+}
+.order-list-box{
+  margin-bottom: 10px;
+  margin-top: 90px;
 }
 .order-list-item {
   display: flex;

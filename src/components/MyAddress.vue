@@ -3,11 +3,12 @@
     <van-nav-bar title="我的地址" left-arrow @click-left="onClickLeft" />
     <van-empty
       v-if="empty"
-      class="custom-image"
+      class="custom-image fixed-margin"
       image="https://img.yzcdn.cn/vant/custom-empty-image.png"
       description="暂无地址，请添加"
     />
     <van-address-list
+      class="fixed-margin"
       v-model="chosenAddressId"
       :list="list"
       default-tag-text="默认"
@@ -20,7 +21,7 @@
 export default {
   data() {
     return {
-      empty:false,
+      empty: false,
       chosenAddressId: "1",
       list: [
         {
@@ -68,6 +69,7 @@ export default {
 .van-nav-bar {
   width: 100% !important;
   background-color: #ff48bd;
+  position: fixed;
 }
 .van-nav-bar >>> .van-icon {
   color: #fff !important;

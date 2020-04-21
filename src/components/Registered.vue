@@ -4,8 +4,8 @@
 
     <!-- 弹出框 -->
     <van-overlay :show="show" @click="show = false">
-      <div class="wrapper" >
-        <img @click.stop src="../../static/image/register.png" alt="" class="registered">
+      <div class="wrapper">
+        <img @click.stop src="../../static/image/register.png" alt class="registered" />
       </div>
     </van-overlay>
 
@@ -55,7 +55,7 @@
         name="手机"
         label="手机"
         placeholder="请输入您的手机号"
-         :rules="[{required: true, pattern: phoneRE, message: '请填写正确的手机号' }]"
+        :rules="[{required: true, pattern: phoneRE, message: '请填写正确的手机号' }]"
       />
       <van-field
         v-model="email"
@@ -83,7 +83,7 @@
 export default {
   data() {
     return {
-      show:false,
+      show: false,
       username: "",
       phoneNum: "",
       email: "",
@@ -95,17 +95,29 @@ export default {
       value: "",
       showDate: false,
       phoneRE: /^1[3456789]\d{9}$/,
-      emailRE: /^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/,
+      emailRE: /^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/
     };
   },
-  created() {},
+  created() {
+    
+  },
+  mounted(){},
+  destroyed() {
+    clearTimeout(this.timeout);
+  },
   methods: {
+    
     onClickLeft() {
       this.$router.back(-1);
     },
     onSubmit(values) {
+      var _self = this;
       console.log("submit", values);
-      this.show = true
+      this.show = true;
+      var timeout = null;
+      timeout = setTimeout(function() {
+        _self.$router.push("mine");
+      }, 2000);
     },
     onConfirm(date) {
       this.value = `${date.getFullYear()}-${date.getMonth() +
@@ -161,5 +173,8 @@ export default {
   background-color: #ff49bd;
   margin-right: 8px;
 }
-.van-cell /deep/ .van-radio__icon--checked .van-icon{background-color: #ff49bd;border-color: #ff49bd;}
+.van-cell /deep/ .van-radio__icon--checked .van-icon {
+  background-color: #ff49bd;
+  border-color: #ff49bd;
+}
 </style>

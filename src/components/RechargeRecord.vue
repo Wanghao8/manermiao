@@ -1,13 +1,13 @@
 <template>
   <div id="rechargeRecord">
     <van-nav-bar title="充值记录" left-arrow @click-left="onClickLeft" />
-     <van-empty
+    <van-empty
       v-if="empty"
-      class="custom-image"
+      class="custom-image fixed-margin"
       image="https://img.yzcdn.cn/vant/custom-empty-image.png"
       description="暂无充值记录"
     />
-    <div class="month-record-box">
+    <div class="month-record-box fixed-margin">
       <div class="month-record-title fz16 col9">本月</div>
       <div class="month-record-list-box">
         <div class="month-record-list-item">
@@ -49,7 +49,7 @@
 export default {
   data() {
     return {
-      empty:false
+      empty: false
     };
   },
   created() {},
@@ -62,14 +62,6 @@ export default {
 </script>
 
 <style scoped>
-.fz16 {
-  font-size: 16px;
-}
-.fz14 {
-  font-size: 14px;
-}
-.col6{color: #666;}
-.col9{color: #999;}
 #rechargeRecord {
   background-color: #e4e4e4;
   overflow: auto;
@@ -82,6 +74,7 @@ export default {
 .van-nav-bar {
   width: 100% !important;
   background-color: #ff48bd;
+  position: fixed;
 }
 .van-nav-bar >>> .van-icon {
   color: #fff !important;
@@ -94,11 +87,20 @@ export default {
   font-size: 13px;
   color: #fff;
 }
-.month-record-title{padding: 12px;}
-.month-record-list-box{background-color: #fff;}
-.month-record-list-item{padding: 18px 12px;border-bottom: 1px solid #eee;display: flex;justify-content: flex-start;align-items: center;}
-.month-record-list-item-content{margin-left: 70px;}
-
-
-
+.month-record-title {
+  padding: 12px;
+}
+.month-record-list-box {
+  background-color: #fff;
+}
+.month-record-list-item {
+  padding: 18px 12px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.month-record-list-item-content {
+  margin-left: 70px;
+}
 </style>

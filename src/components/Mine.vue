@@ -3,22 +3,18 @@
     <div class="top">
       <div class="top-box">
         <img class="back-img" src="../../static/image/mine-back.png" alt />
-        <van-nav-bar
-          title="个人中心"
-        />
+        <van-nav-bar title="个人中心" />
         <div class="top-nav"></div>
-        <img
-          src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-          alt
-          class="top-avatar"
-        />
+        <img :src="avatar" alt class="top-avatar" />
+        <div v-show="male" class="iconfont gender male fz13">&#xe6ef;</div>
+        <div v-show="!male" class="iconfont gender famale fz13">&#xe6f0;</div>
       </div>
       <div class="mylist">
-        <div class="mylist-username">安琪拉</div>
+        <div class="mylist-username">{{userName}}</div>
         <van-progress color="#FF49BD" :percentage="progressRat" />
         <div class="mylist-exp-level">
-          <div class="exp">经验：12345</div>
-          <div class="level">等级2/5</div>
+          <div class="exp">经验：{{exp}}</div>
+          <div class="level">等级: {{level}}</div>
         </div>
         <div class="mylist-list" @click="toMyOrder(0)">
           <div class="mylist-list-left">
@@ -83,12 +79,16 @@
 export default {
   data() {
     return {
-      progressRat: 48
+      userName: "安琪拉",
+      progressRat: 33,
+      male: false,
+      exp: "12345",
+      level: "2/5",
+      avatar:
+        "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
     };
   },
-  created() {
-    
-  },
+  created() {},
   methods: {
     onClickLeft() {
       this.$toast("返回");
@@ -102,32 +102,38 @@ export default {
     toRechargeRecord() {
       this.$router.push("rechargeRecord");
     },
-    toBuyRecord(){
+    toBuyRecord() {
       this.$router.push("buyRecord");
     },
-    toMyAddress(){
+    toMyAddress() {
       this.$router.push("myAddress");
     },
-    toMyOrder(e){
-      this.$router.push({name:"myOrder",params:{index:e}});
+    toMyOrder(e) {
+      this.$router.push({ name: "myOrder", params: { index: e } });
     }
   }
 };
 </script>
 
 <style scoped>
-[class*=van-hairline]::after{
+[class*="van-hairline"]::after {
   border: none;
 }
-.van-progress>>>.van-progress__pivot{display: none;}
+.van-progress >>> .van-progress__pivot {
+  display: none;
+}
 #mine {
   background-color: #e4e4e4;
   overflow: auto;
   height: 100%;
   width: 100%;
   position: absolute;
+  overflow-x: hidden;
   top: 0px;
   bottom: 0px;
+}
+.div:last-child {
+  margin-bottom: 50px;
 }
 .top {
   background-color: #fff;
@@ -146,11 +152,24 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+.gender {
+  position: relative;
+  right: -20px;
+  z-index: 3;
+}
+.male {
+  color: #0091ff;
+}
+.famale {
+  color: #fe88fd;
+}
 .top-avatar {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  z-index: 1;
+  z-index: 2;
+  position: relative;
+  top: 20px;
 }
 .van-nav-bar {
   width: 100% !important;

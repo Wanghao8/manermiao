@@ -85,7 +85,7 @@ export default {
       this.$router.back(-1);
     },
     toMyorder() {
-      this.$router.push({name:"myOrder",params:{index:0}});
+      this.$router.push({name:"myOrder",params:{index:3}});
     },
     toMyteam() {
       this.$router.push("myTeam");
@@ -104,6 +104,12 @@ export default {
 </script>
 
 <style scoped>
+[class*="van-hairline"]::after {
+  border: none;
+}
+.van-progress >>> .van-progress__pivot {
+  display: none;
+}
 .pink {
   color: #ff49bd;
 }

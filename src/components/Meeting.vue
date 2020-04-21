@@ -49,6 +49,66 @@
             <div class="meeting-person-txt col6">2020-04-17 12:48:32</div>
           </div>
         </div>
+        <div class="meeting-box fz12">
+          <div class="meeting-time">
+            <div class="meeting-time-label col3 fw400">会议时间：</div>
+            <div class="meeting-time-date col6">3月8日</div>
+            <div class="meeting-time-week col6">周三</div>
+            <div class="meeting-time-time col6">15:30~16:00</div>
+          </div>
+          <div class="meeting-theme">
+            <div class="meeting-theme-label col3">会议主题：</div>
+            <div class="meeting-theme-txt col6">三八妇女节会议</div>
+          </div>
+          <div class="meeting-address">
+            <div class="meeting-address-label col3">会议地址：</div>
+            <div class="meeting-address-txt col6">未来城3F 302会议室</div>
+          </div>
+          <div class="meeting-person">
+            <div class="meeting-person-label col3">申请时间：</div>
+            <div class="meeting-person-txt col6">2020-04-17 12:48:32</div>
+          </div>
+        </div>
+        <div class="meeting-box fz12">
+          <div class="meeting-time">
+            <div class="meeting-time-label col3 fw400">会议时间：</div>
+            <div class="meeting-time-date col6">3月8日</div>
+            <div class="meeting-time-week col6">周三</div>
+            <div class="meeting-time-time col6">15:30~16:00</div>
+          </div>
+          <div class="meeting-theme">
+            <div class="meeting-theme-label col3">会议主题：</div>
+            <div class="meeting-theme-txt col6">三八妇女节会议</div>
+          </div>
+          <div class="meeting-address">
+            <div class="meeting-address-label col3">会议地址：</div>
+            <div class="meeting-address-txt col6">未来城3F 302会议室</div>
+          </div>
+          <div class="meeting-person">
+            <div class="meeting-person-label col3">申请时间：</div>
+            <div class="meeting-person-txt col6">2020-04-17 12:48:32</div>
+          </div>
+        </div>
+        <div class="meeting-box fz12">
+          <div class="meeting-time">
+            <div class="meeting-time-label col3 fw400">会议时间：</div>
+            <div class="meeting-time-date col6">3月8日</div>
+            <div class="meeting-time-week col6">周三</div>
+            <div class="meeting-time-time col6">15:30~16:00</div>
+          </div>
+          <div class="meeting-theme">
+            <div class="meeting-theme-label col3">会议主题：</div>
+            <div class="meeting-theme-txt col6">三八妇女节会议</div>
+          </div>
+          <div class="meeting-address">
+            <div class="meeting-address-label col3">会议地址：</div>
+            <div class="meeting-address-txt col6">未来城3F 302会议室</div>
+          </div>
+          <div class="meeting-person">
+            <div class="meeting-person-label col3">申请时间：</div>
+            <div class="meeting-person-txt col6">2020-04-17 12:48:32</div>
+          </div>
+        </div>
       </van-tab>
       <van-tab title="历史记录">
         <van-empty
@@ -126,15 +186,6 @@ export default {
 </script>
 
 <style  scoped>
-.fz12 {
-  font-size: 12px;
-}
-.col3 {
-  color: #333;
-}
-.col6 {
-  color: #666;
-}
 .fw400 {
   font-weight: 400;
 }
@@ -150,7 +201,14 @@ export default {
 .van-nav-bar {
   width: 100% !important;
   background-color: #ff48bd;
+  position: fixed;
 }
+.van-tabs>>>.van-tabs__wrap{
+  position: fixed;
+  width: 100%;
+  top: 46px;
+}
+.van-tabs>>>.van-tabs__content{margin-top: 105px;}
 .van-nav-bar >>> .van-icon {
   color: #fff !important;
 }

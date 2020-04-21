@@ -44,3 +44,5 @@ overflow: hidden;
    display: -webkit-box;    -webkit-line-clamp: 2;    -webkit-box-orient: vertical;
 }
 body{-webkit-text-size-adjust:none} 
+.fixed-margin{margin-top: 46px;}
+.fixed-margin9{margin-top: 90px;}

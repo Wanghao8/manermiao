@@ -31,6 +31,12 @@ export default {
 </script>
 
 <style scoped>
+[class*="van-hairline"]::after {
+  border: none;
+}
+.van-progress >>> .van-progress__pivot {
+  display: none;
+}
 .fz19{font-size: 19px;}
 .bold{font-weight: bold;}
 #spreadQRcode {
