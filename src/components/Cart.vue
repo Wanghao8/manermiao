@@ -72,7 +72,7 @@ export default {
           quantity: 1,
           goodsImg:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          price: 139,
+          price: 131,
           description:
             "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
         },
@@ -81,7 +81,7 @@ export default {
           quantity: 1,
           goodsImg:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          price: 139,
+          price: 132,
           description:
             "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
         },
@@ -90,7 +90,7 @@ export default {
           quantity: 1,
           goodsImg:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          price: 139,
+          price: 133,
           description:
             "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
         },
@@ -99,7 +99,7 @@ export default {
           quantity: 1,
           goodsImg:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          price: 139,
+          price: 134,
           description:
             "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
         },
@@ -166,7 +166,12 @@ export default {
       }, 100);
     },
     deletaGoods() {
+      var _self =this
       this.$toast("点击删除按钮");
+      // console.log(this.choosed);
+      // _self.choosed.forEach(item2 => {
+      //   _self.list.splice(item2,1)
+      // });
     },
     settle() {
       this.$toast("点击结算按钮");

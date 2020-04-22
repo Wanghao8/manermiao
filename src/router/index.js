@@ -25,7 +25,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect:"/home"
+      // redirect:"/registered",
+      meta: { requiresAuth: true }
     },
     {
       path: '/home',
