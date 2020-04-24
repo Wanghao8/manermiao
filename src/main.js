@@ -11,13 +11,17 @@ import './assets/css/common.css';
 import '../static/iconfont.css';
 import wx from 'weixin-js-sdk'
 import { Lazyload, Toast, RadioGroup, Radio } from 'vant';
+import VueJsonp from 'vue-jsonp'
 
 
 Vue.use(Vant).use(Lazyload).use(Toast).use(RadioGroup).use(Radio)
 Vue.prototype.$axios = Axios
 Vue.prototype.$common = Common
-Vue.prototype.$wx = wx
+Vue.prototype.wx = wx
 Vue.config.productionTip = false
+Vue.use(VueJsonp)
+
+
 
 /* eslint-disable no-new */
 new Vue({
