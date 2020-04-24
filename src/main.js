@@ -12,6 +12,7 @@ import '../static/iconfont.css';
 import wx from 'weixin-js-sdk'
 import { Lazyload, Toast, RadioGroup, Radio } from 'vant';
 import VueJsonp from 'vue-jsonp'
+import AMapLoader from '@amap/amap-jsapi-loader';
 
 
 Vue.use(Vant).use(Lazyload).use(Toast).use(RadioGroup).use(Radio)
@@ -20,6 +21,17 @@ Vue.prototype.$common = Common
 Vue.prototype.wx = wx
 Vue.config.productionTip = false
 Vue.use(VueJsonp)
+
+
+AMapLoader.load({
+  "key": "您申请的key值",   // 申请好的Web端开发者Key，首次调用 load 时必填
+  "version": "2.0",   // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+  "plugins": []  //插件列表
+}).then((AMap) => {
+  map = new AMap.Map('container');
+}).catch(e => {
+  console.log(e);
+})
 
 
 
