@@ -3,10 +3,10 @@
     <van-nav-bar title="升级规则" left-arrow @click-left="onClickLeft" />
     <div class="top-box">
       <div class="top-tltle-level">
-        <div class="top-title fz18 bold white">安琪拉</div>
-        <div class="top-level fz10">LV.3</div>
+        <div class="top-title fz18 bold white">{{userInfo.username}}</div>
+        <div class="top-level fz10">LV.{{userInfo.level}}</div>
       </div>
-      <div class="status fz14 white">已获得XX级称号</div>
+      <div class="status fz14 white">已获得{{userInfo.title}}级称号</div>
     </div>
     <div class="content-box">
       <div class="content-left">
@@ -29,15 +29,42 @@
 export default {
   props: {},
   data() {
-    return {};
+    return {
+      userInfo:{
+        userName:'安琪拉',
+        level:'3',
+        title:'XX'
+      }
+    };
   },
   computed: {},
   created() {},
-  mounted() {},
+  mounted() {
+    this.getInfo();
+  },
   watch: {},
   methods: {
     onClickLeft() {
       this.$router.back(-1);
+    },
+    getInfo() {
+      var _self = this;
+      _self
+        .$axios({
+          method: "get",
+          url: "https://yesno.wtf/api"
+          // data: {
+
+          // }
+        })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
   components: {}

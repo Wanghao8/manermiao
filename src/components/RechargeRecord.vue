@@ -53,9 +53,31 @@ export default {
     };
   },
   created() {},
+  mounted() {
+    this.getInfo();
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
+    },
+    getInfo() {
+      var _self = this;
+      _self
+        .$axios({
+          method: "get",
+          url: "https://yesno.wtf/api"
+          // data: {
+
+          // }
+        })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

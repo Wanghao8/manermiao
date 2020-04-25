@@ -8,12 +8,12 @@
         class="user-avatar"
       />
       <div class="user-info-box">
-        <div class="username">安琪拉</div>
+        <div class="username">{{userInfo.username}}</div>
         <div class="user-info-level-box flexr0c fz12 white">
-          <div class="level fz12">等级：</div>
-          <div class="recommend fz12">推荐人：张三</div>
+          <div class="level fz12">等级：{{userInfo.level}}</div>
+          <div class="recommend fz12">推荐人：{{userInfo.referrer}}</div>
         </div>
-        <div class="upgrade-time fz11 white">升级时间：2020.04.06</div>
+        <div class="upgrade-time fz11 white">升级时间：{{userInfo.upgradeTime}}</div>
       </div>
     </div>
     <div class="order-card-box">
@@ -31,11 +31,11 @@
       </div>
     </div>
     <div class="number-box fz16">
-      <div class="total-num fz16">累计佣金：￥5000.00</div>
+      <div class="total-num fz16">累计佣金：￥{{userInfo.totalMoney}}</div>
       <div class="last-withdraw" @click="toWithdraw">
         <div class="last-withdraw-left fz16">
           可提现余额：
-          <span class="pink">￥2000.00</span>
+          <span class="pink">￥{{userInfo.canWithdraw}}</span>
         </div>
         <div class="last-withdraw-right">
           <div class="last-withdraw-right-txt pink fz16">提现</div>
@@ -77,15 +77,27 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      userInfo: {
+        userName: "安琪拉",
+        level: "2",
+        referrer: "张三",
+        upgradeTime: "2020.04.06",
+        totalMoney: "5000.00",
+        canWithdraw: "2000.00"
+      }
+    };
   },
   created() {},
+  mounted() {
+    this.getInfo();
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
     },
     toMyorder() {
-      this.$router.push({name:"myOrder",params:{index:3}});
+      this.$router.push({ name: "myOrder", params: { index: 3 } });
     },
     toMyteam() {
       this.$router.push("myTeam");
@@ -98,6 +110,25 @@ export default {
     },
     toUpgradeRule() {
       this.$router.push("upgradeRule");
+    },
+    getInfo() {
+      var _self = this;
+      _self
+        .$axios({
+          method: "get",
+          url: "https://yesno.wtf/api"
+          // data: {
+
+          // }
+        })
+        .then(function(response) {
+          console.log(response);
+          // _self.userInfo = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

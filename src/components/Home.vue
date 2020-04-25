@@ -144,7 +144,8 @@ export default {
       this.$router.push({ path: "/detail" });
     },
     getinfo() {
-      this.$axios({
+      var _self = this
+      _self.$axios({
         method: "get",
         url: "https://yesno.wtf/api"
         // data: {
@@ -153,6 +154,8 @@ export default {
       })
         .then(function(response) {
           console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
         })
         .catch(function(error) {
           console.log(error);

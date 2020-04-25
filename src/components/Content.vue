@@ -2,28 +2,18 @@
   <div id="content">
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <van-grid :border="false" :column-num="2">
-        <van-grid-item v-for="value in 16" :key="value">
+        <van-grid-item v-for="item in list" :key="item.id">
           <div class="content-box">
-            <img
-              src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-              alt
-              class="goods-img"
-            />
+            <img :src="item.img" alt class="goods-img" />
             <div class="content-detail-box">
-              <div class="content-detail-title col3 fz13">妙而曼红参阿胶五谷素1231351</div>
+              <div class="content-detail-title col3 fz13">{{item.name}}</div>
               <div class="content-detail-tags flexr fz9">
-                <div class="content-detail-tag fz9">
-                  <span>通气血</span>
-                </div>
-                <div class="content-detail-tag fz9">
-                  <span>排毒素</span>
-                </div>
-                <div class="content-detail-tag fz9">
-                  <span>补能量</span>
+                <div class="content-detail-tag fz9" v-for="items in item.tags" :key="items">
+                  <span>{{items}}</span>
                 </div>
               </div>
               <div class="content-detail-bottom flexrbe">
-                <div class="content-detail-price red fz13">￥139</div>
+                <div class="content-detail-price red fz13">￥{{item.price}}</div>
                 <div class="content-detail-cart-icon iconfont" @click="addCart(1)">&#xe668;</div>
                 <!-- <div class="content-detail-cart-icon iconfont" @click="addCart(item.id)">&#xe668;</div> -->
               </div>
@@ -38,7 +28,57 @@
 export default {
   data() {
     return {
-      isLoading: false
+      isLoading: false,
+      list: [
+        {
+          id: 0,
+          img:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          name: "妙而曼红参阿胶五谷素1231351",
+          tags: ["通气血", "排毒素", "补能量"],
+          price: "131"
+        },
+        {
+          id: 1,
+          img:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          name: "妙而曼红参阿胶五谷素1231351",
+          tags: ["通气血", "排毒素", "补能量"],
+          price: "132"
+        },
+        {
+          id: 2,
+          img:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          name: "妙而曼红参阿胶五谷素1231351",
+          tags: ["通气血", "排毒素", "补能量"],
+          price: "133"
+        },
+        {
+          id: 3,
+          img:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          name: "妙而曼红参阿胶五谷素1231351",
+          tags: ["通气血", "排毒素", "补能量"],
+          price: "134"
+        },
+        {
+          id: 4,
+          img:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          name: "妙而曼红参阿胶五谷素1231351",
+          tags: ["通气血", "排毒素", "补能量"],
+          price: "135"
+        },
+        {
+          id: 5,
+          img:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          name: "妙而曼红参阿胶五谷素1231351",
+          tags: ["通气血", "排毒素", "补能量"],
+          price: "136"
+        }
+      ]
     };
   },
   props: {

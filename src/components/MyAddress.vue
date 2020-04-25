@@ -27,13 +27,13 @@ export default {
         {
           id: "1",
           name: "张三",
-          tel: "13000000000",
+          tel: "13812345678",
           address: "浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室"
         },
         {
           id: "2",
           name: "李四",
-          tel: "1310000000",
+          tel: "13587654321",
           address: "浙江省杭州市拱墅区莫干山路 50 号"
         }
       ]
@@ -50,7 +50,7 @@ export default {
     },
     onEdit(item, index) {
       this.$toast("编辑地址:" + index);
-      this.$router.push({ name: "editAddress", params: { id: index } });
+      this.$router.push({ name: "editAddress", params: { id: index,info:item } });
     }
   }
 };

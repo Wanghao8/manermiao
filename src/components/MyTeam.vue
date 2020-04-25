@@ -4,19 +4,15 @@
     <div class="top-card-box fixed-margin">
       <div class="top-card">
         <div class="top-cad-left">
-          <img
-            src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-            alt
-            class="avatar"
-          />
+          <img :src="userInfo.avatar" alt class="avatar" />
           <div class="card-info">
             <div class="card-info-left">
-              <div class="card-username">王包子</div>
-              <div class="card-level">Lv.5</div>
+              <div class="card-username">{{userInfo.userName}}</div>
+              <div class="card-level">Lv.{{userInfo.level}}</div>
             </div>
           </div>
         </div>
-        <div class="my-team-num fz12">我的团队204人</div>
+        <div class="my-team-num fz12">我的团队{{userInfo.teamNum}}人</div>
       </div>
     </div>
     <div class="team-menber-box">
@@ -26,77 +22,42 @@
         image="https://img.yzcdn.cn/vant/custom-empty-image.png"
         description="暂无团队成员，快去邀请"
       />
-      <div class="meeting-box fz12">
-        <div class="meeting-time">
-          <div class="meeting-time-label col3 fw400">用户编号：</div>
-          <div class="meeting-time-date col6">yhdsyhaya</div>
-        </div>
-        <div class="meeting-theme">
-          <div class="meeting-theme-label col3">用户姓名：</div>
-          <div class="meeting-theme-txt col6">王二狗</div>
-        </div>
-        <div class="meeting-address">
-          <div class="meeting-address-label col3">手机号码：</div>
-          <div class="meeting-address-txt col6">12345678958</div>
-        </div>
-        <div class="meeting-address">
-          <div class="meeting-person-label col3">佣金价格：</div>
-          <div class="meeting-person-txt col6">12元</div>
-        </div>
-        <div class="meeting-person">
-          <div class="meeting-person-label col3">注册时间：</div>
-          <div class="meeting-person-txt col6">2019-02-20 10:20:30</div>
-        </div>
-      </div>
-      <div class="team-num-spread">
-        <div class="team-num-spnum">
-          <div class="team-num">
-            团队人数：
-            <span class="nunber">280</span>
+      <div v-for="item in list" :key="item.userId">
+        <div class="meeting-box fz12">
+          <div class="meeting-time">
+            <div class="meeting-time-label col3 fw400">用户编号：</div>
+            <div class="meeting-time-date col6">{{item.userId}}</div>
           </div>
-          <div class="spread-num">
-            推广人数：
-            <span class="nunber">10</span>
+          <div class="meeting-theme">
+            <div class="meeting-theme-label col3">用户姓名：</div>
+            <div class="meeting-theme-txt col6">{{item.userName}}</div>
+          </div>
+          <div class="meeting-address">
+            <div class="meeting-address-label col3">手机号码：</div>
+            <div class="meeting-address-txt col6">{{item.phone}}</div>
+          </div>
+          <div class="meeting-address">
+            <div class="meeting-person-label col3">佣金价格：</div>
+            <div class="meeting-person-txt col6">{{item.commission}}元</div>
+          </div>
+          <div class="meeting-person">
+            <div class="meeting-person-label col3">注册时间：</div>
+            <div class="meeting-person-txt col6">{{item.signupTime}}</div>
           </div>
         </div>
-        <div class="iconfont right-icon">&#xe605;</div>
-      </div>
-    </div>
-    <div class="team-menber-box">
-      <div class="meeting-box fz12">
-        <div class="meeting-time">
-          <div class="meeting-time-label col3 fw400">用户编号：</div>
-          <div class="meeting-time-date col6">yhdsyhaya</div>
-        </div>
-        <div class="meeting-theme">
-          <div class="meeting-theme-label col3">用户姓名：</div>
-          <div class="meeting-theme-txt col6">王二狗</div>
-        </div>
-        <div class="meeting-address">
-          <div class="meeting-address-label col3">手机号码：</div>
-          <div class="meeting-address-txt col6">12345678958</div>
-        </div>
-        <div class="meeting-address">
-          <div class="meeting-person-label col3">佣金价格：</div>
-          <div class="meeting-person-txt col6">12元</div>
-        </div>
-        <div class="meeting-person">
-          <div class="meeting-person-label col3">注册时间：</div>
-          <div class="meeting-person-txt col6">2019-02-20 10:20:30</div>
-        </div>
-      </div>
-      <div class="team-num-spread">
-        <div class="team-num-spnum">
-          <div class="team-num">
-            团队人数：
-            <span class="nunber">280</span>
+        <div class="team-num-spread">
+          <div class="team-num-spnum">
+            <div class="team-num">
+              团队人数：
+              <span class="nunber">{{item.teamNum}}</span>
+            </div>
+            <div class="spread-num">
+              推广人数：
+              <span class="nunber">{{item.speardNum}}</span>
+            </div>
           </div>
-          <div class="spread-num">
-            推广人数：
-            <span class="nunber">10</span>
-          </div>
+          <div class="iconfont right-icon">&#xe605;</div>
         </div>
-        <div class="iconfont right-icon">&#xe605;</div>
       </div>
     </div>
   </div>
@@ -105,13 +66,62 @@
 export default {
   data() {
     return {
-      empty:false
+      empty: false,
+      userInfo: {
+        userName: "张三",
+        level: 5,
+        avatar:
+          "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+        teamNum: 204
+      },
+      list: [
+        {
+          userId: "1",
+          userName: "李四",
+          phone: "13012345678",
+          commission: "12",
+          signupTime: "2019-02-20",
+          teamNum: 280,
+          speardNum: 10
+        },
+        {
+          userId: "2",
+          userName: "王二",
+          phone: "13012345678",
+          commission: "12",
+          signupTime: "2019-02-20",
+          teamNum: 280,
+          speardNum: 10
+        }
+      ]
     };
   },
   created() {},
+  mounted() {
+    this.getInfo();
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
+    },
+    getInfo() {
+      var _self = this;
+      _self
+        .$axios({
+          method: "get",
+          url: "https://yesno.wtf/api"
+          // data: {
+
+          // }
+        })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

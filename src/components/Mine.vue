@@ -5,16 +5,16 @@
         <img class="back-img" src="../../static/image/mine-back.png" alt />
         <van-nav-bar title="个人中心" />
         <div class="top-nav"></div>
-        <img :src="avatar" alt class="top-avatar" />
-        <div v-show="male" class="iconfont gender male fz13">&#xe6ef;</div>
-        <div v-show="!male" class="iconfont gender famale fz13">&#xe6f0;</div>
+        <img :src="userInfo.avatar" alt class="top-avatar" />
+        <div v-show="userInfo.male" class="iconfont gender male fz13">&#xe6ef;</div>
+        <div v-show="!userInfo.male" class="iconfont gender famale fz13">&#xe6f0;</div>
       </div>
       <div class="mylist">
-        <div class="mylist-username">{{userName}}</div>
-        <van-progress color="#FF49BD" :percentage="progressRat" />
+        <div class="mylist-username">{{userInfo.userName}}</div>
+        <van-progress color="#FF49BD" :percentage="userInfo.progressRat" />
         <div class="mylist-exp-level">
-          <div class="exp">经验：{{exp}}</div>
-          <div class="level">等级: {{level}}</div>
+          <div class="exp">经验：{{userInfo.exp}}</div>
+          <div class="level">等级: {{userInfo.level}}</div>
         </div>
         <div class="mylist-list" @click="toMyOrder(0)">
           <div class="mylist-list-left">
@@ -79,13 +79,15 @@
 export default {
   data() {
     return {
-      userName: "安琪拉",
-      progressRat: 33,
-      male: false,
-      exp: "12345",
-      level: "2/5",
-      avatar:
-        "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
+      userInfo: {
+        userName: "安琪拉",
+        progressRat: 33,
+        male: false,
+        exp: "12345",
+        level: "2/5",
+        avatar:
+          "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
+      }
     };
   },
   created() {},

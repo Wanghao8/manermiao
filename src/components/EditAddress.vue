@@ -4,6 +4,7 @@
 
     <van-address-edit
       :area-list="areaList"
+      :address-info="info"
       show-delete
       show-set-default
       :tel-validator="phoneRE"
@@ -19,34 +20,44 @@ export default {
   data() {
     return {
       navTitle: "修改地址",
-      areaList,
+      info: {},
+      areaList
     };
   },
   created() {
-    if (this.$route.params.id < 0) this.navTitle = "新增地址";
+    if (this.$route.params.id < 0) {
+      this.navTitle = "新增地址";
+    } else {
+      this.info = this.$route.params.info;
+    }
+    console.log(this.$route.params.info);
   },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
     },
     onSave() {
-      this.$toast("save");
+      if (this.$route.params.id < 0) {
+        this.$toast("保存成功");
+      } else {
+        this.$toast("修改成功");
+      }
+      this.$router.push('myAddress')
     },
     onDelete() {
       this.$toast("delete");
-      this.$common.aaa()
+      this.$common.aaa();
     },
     phoneRE() {
       //这里定义校验规则
       let reg = /^1[3|4|5|7|8][0-9]{9}$/; //如果校验不通过会返回false，如果校验通过会返回true
       //校验手机号规则
       if (reg.test(this.$children[1].data.tel)) {
-        return true
+        return true;
       } else {
         console.log("正则失败");
       }
-    },
-    
+    }
   }
 };
 </script>

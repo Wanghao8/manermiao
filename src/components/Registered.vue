@@ -65,7 +65,7 @@
         :rules="[{required: true, pattern:  emailRE, message: '请填写正确的邮箱号' }]"
       />
       <van-field
-        v-model="location"
+        :value="location"
         name="位置"
         label="位置"
         placeholder="点击获取您的位置"
@@ -141,27 +141,21 @@ export default {
     },
     getLocation() {
       var _self = this;
-      let url = "https://apis.map.qq.com/ws/geocoder/v1";
-      this.$jsonp(url, {
-        location: "34.7593666700,113.6606653000",
-        key: "JO5BZ-HWOKU-QSUV5-2MGN5-VYSQT-EPFTQ"
-      })
-        .then(e => {
-          console.log(e);
-          //终于不会报跨域错误了！真乃神器也！
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      _self.$toast("获取位置");
-      // _self.$axios
-      //   .get(url)
-      //   .then(function(res) {
-      //     console.log(res);
+      // 腾讯地图逆地址解析API,跨域使用vue-jsonp
+      // let url = "https://apis.map.qq.com/ws/geocoder/v1";
+      // this.$jsonp(url, {
+      //   location: "34.7593666700,113.6606653000",
+      //   key: "JO5BZ-HWOKU-QSUV5-2MGN5-VYSQT-EPFTQ"
+      // })
+      //   .then(e => {
+      //     console.log(e);
+      //     //终于不会报跨域错误了！真乃神器也！
       //   })
-      //   .catch(function(err) {
-      //     console.log(err);
+      //   .catch(e => {
+      //     console.log(e);
       //   });
+
+      // 微信js-sdk获取当前位置的经纬度
       // _self.wx.getLocation({
       //   type: "wgs84", // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
       //   success: function(res) {
@@ -175,6 +169,26 @@ export default {
       //     console.log(error)
       //   }
       // });
+
+      // 高德地图逆地址解析
+      AMap.plugin("AMap.Geocoder", function() {
+        var geocoder = new AMap.Geocoder({
+          // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
+          city: "010"
+        });
+
+        // 经纬度
+        var lnglat = [113.665412, 34.757993];
+
+        geocoder.getAddress(lnglat, function(status, result) {
+          if (status === "complete" && result.info === "OK") {
+            // result为对应的地理位置详细信息
+            console.log(result.regeocode.formattedAddress);
+            _self.location = result.regeocode.formattedAddress;
+          }
+        });
+      });
+      _self.$toast("获取位置");
     }
   }
 };

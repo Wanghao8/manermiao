@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       searchContent: "",
-      packageIndex:0,
+      packageIndex: 0,
       taocan: [
         "套餐一",
         "套餐二",
@@ -56,7 +56,7 @@ export default {
     },
     navigate() {
       console.log(123);
-      this.$router.replace({ path: "/list"});
+      this.$router.replace({ path: "/list" });
     },
     gotoDetail() {
       console.log("123detail");
@@ -67,7 +67,7 @@ export default {
       console.log(name, title);
       this.packageIndex = name;
       // this.$refs.detail[name].jiekou();
-      
+      console.log(this.$refs);
     },
     goback() {
       this.$router.back(-1);

@@ -4,17 +4,17 @@
     <div class="content-box bgwhite fixed-margin">
       <div class="card-box flexcac white">
         <div class="last-money flexc0c white">
-          <div class="last-money-num fz24">8690.20</div>
+          <div class="last-money-num fz24">{{userInfo.overage}}</div>
           <div class="last-money-txt fz14">账户余额（元）</div>
         </div>
         <div class="last-money-detail flexrcc">
           <div class="income-box flexc0c">
-            <div class="income-num fz18">300.20</div>
+            <div class="income-num fz18">{{userInfo.income}}</div>
             <div class="income-txt fz11">总收入（元）</div>
           </div>
           <div class="divider bgwhite"></div>
           <div class="withdraw-box flexc0c">
-            <div class="withdraw-num fz18">253.20</div>
+            <div class="withdraw-num fz18">{{userInfo.withdrawed}}</div>
             <div class="withdraw-txt fz11">已提取（元）</div>
           </div>
         </div>
@@ -22,7 +22,7 @@
       <div class="withdraw-button-box flexrbc">
         <div class="withdraw-left flexr0c">
           <div class="withdraw-left-label fz15 col3">可提现（元）</div>
-          <div class="withdraw-left-num fz21 pink bold">47.00</div>
+          <div class="withdraw-left-num fz21 pink bold">{{userInfo.canWithdraw}}</div>
         </div>
         <div class="withdraw-button white fz16" @click="withdraw">提现</div>
       </div>
@@ -42,26 +42,12 @@
         description="暂无提现记录"
       />
       <div class="withdraw-list-box">
-        <div class="withdraw-list-item flexrbc">
+        <div class="withdraw-list-item flexrbc" v-for="item in list" :key="item.id">
           <div class="withdraw-list-item-left flexc">
-            <div class="withdraw-list-item-left-title fz14 col3">王包子</div>
-            <div class="withdraw-list-item-left-time fz11 col9">2019-02-03 10:20:30</div>
+            <div class="withdraw-list-item-left-title fz14 col3">{{item.userName}}</div>
+            <div class="withdraw-list-item-left-time fz11 col9">{{item.time}}</div>
           </div>
-          <div class="withdraw-list-item-right fz16 pink">+2.30元</div>
-        </div>
-        <div class="withdraw-list-item flexrbc">
-          <div class="withdraw-list-item-left flexc">
-            <div class="withdraw-list-item-left-title fz14 col3">王包子</div>
-            <div class="withdraw-list-item-left-time fz11 col9">2019-02-03 10:20:30</div>
-          </div>
-          <div class="withdraw-list-item-right fz16 pink">+2.30元</div>
-        </div>
-        <div class="withdraw-list-item flexrbc">
-          <div class="withdraw-list-item-left flexc">
-            <div class="withdraw-list-item-left-title fz14 col3">王包子</div>
-            <div class="withdraw-list-item-left-time fz11 col9">2019-02-03 10:20:30</div>
-          </div>
-          <div class="withdraw-list-item-right fz16 pink">+2.30元</div>
+          <div class="withdraw-list-item-right fz16 pink">+{{item.money}}元</div>
         </div>
       </div>
     </div>
@@ -71,16 +57,49 @@
 export default {
   data() {
     return {
-      empty:false
+      empty: false,
+      userInfo: {
+        overage: "8690.20",
+        income: "300.20",
+        withdrawed: "253.20",
+        canWithdraw: "47.00"
+      },
+      list: [
+        { userName: "王包子", time: "2019-02-03", money: "2.30", id: 0 },
+        { userName: "王包子", time: "2019-02-03", money: "2.30", id: 1 },
+        { userName: "王包子", time: "2019-02-03", money: "2.30", id: 2 }
+      ]
     };
   },
   created() {},
+  mounted() {
+    this.getInfo();
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
     },
     withdraw() {
       this.$toast("点击提现按钮");
+    },
+    getInfo() {
+      var _self = this;
+      _self
+        .$axios({
+          method: "get",
+          url: "https://yesno.wtf/api"
+          // data: {
+
+          // }
+        })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

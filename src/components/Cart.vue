@@ -109,7 +109,9 @@ export default {
   created() {
     var _self = this;
   },
-  mounted() {},
+  mounted() {
+    this.getInfo()
+  },
   computed: {
     total_price: function() {
       var _self = this;
@@ -153,6 +155,24 @@ export default {
         this.isDelete = false;
         this.operate = "编辑";
       }
+    },
+    getInfo(){
+      var _self = this
+      _self.$axios({
+        method: "get",
+        url: "https://yesno.wtf/api"
+        // data: {
+
+        // }
+      })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     chooseGoods() {
       var timeout = null;

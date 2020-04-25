@@ -24,11 +24,11 @@ Vue.use(VueJsonp)
 
 
 AMapLoader.load({
-  "key": "您申请的key值",   // 申请好的Web端开发者Key，首次调用 load 时必填
+  "key": "3f8af947f3de0c8bb9f6c5f19f5b2760",   // 申请好的Web端开发者Key，首次调用 load 时必填
   "version": "2.0",   // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-  "plugins": []  //插件列表
+  "plugins": ['AMap.Geocoder']  //插件列表
 }).then((AMap) => {
-  map = new AMap.Map('container');
+  map = new AMap.Map();
 }).catch(e => {
   console.log(e);
 })
