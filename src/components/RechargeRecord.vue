@@ -10,17 +10,9 @@
     <div class="month-record-box fixed-margin">
       <div class="month-record-title fz16 col9">本月</div>
       <div class="month-record-list-box">
-        <div class="month-record-list-item">
-          <div class="month-record-list-item-date fz16 col9">11/12</div>
-          <div class="month-record-list-item-content fz14 col9">充值3000元</div>
-        </div>
-        <div class="month-record-list-item">
-          <div class="month-record-list-item-date fz16 col9">11/05</div>
-          <div class="month-record-list-item-content col9 fz14">充值500元</div>
-        </div>
-        <div class="month-record-list-item">
-          <div class="month-record-list-item-date fz16 col9">11/01</div>
-          <div class="month-record-list-item-content fz14 col9">充值950元</div>
+        <div class="month-record-list-item" v-for="item in list" :key="item.id">
+          <div class="month-record-list-item-date fz16 col9">{{item.date}}</div>
+          <div class="month-record-list-item-content fz14 col9">{{item.event}}</div>
         </div>
       </div>
       <div class="month-record-title fz16 col9">10月</div>
@@ -49,7 +41,21 @@
 export default {
   data() {
     return {
-      empty: false
+      empty: false,
+      list: [
+        {
+          date:'11/12',
+          event:'充值5020元'
+      },
+        {
+          date:'11/05',
+          event:'充值500元'
+      },
+        {
+          date:'11/01',
+          event:'充值20元'
+      },
+      ]
     };
   },
   created() {},

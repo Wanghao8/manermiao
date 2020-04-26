@@ -25,7 +25,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect:"/registered",
+      redirect:"/home",
       meta: { requiresAuth: true }
     },
     {
@@ -123,8 +123,5 @@ export default new Router({
       name: 'withdraw',
       component: Withdraw
     },
-    
-
-
   ]
 })

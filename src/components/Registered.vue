@@ -83,6 +83,7 @@
 export default {
   data() {
     return {
+      timeout:null,
       show: false,
       username: "",
       phoneNum: "",
@@ -128,9 +129,10 @@ export default {
     onSubmit(values) {
       var _self = this;
       console.log("submit", values);
+      window.localStorage.setItem('isSignup',true)
       this.show = true;
-      var timeout = null;
-      timeout = setTimeout(function() {
+      this.timeout = null;
+      this.timeout = setTimeout(function() {
         _self.$router.push("mine");
       }, 2000);
     },

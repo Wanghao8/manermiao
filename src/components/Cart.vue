@@ -52,6 +52,7 @@
 export default {
   data() {
     return {
+      timeout:null,
       empty: false,
       choosed: [],
       allChecked: false,
@@ -140,7 +141,8 @@ export default {
       }
     }
   },
-  destroyed() {
+  destroyed() {    
+    console.log(this.timeout);
     clearTimeout(this.timeout);
   },
   methods: {
@@ -175,8 +177,8 @@ export default {
         });
     },
     chooseGoods() {
-      var timeout = null;
-      timeout = setTimeout(() => {
+      this.timeout = null;
+      this.timeout = setTimeout(() => {
         console.log(this.choosed.length, this.choosed);
         if (this.choosed.length == this.list.length) {
           this.allChecked = true;

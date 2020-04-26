@@ -14,6 +14,7 @@
       default-tag-text="默认"
       @add="onAdd"
       @edit="onEdit"
+      @click-item="chooseAdd"
     />
   </div>
 </template>
@@ -35,11 +36,29 @@ export default {
           name: "李四",
           tel: "13587654321",
           address: "浙江省杭州市拱墅区莫干山路 50 号"
+        },
+        {
+          id: "3",
+          name: "王二",
+          tel: "13587654321",
+          address: "江西省南昌市拱墅区莫干山路 50 号"
+        },
+        {
+          id: "4",
+          name: "里的",
+          tel: "13587654321",
+          address: "北京市拱墅区莫干山路 50 号"
         }
       ]
     };
   },
   created() {},
+  mounted() {
+    if (this.$route.params.isDefault) {
+      this.chosenAddressId = this.$route.params.defaultId;
+    }
+    this.getinfo()
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
@@ -50,7 +69,32 @@ export default {
     },
     onEdit(item, index) {
       this.$toast("编辑地址:" + index);
-      this.$router.push({ name: "editAddress", params: { id: index,info:item } });
+      this.$router.push({
+        name: "editAddress",
+        params: { id: index, info: item }
+      });
+    },
+    chooseAdd() {
+      this.$toast("选择此条地址");
+    },
+    getinfo() {
+      var _self = this;
+      _self
+        .$axios({
+          method: "get",
+          url: "https://yesno.wtf/api"
+          // data: {
+
+          // }
+        })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

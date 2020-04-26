@@ -17,95 +17,21 @@
         description="暂无购买记录"
       />
       <van-collapse v-model="activeNames" class="fixed-margin">
-        <van-collapse-item title="2019.03.08" name="1">
+        <van-collapse-item
+          :title="item[0].date"
+          :name="index"
+          v-for="(item,index) in list"
+          :key="index"
+        >
           <div class="deal-detail-box">
-            <div class="deal-detail-item">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                class="deal-detail-item-left"
-              />
+            <div class="deal-detail-item" v-for="items in item" :key="items.id">
+              <img :src="items.img" class="deal-detail-item-left" />
               <div class="deal-detail-item-right">
                 <div class="deal-detail-item-right-top">
-                  <div class="deal-detail-item-right-title fz12 bold col24">套餐一</div>
-                  <div class="deal-detail-item-right-txt fz10">果蔬生鲜</div>
+                  <div class="deal-detail-item-right-title fz12 bold col24">{{items.name}}</div>
+                  <div class="deal-detail-item-right-txt fz10">{{items.type}}</div>
                 </div>
-                <div class="deal-detail-item-right-price pink fz12">￥2200.00</div>
-              </div>
-            </div>
-
-            <div class="deal-detail-item">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                class="deal-detail-item-left"
-              />
-              <div class="deal-detail-item-right">
-                <div class="deal-detail-item-right-top">
-                  <div class="deal-detail-item-right-title fz12 bold col24">套餐二</div>
-                  <div class="deal-detail-item-right-txt fz10">面膜</div>
-                </div>
-                <div class="deal-detail-item-right-price pink fz12">￥3000.00</div>
-              </div>
-            </div>
-          </div>
-        </van-collapse-item>
-        <van-collapse-item title="2019.02.15" name="2">
-          <div class="deal-detail-box">
-            <div class="deal-detail-item">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                class="deal-detail-item-left"
-              />
-              <div class="deal-detail-item-right">
-                <div class="deal-detail-item-right-top">
-                  <div class="deal-detail-item-right-title fz12 bold col24">套餐一</div>
-                  <div class="deal-detail-item-right-txt fz10">果蔬生鲜</div>
-                </div>
-                <div class="deal-detail-item-right-price pink fz12">￥2200.00</div>
-              </div>
-            </div>
-
-            <div class="deal-detail-item">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                class="deal-detail-item-left"
-              />
-              <div class="deal-detail-item-right">
-                <div class="deal-detail-item-right-top">
-                  <div class="deal-detail-item-right-title fz12 bold col24">套餐二</div>
-                  <div class="deal-detail-item-right-txt fz10">面膜</div>
-                </div>
-                <div class="deal-detail-item-right-price pink fz12">￥3000.00</div>
-              </div>
-            </div>
-          </div>
-        </van-collapse-item>
-        <van-collapse-item title="2019.02.04" name="3">
-          <div class="deal-detail-box">
-            <div class="deal-detail-item">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                class="deal-detail-item-left"
-              />
-              <div class="deal-detail-item-right">
-                <div class="deal-detail-item-right-top">
-                  <div class="deal-detail-item-right-title fz12 bold col24">套餐一</div>
-                  <div class="deal-detail-item-right-txt fz10">果蔬生鲜</div>
-                </div>
-                <div class="deal-detail-item-right-price pink fz12">￥2200.00</div>
-              </div>
-            </div>
-
-            <div class="deal-detail-item">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                class="deal-detail-item-left"
-              />
-              <div class="deal-detail-item-right">
-                <div class="deal-detail-item-right-top">
-                  <div class="deal-detail-item-right-title fz12 bold col24">套餐二</div>
-                  <div class="deal-detail-item-right-txt fz10">面膜</div>
-                </div>
-                <div class="deal-detail-item-right-price pink fz12">￥3000.00</div>
+                <div class="deal-detail-item-right-price pink fz12">￥{{items.price}}</div>
               </div>
             </div>
           </div>
@@ -118,14 +44,104 @@
 export default {
   data() {
     return {
-      empty:false,
-      activeNames: ["1"],
+      empty: false,
+      activeNames: [0],
+      list: [
+        [
+          {
+            id: 1,
+            name: "套餐一",
+            type: "果蔬生鲜",
+            price: "2200.00",
+            img:
+              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+            num: "1",
+            date: "2019.03.08"
+          },
+          {
+            id: 2,
+            name: "套餐二",
+            type: "面膜",
+            price: "3000.00",
+            img:
+              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+            num: "1",
+            date: "2019.03.08"
+          }
+        ],
+        [
+          {
+            id: 1,
+            name: "套餐一",
+            type: "果蔬生鲜",
+            price: "2200.00",
+            img:
+              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+            num: "1",
+            date: "2019.02.15"
+          },
+          {
+            id: 2,
+            name: "套餐二",
+            type: "面膜",
+            price: "3000.00",
+            img:
+              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+            num: "1",
+            date: "2019.02.15"
+          }
+        ],
+        [
+          {
+            id: 1,
+            name: "套餐一",
+            type: "果蔬生鲜",
+            price: "2200.00",
+            img:
+              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+            num: "1",
+            date: "2019.02.08"
+          },
+          {
+            id: 2,
+            name: "套餐二",
+            type: "面膜",
+            price: "3000.00",
+            img:
+              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+            num: "1",
+            date: "2019.02.08"
+          }
+        ]
+      ]
     };
   },
   created() {},
+  mounted() {
+    this.getInfo();
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
+    },
+    getInfo() {
+      var _self = this;
+      _self
+        .$axios({
+          method: "get",
+          url: "https://yesno.wtf/api"
+          // data: {
+
+          // }
+        })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };
@@ -138,7 +154,7 @@ export default {
 /* .van-hairline--bottom::after {
     border-bottom-width: 0;
 } */
-[class*=van-hairline]::after{
+[class*="van-hairline"]::after {
   border: none;
 }
 #buyRecord {

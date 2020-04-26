@@ -10,41 +10,37 @@
           description="我的订单是空的"
         />
         <div class="order-list-box fixed-margin9">
-          <div class="order-list-item">
+          <div class="order-list-item" v-for="item in list1" :key="item.id">
             <div class="order-list-item-top">
               <div class="order-list-item-top-left fz11 col3">
                 订单编号：
-                <span class="col9">C01254639522</span>
+                <span class="col9">{{item.orderId}}</span>
               </div>
               <div class="order-list-item-top-right col9 fz11">待付款</div>
             </div>
             <div class="order-list-item-content">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                alt
-                class="goods-img"
-              />
+              <img :src="item.img" alt class="goods-img" />
               <div class="order-list-item-content-right">
                 <div class="order-list-item-content-right-titleprice">
-                  <div class="order-list-item-content-right-title fz13">果蔬果冻（10袋装）</div>
-                  <div class="order-list-item-content-right-price red fz12">￥1639.00</div>
+                  <div class="order-list-item-content-right-title fz13">{{item.name}}</div>
+                  <div class="order-list-item-content-right-price red fz12">￥{{item.price}}</div>
                 </div>
                 <div class="order-list-item-content-right-sortnum">
-                  <div class="order-list-item-content-right-sort col9 fz10">类别：酵素果冻</div>
+                  <div class="order-list-item-content-right-sort col9 fz10">类别：{{item.type}}</div>
                   <div class="order-list-item-content-right-num col9 fz11">
                     X
-                    <span class="goos-num">1</span>
+                    <span class="goos-num">{{item.quantity}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：2019-02-10</div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.time}}</div>
               </div>
             </div>
             <div class="order-list-item-total">
               <div class="order-list-item-total-left col6 fz11">
                 订单合计:
-                <span class="fz11 red">￥1639.00</span>
+                <span class="fz11 red">￥{{item.totalPrice}}</span>
               </div>
-              <div class="order-list-item-total-right col6 fz11">共1件产品</div>
+              <div class="order-list-item-total-right col6 fz11">共{{item.quantity}}件产品</div>
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
@@ -52,7 +48,6 @@
               <div class="order-list-item-bottom-pay fz13" @click="toPay(1)">去支付</div>
             </div>
           </div>
-          
         </div>
       </van-tab>
       <van-tab title="待收货" name="1">
@@ -63,41 +58,37 @@
           description="我的订单是空的"
         />
         <div class="order-list-box">
-          <div class="order-list-item">
+          <div class="order-list-item" v-for="item in list1" :key="item.id">
             <div class="order-list-item-top">
               <div class="order-list-item-top-left fz11 col3">
                 订单编号：
-                <span class="col9">C01254639522</span>
+                <span class="col9">{{item.orderId}}</span>
               </div>
               <div class="order-list-item-top-right col9 fz11">待收货</div>
             </div>
             <div class="order-list-item-content">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                alt
-                class="goods-img"
-              />
+              <img :src="item.img" alt class="goods-img" />
               <div class="order-list-item-content-right">
                 <div class="order-list-item-content-right-titleprice">
-                  <div class="order-list-item-content-right-title fz13">果蔬果冻（10袋装）</div>
-                  <div class="order-list-item-content-right-price red fz12">￥1639.00</div>
+                  <div class="order-list-item-content-right-title fz13">{{item.name}}</div>
+                  <div class="order-list-item-content-right-price red fz12">￥{{item.price}}</div>
                 </div>
                 <div class="order-list-item-content-right-sortnum">
-                  <div class="order-list-item-content-right-sort col9 fz10">类别：酵素果冻</div>
+                  <div class="order-list-item-content-right-sort col9 fz10">类别：{{item.type}}</div>
                   <div class="order-list-item-content-right-num col9 fz11">
                     X
-                    <span class="goos-num">1</span>
+                    <span class="goos-num">{{item.quantity}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：2019-02-10</div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.time}}</div>
               </div>
             </div>
             <div class="order-list-item-total">
               <div class="order-list-item-total-left col6 fz11">
                 订单合计:
-                <span class="fz11 red">￥1639.00</span>
+                <span class="fz11 red">￥{{item.totalPrice}}</span>
               </div>
-              <div class="order-list-item-total-right col6 fz11">共1件产品</div>
+              <div class="order-list-item-total-right col6 fz11">共{{item.quantity}}件产品</div>
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
@@ -115,41 +106,37 @@
           description="我的订单是空的"
         />
         <div class="order-list-box">
-          <div class="order-list-item">
+          <div class="order-list-item" v-for="item in list1" :key="item.id">
             <div class="order-list-item-top">
               <div class="order-list-item-top-left fz11 col3">
                 订单编号：
-                <span class="col9">C01254639522</span>
+                <span class="col9">{{item.orderId}}</span>
               </div>
               <div class="order-list-item-top-right col9 fz11">已完成</div>
             </div>
             <div class="order-list-item-content">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                alt
-                class="goods-img"
-              />
+              <img :src="item.img" alt class="goods-img" />
               <div class="order-list-item-content-right">
                 <div class="order-list-item-content-right-titleprice">
-                  <div class="order-list-item-content-right-title fz13">果蔬果冻（10袋装）</div>
-                  <div class="order-list-item-content-right-price red fz12">￥1639.00</div>
+                  <div class="order-list-item-content-right-title fz13">{{item.name}}</div>
+                  <div class="order-list-item-content-right-price red fz12">￥{{item.price}}</div>
                 </div>
                 <div class="order-list-item-content-right-sortnum">
-                  <div class="order-list-item-content-right-sort col9 fz10">类别：酵素果冻</div>
+                  <div class="order-list-item-content-right-sort col9 fz10">类别：{{item.type}}</div>
                   <div class="order-list-item-content-right-num col9 fz11">
                     X
-                    <span class="goos-num">1</span>
+                    <span class="goos-num">{{item.quantity}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：2019-02-10</div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.time}}</div>
               </div>
             </div>
             <div class="order-list-item-total">
               <div class="order-list-item-total-left col6 fz11">
                 订单合计:
-                <span class="fz11 red">￥1639.00</span>
+                <span class="fz11 red">￥{{item.totalPrice}}</span>
               </div>
-              <div class="order-list-item-total-right col6 fz11">共1件产品</div>
+              <div class="order-list-item-total-right col6 fz11">共{{item.quantity}}件产品</div>
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
@@ -167,41 +154,37 @@
           description="我的订单是空的"
         />
         <div class="order-list-box">
-          <div class="order-list-item">
+          <div class="order-list-item" v-for="item in list1" :key="item.id">
             <div class="order-list-item-top">
               <div class="order-list-item-top-left fz11 col3">
                 订单编号：
-                <span class="col9">C01254639522</span>
+                <span class="col9">{{item.orderId}}</span>
               </div>
               <div class="order-list-item-top-right col9 fz11">退款中</div>
             </div>
             <div class="order-list-item-content">
-              <img
-                src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-                alt
-                class="goods-img"
-              />
+              <img :src="item.img" alt class="goods-img" />
               <div class="order-list-item-content-right">
                 <div class="order-list-item-content-right-titleprice">
-                  <div class="order-list-item-content-right-title fz13">果蔬果冻（10袋装）</div>
-                  <div class="order-list-item-content-right-price red fz12">￥1639.00</div>
+                  <div class="order-list-item-content-right-title fz13">{{item.name}}</div>
+                  <div class="order-list-item-content-right-price red fz12">￥{{item.price}}</div>
                 </div>
                 <div class="order-list-item-content-right-sortnum">
-                  <div class="order-list-item-content-right-sort col9 fz10">类别：酵素果冻</div>
+                  <div class="order-list-item-content-right-sort col9 fz10">类别：{{item.type}}</div>
                   <div class="order-list-item-content-right-num col9 fz11">
                     X
-                    <span class="goos-num">1</span>
+                    <span class="goos-num">{{item.quantity}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：2019-02-10</div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.time}}</div>
               </div>
             </div>
             <div class="order-list-item-total">
               <div class="order-list-item-total-left col6 fz11">
                 订单合计:
-                <span class="fz11 red">￥1639.00</span>
+                <span class="fz11 red">￥{{item.totalPrice}}</span>
               </div>
-              <div class="order-list-item-total-right col6 fz11">共1件产品</div>
+              <div class="order-list-item-total-right col6 fz11">共{{item.quantity}}件产品</div>
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
@@ -219,40 +202,107 @@ export default {
   data() {
     return {
       empty: false,
-      orderStatus: -1
+      orderStatus: -1,
+      list1: [
+        {
+          id: 1,
+          orderId: "C012354693522",
+          img:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          name: "果蔬果冻（10袋装）",
+          price: "1639.00",
+          type: "酵素果冻",
+          quantity: "1",
+          time: "2019-02-10",
+          totalPrice: "1639.00"
+        },
+        {
+          id: 2,
+          orderId: "C012354693522",
+          img:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
+          name: "果蔬果冻（10袋装）",
+          price: "1639.00",
+          type: "酵素果冻",
+          quantity: "1",
+          time: "2019-02-10",
+          totalPrice: "1639.00"
+        }
+      ]
     };
   },
   created() {
     this.orderStatus = this.$route.params.index + "";
     console.log("订单状态码是" + this.orderStatus);
   },
+  mounted() {
+    this.getInfo();
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
     },
     cancelOrder(e) {
+      var _self = this;
+      // _self
+      //   .$axios({
+      //     url: "",
+      //     method: "get"
+      //   })
+      //   .then(function(res) {
+      //     console.log(res);
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   });
       this.$toast("点击取消订单");
     },
     toPay(e) {
+      var _self = this;
       this.$toast("点击去支付");
     },
     deleteOrder(e) {
+      var _self = this;
       this.$toast("点击删除订单");
     },
     requestRefund(e) {
+      var _self = this;
       this.$toast("点击申请退款");
     },
     confirmRecive(e) {
+      var _self = this;
       this.$toast("点击确认收货");
     },
     lookDetail(e) {
+      var _self = this;
       this.$toast("点击查看详情");
     },
     buyAgain(e) {
+      var _self = this;
       this.$toast("点击再次购买");
     },
     chooseSurvice(e) {
+      var _self = this;
       this.$toast("点击挑选服务");
+    },
+    getInfo() {
+      var _self = this;
+      _self
+        .$axios({
+          method: "get",
+          url: "https://yesno.wtf/api"
+          // data: {
+
+          // }
+        })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

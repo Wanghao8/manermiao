@@ -11,6 +11,7 @@
       :area-columns-placeholder="['请选择', '请选择', '请选择']"
       @save="onSave"
       @delete="onDelete"
+      @change-default="changeDefault"
     />
   </div>
 </template>
@@ -30,23 +31,29 @@ export default {
     } else {
       this.info = this.$route.params.info;
     }
-    console.log(this.$route.params.info);
+  },
+  mounted(){
+    this.getinfo()
   },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
     },
-    onSave() {
+    onSave(content) {
+      console.log(content);
+      
       if (this.$route.params.id < 0) {
         this.$toast("保存成功");
       } else {
         this.$toast("修改成功");
       }
-      this.$router.push('myAddress')
+      this.$router.push({name:'myAddress',params:{isDefault:this.isDefault,defaultId:this.info.id}})
+    },
+    changeDefault(e){
+      this.isDefault = e
     },
     onDelete() {
       this.$toast("delete");
-      this.$common.aaa();
     },
     phoneRE() {
       //这里定义校验规则
@@ -57,6 +64,24 @@ export default {
       } else {
         console.log("正则失败");
       }
+    },
+     getinfo() {
+      var _self = this
+      _self.$axios({
+        method: "get",
+        url: "https://yesno.wtf/api"
+        // data: {
+
+        // }
+      })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

@@ -2,10 +2,10 @@
   <div id="registered">
     <van-nav-bar title="在线支付" left-arrow @click-left="onClickLeft" />
     <div class="pay-box">
-        <div class="title fz15">支付二维码</div>
-        <div class="sub-title fz15">在线扫码支付</div>
+        <div class="title fz16">支付二维码</div>
+        <div class="sub-title fz16">在线扫码支付</div>
         <img src="https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=376029017,2622921745&fm=26&gp=0.jpg" alt="" class="QRcode">
-        <div class="saveImg fz15 pink" @click="save">保存至相册</div>
+        <div class="saveImg fz15 pink" @click="save">长按图片保存到相册</div>
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
       this.$router.back(-1);
     },
     save(){
-        this.$toast("保存到相册")
+        this.$toast("长按图片保存到相册")
     }
   }
 };
@@ -48,4 +48,7 @@ export default {
 .pay-box{display: flex;flex-direction: column;align-items: center;}
 .QRcode{width: 180px;height: 180px;margin: 12px 0 40px 0;}
 .title{margin: 30px 0 4px 0;}
+.title,.sub-title{
+  line-height: 30px;
+}
 </style>

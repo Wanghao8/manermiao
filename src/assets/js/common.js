@@ -12,8 +12,4 @@ export default {
             }, delay);
         }
     },
-    aaa(){
-        console.log(23456);
-        
-    }
 }

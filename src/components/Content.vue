@@ -14,7 +14,7 @@
               </div>
               <div class="content-detail-bottom flexrbe">
                 <div class="content-detail-price red fz13">￥{{item.price}}</div>
-                <div class="content-detail-cart-icon iconfont" @click="addCart(1)">&#xe668;</div>
+                <div class="content-detail-cart-icon iconfont" @click="addCart(item.id)">&#xe668;</div>
                 <!-- <div class="content-detail-cart-icon iconfont" @click="addCart(item.id)">&#xe668;</div> -->
               </div>
             </div>
@@ -28,6 +28,7 @@
 export default {
   data() {
     return {
+      timeout:null,
       isLoading: false,
       list: [
         {
@@ -111,8 +112,8 @@ export default {
     },
     //下拉刷新操作事件
     onRefresh() {
-      var timeout = null;
-      timeout = setTimeout(() => {
+      this.timeout = null;
+      this.timeout = setTimeout(() => {
         this.$toast("刷新成功");
         this.isLoading = false;
         this.count++;
