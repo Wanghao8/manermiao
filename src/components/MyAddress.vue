@@ -16,6 +16,7 @@
       @edit="onEdit"
       @click-item="chooseAdd"
     />
+    <router-view></router-view>
   </div>
 </template>
 <script>

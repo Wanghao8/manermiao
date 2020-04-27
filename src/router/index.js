@@ -66,7 +66,14 @@ export default new Router({
     {
       path: '/myAddress',
       name: 'myAddress',
-      component: MyAddress
+      component: MyAddress,
+      // children:[
+      //   {
+      //     path: 'editAddress',
+      //     name: 'editAddress',
+      //     component: EditAddress
+      //   },
+      // ]
     },
     {
       path: '/buyRecord',
