@@ -101,6 +101,7 @@ export default {
       this.$toast("添加购物车，ID为" + id);
     },
     jiekou() {
+      console.log("diaoyongjiekou")
       this.$axios
         .get("https://yesno.wtf/api")
         .then(function(response) {

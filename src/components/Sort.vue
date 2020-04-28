@@ -23,8 +23,8 @@
     <van-nav-bar title="商品列表" />
 
     <div class="top-tab">
-      <van-tabs color="#ff49bd">
-        <van-tab v-for="index in taocan" :title="index" :key="index" @click="onClick">
+      <van-tabs color="#ff49bd" @click="onClick">
+        <van-tab v-for="index in taocan" :title="index" :key="index">
           <detail ref="detail" :packageIndex="packageIndex"></detail>
         </van-tab>
       </van-tabs>
@@ -36,7 +36,7 @@ import detail from "../components/Content.vue";
 export default {
   data() {
     return {
-      timeout:null,
+      timeout: null,
       searchContent: "",
       packageIndex: 0,
       taocan: [
@@ -67,16 +67,15 @@ export default {
       this.$router.replace({ path: "/detail" });
     },
     onClick(name, title) {
+      console.log("点击tab");
       var _self = this;
       this.$toast(title);
       console.log(name, title);
       this.packageIndex = name;
-      this.$refs.detail.jiekou();
-      // this.timeout = null;
-      // this.timeout = setTimeout(function() {
-      //   console.log(name)
-      //   _self.$refs.detail[name].jiekou();
-      // }, 200);
+      this.timeout = null;
+      this.timeout = setTimeout(function() {
+        _self.$refs.detail[name].jiekou();
+      }, 200);
     },
     goback() {
       this.$router.back(-1);

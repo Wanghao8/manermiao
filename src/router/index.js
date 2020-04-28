@@ -25,7 +25,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect:"/home",
+      redirect: "/home",
       meta: { requiresAuth: true }
     },
     {
@@ -37,10 +37,10 @@ export default new Router({
       path: '/sort',
       name: 'sort',
       component: Sort, meta: { navShow: true, },
-      children:[{
-        path:'content',
-        name:'content',
-        component:Content
+      children: [{
+        path: 'content',
+        name: 'content',
+        component: Content
       }]
     },
     {
