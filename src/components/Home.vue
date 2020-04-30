@@ -132,7 +132,7 @@ export default {
     };
   },
   mounted() {
-    this.getinfo();
+    this.getInfo();
   },
   methods: {
     navigate() {
@@ -143,7 +143,7 @@ export default {
       console.log("123detail");
       this.$router.push({ path: "/detail" });
     },
-    getinfo() {
+    getInfo() {
       var _self = this;
       _self
         .$axios({

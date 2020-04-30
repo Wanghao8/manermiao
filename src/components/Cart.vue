@@ -142,7 +142,6 @@ export default {
     }
   },
   destroyed() {    
-    console.log(this.timeout);
     clearTimeout(this.timeout);
   },
   methods: {
