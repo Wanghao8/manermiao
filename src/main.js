@@ -22,7 +22,8 @@ Vue.prototype.wx = wx
 Vue.config.productionTip = false
 Vue.use(VueJsonp)
 
-// Axios.defaults.baseURL = 'https://api.example.com';
+Axios.defaults.baseURL = '/api';
+Axios.defaults.baseURL = 'http://www.hnkmx.com/public/index';
 // Axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 

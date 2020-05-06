@@ -129,7 +129,7 @@ export default {
       _self
         .$axios({
           method: "get",
-          url: "https://yesno.wtf/api"
+          url: "/order/order3"
           // data: {
 
           // }
@@ -137,7 +137,6 @@ export default {
         .then(function(response) {
           console.log(response);
           // _self.list = response
-          // _self.swiperImages = response
         })
         .catch(function(error) {
           console.log(error);

@@ -101,9 +101,10 @@ export default {
       this.$toast("添加购物车，ID为" + id);
     },
     jiekou() {
+      var id = this.packageIndex
       console.log("diaoyongjiekou")
       this.$axios
-        .get("https://yesno.wtf/api")
+        .get("/goods/goods_all")
         .then(function(response) {
           console.log(response.data.answer);
         })

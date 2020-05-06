@@ -1,7 +1,7 @@
 <template>
   <div id="myOrder">
     <van-nav-bar title="我的订单" left-arrow @click-left="onClickLeft" />
-    <van-tabs v-model="orderStatus" sticky color="#ff48bd">
+    <van-tabs v-model="orderStatus" sticky color="#ff48bd" @click="onClick">
       <van-tab title="待付款" name="0">
         <van-empty
           v-if="empty"
@@ -236,7 +236,7 @@ export default {
     console.log("订单状态码是" + this.orderStatus);
   },
   mounted() {
-    this.getInfo();
+    this.getInfo(0);
   },
   methods: {
     onClickLeft() {
@@ -244,17 +244,18 @@ export default {
     },
     cancelOrder(e) {
       var _self = this;
-      // _self
-      //   .$axios({
-      //     url: "",
-      //     method: "get"
-      //   })
-      //   .then(function(res) {
-      //     console.log(res);
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
+      var id = this.orderStatus
+      _self
+        .$axios({
+          url: "/order/order" + id,
+          method: "get"
+        })
+        .then(function(res) {
+          console.log(res);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
       this.$toast("点击取消订单");
     },
     toPay(e) {
@@ -285,20 +286,18 @@ export default {
       var _self = this;
       this.$toast("点击挑选服务");
     },
-    getInfo() {
+     onClick(name, title) {
+      this.getInfo(name)
+    },
+    getInfo(name) {
       var _self = this;
       _self
         .$axios({
-          method: "get",
-          url: "https://yesno.wtf/api"
-          // data: {
-
-          // }
+          url: "/order/order" + name,
+          method: "get"
         })
-        .then(function(response) {
-          console.log(response);
-          // _self.list = response
-          // _self.swiperImages = response
+        .then(function(res) {
+          console.log(res);
         })
         .catch(function(error) {
           console.log(error);

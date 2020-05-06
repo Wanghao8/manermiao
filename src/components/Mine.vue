@@ -112,6 +112,24 @@ export default {
     },
     toMyOrder(e) {
       this.$router.push({ name: "myOrder", params: { index: e } });
+    },
+    getInfo() {
+      _self
+        .$axios({
+          method: "get",
+          url: "/member/index"
+          // data: {
+
+          // }
+        })
+        .then(function(response) {
+          console.log(response);
+          // _self.list = response
+          // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

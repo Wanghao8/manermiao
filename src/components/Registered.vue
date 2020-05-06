@@ -83,7 +83,7 @@
 export default {
   data() {
     return {
-      timeout:null,
+      timeout: null,
       show: false,
       username: "",
       phoneNum: "",
@@ -129,7 +129,7 @@ export default {
     onSubmit(values) {
       var _self = this;
       console.log("submit", values);
-      window.localStorage.setItem('isSignup',true)
+      window.localStorage.setItem("isSignup", true);
       this.show = true;
       this.timeout = null;
       this.timeout = setTimeout(function() {
@@ -155,6 +155,22 @@ export default {
       //   })
       //   .catch(e => {
       //     console.log(e);
+      //   });
+
+      // _self.$axios
+      //   .get("/ws/geocoder/v1", {
+      //     params: {
+      //       location: "34.7593666700,113.6606653000",
+      //       key: "JO5BZ-HWOKU-QSUV5-2MGN5-VYSQT-EPFTQ"
+      //     }
+      //   })
+      //   .then(function(response) {
+      //     console.log(response);
+      //     // _self.list = response
+      //     // _self.swiperImages = response
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
       //   });
 
       // 微信js-sdk获取当前位置的经纬度

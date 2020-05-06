@@ -161,7 +161,7 @@ export default {
       var _self = this
       _self.$axios({
         method: "get",
-        url: "https://yesno.wtf/api"
+        url: "/cart/index"
         // data: {
 
         // }
@@ -268,7 +268,7 @@ export default {
   display: flex;
   align-items: center;
   background-color: #e6e3e4;
-  width: 30%;
+  width: 26%;
   padding: 5px 10px;
   margin-top: 7px;
 }

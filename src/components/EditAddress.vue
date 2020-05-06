@@ -69,10 +69,10 @@ export default {
       var _self = this
       _self.$axios({
         method: "get",
-        url: "https://yesno.wtf/api"
-        // data: {
-
-        // }
+        url: "/address/edit_address",
+        data: {
+          id:1
+        }
       })
         .then(function(response) {
           console.log(response);

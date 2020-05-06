@@ -46,7 +46,7 @@ export default {
       _self
         .$axios({
           method: "get",
-          url: "https://yesno.wtf/api"
+          url: "/code/index"
           // data: {
 
           // }
