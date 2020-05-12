@@ -26,6 +26,7 @@
     <div class="swiperbox">
       <van-swipe :autoplay="3000" indicator-color="#FE18FB">
         <van-swipe-item v-for="(image, index) in swiperImages" :key="index">
+          <!-- <img class="swiperImg" v-lazy="image.adFile" /> -->
           <img class="swiperImg" v-lazy="image" />
         </van-swipe-item>
       </van-swipe>
@@ -43,26 +44,27 @@
     </div>
 
     <div class="list-container">
-      <div class="list-item" v-for="(item,index) in list" :key="index">
+      <div class="list-item" v-for="item in hotSell" :key="item.id">
+        <!-- <div>{{item.user}}</div> -->
         <div class="list-item-top">
           <div class="list-item-top-left">
             <div class="list-avatar">
-              <img :src="item.avatar" alt class="list-avatar-img" />
+              <img :src="item.user.avatar" alt class="list-avatar-img" />
             </div>
-            <div class="list-username">{{item.userName}}</div>
+            <div class="list-username">{{item.user.username}}</div>
           </div>
-          <div class="list-level">{{item.userLevel}}</div>
+          <div class="list-level">Lv.{{item.user.level}}</div>
         </div>
         <div class="list-item-content">
           <div class="list-item-content-left">
-            <img :src="item.goodsImg" alt class="list-item-content-img" />
+            <img :src="item.ordergoods[0].goodsImg" alt class="list-item-content-img" />
           </div>
           <div class="list-item-content-right">
-            <div class="list-item-content-title">{{item.goodsName}}</div>
-            <div class="list-item-content-detail two-line">{{item.goodsDesc}}</div>
+            <div class="list-item-content-title">{{item.ordergoods[0].goodsName}}</div>
+            <div class="list-item-content-detail two-line">{{item.ordergoods[0].goodsDesc}}</div>
           </div>
         </div>
-        <div class="list-item-bottom">{{item.dateTime}}</div>
+        <div class="list-item-bottom">{{item.createTime}}</div>
       </div>
     </div>
   </div>
@@ -79,60 +81,15 @@ export default {
         "../../static/image/homeSwiper2.jpg",
         "../../static/image/homeSwiper3.png"
       ],
-      list: [
-        {
-          userName: "好好先生",
-          avatar:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          userLevel: "Lv.1",
-          goodsImg:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          goodsName: "富勒烯多肽面膜",
-          goodsDesc:
-            "富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮",
-          dateTime: "2020.03.06"
-        },
-        {
-          userName: "好好先生",
-          avatar:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          userLevel: "Lv.1",
-          goodsImg:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          goodsName: "富勒烯多肽面膜",
-          goodsDesc:
-            "富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮",
-          dateTime: "2020.03.06"
-        },
-        {
-          userName: "好好先生",
-          avatar:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          userLevel: "Lv.1",
-          goodsImg:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          goodsName: "富勒烯多肽面膜",
-          goodsDesc:
-            "富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮",
-          dateTime: "2020.03.06"
-        },
-        {
-          userName: "好好先生",
-          avatar:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          userLevel: "Lv.1",
-          goodsImg:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          goodsName: "富勒烯多肽面膜",
-          goodsDesc:
-            "富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮富勒烯多肽黑面膜满足你肌肤的挑剔要求，减缓细纹，补水 保湿、收缩毛孔、肌肤透亮",
-          dateTime: "2020.03.06"
-        }
-      ]
+
+      hotSell: []
     };
   },
   mounted() {
-    this.getInfo();
+    this.login();
+    var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+    this.getSwiper(token);
+    this.getHot(token);
   },
   methods: {
     navigate() {
@@ -143,15 +100,90 @@ export default {
       console.log("123detail");
       this.$router.push({ path: "/detail" });
     },
+    login() {
+      var _self = this;
+      var radio = parseInt(_self.radio);
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/user/login",
+          params: {
+            account: "aaaaa",
+            password: "123456"
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          var userInfo = JSON.stringify(res.data.data.userinfo);
+          window.localStorage.setItem("userinfo", userInfo);
+          var token = res.data.data.userinfo.token;
+          // _self.getSwiper(token);
+          // _self.getHot(token);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    getSwiper(token) {
+      var _self = this;
+      console.log(token);
+      _self
+        .$axios({
+          url: "/api/index/focus",
+          method: "post",
+          params: {
+            token: token
+          }
+        })
+        .then(function(res) {
+          console.log(res.data.data);
+          // _self.swiperImages = res.data.data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    getHot(token) {
+      var _self = this;
+      _self
+        .$axios({
+          url: "/api/index/orderlist",
+          method: "post",
+          params: {
+            token: token
+          }
+        })
+        .then(function(res) {
+          console.log(res.data.data, 123);
+          var hotSell = res.data.data;
+          hotSell.forEach(item => {
+            var timestamp = new Date(item.createTime * 1000);
+            var date =
+              timestamp.getFullYear() +
+              "-" +
+              (timestamp.getMonth() + 1 + "").padStart(2, "0") +
+              "-" +
+              (timestamp.getDate() + "").padStart(2, "0");
+            item.createTime = date;
+          });
+          _self.hotSell = hotSell;
+          console.log(
+            _self.hotSell[0].user.avatar,
+            _self.hotSell[0].createTime,
+            1111
+          );
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
     getInfo() {
       var _self = this;
       _self
         .$axios({
           method: "get",
-          url: "/index/index"
-          // data: {
-
-          // }
+          url: "/index/index",
+          data: {}
         })
         .then(function(response) {
           console.log(response);

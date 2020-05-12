@@ -12,7 +12,7 @@
     <!-- 表单 -->
     <div class="label">
       <div class="left-icon"></div>
-      <div class="base-info">基本信息</div>
+      <div class="base-info" @click="login">基本信息</div>
     </div>
     <van-form @submit="onSubmit">
       <van-field
@@ -94,6 +94,8 @@ export default {
       currentDate: new Date(),
       radio: "1",
       value: "",
+      lon: "113.665412",
+      lat: "34.757993",
       showDate: false,
       phoneRE: /^1[3456789]\d{9}$/,
       emailRE: /^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/
@@ -102,22 +104,44 @@ export default {
   created() {},
   mounted() {
     var _self = this;
-    _self.$axios.get("https://yesno.wtf/api").then(res => {
-      _self.wx.config({
-        debug: true, // 开启调试模式,
-        appId: res.appId, // 必填，企业号的唯一标识，此处填写企业号corpid
-        timestamp: res.timestamp, // 必填，生成签名的时间戳
-        nonceStr: res.nonceStr, // 必填，生成签名的随机串
-        signature: res.signature, // 必填，签名，见附录1
-        jsApiList: ["openLocation", "getLocation"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-      });
-      _self.wx.ready(function() {
-        console.log("jssdk成功");
-      });
-      _self.wx.error(function(res) {
-        console.log("jssdk失败");
-      });
-    });
+
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition(
+    //     //locationSuccess 获取成功的话
+    //     function(position) {
+    //       _self.getLongitude = position.coords.longitude;
+    //       _self.getLatitude = position.coords.latitude;
+    //       alert(_self.getLongitude); //弹出经度测试
+    //       alert(_self.getLatitude);
+    //     },
+    //     //locationError  获取失败的话
+    //     function(error) {
+    //       var errorType = [
+    //         "您拒绝共享位置信息",
+    //         "获取不到位置信息",
+    //         "获取位置信息超时"
+    //       ];
+    //       alert(errorType[error.code - 1]);
+    //     }
+    //   );
+    // }
+
+    // _self.$axios.get("https://yesno.wtf/api").then(res => {
+    //   _self.wx.config({
+    //     debug: true, // 开启调试模式,
+    //     appId: res.appId, // 必填，企业号的唯一标识，此处填写企业号corpid
+    //     timestamp: res.timestamp, // 必填，生成签名的时间戳
+    //     nonceStr: res.nonceStr, // 必填，生成签名的随机串
+    //     signature: res.signature, // 必填，签名，见附录1
+    //     jsApiList: ["openLocation", "getLocation"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    //   });
+    //   _self.wx.ready(function() {
+    //     console.log("jssdk成功");
+    //   });
+    //   _self.wx.error(function(res) {
+    //     console.log("jssdk失败");
+    //   });
+    // });
   },
   destroyed() {
     clearTimeout(this.timeout);
@@ -129,12 +153,13 @@ export default {
     onSubmit(values) {
       var _self = this;
       console.log("submit", values);
-      window.localStorage.setItem("isSignup", true);
+      // window.localStorage.setItem("isSignup", true);
       this.show = true;
-      this.timeout = null;
-      this.timeout = setTimeout(function() {
-        _self.$router.push("mine");
-      }, 2000);
+      this.upload();
+      // this.timeout = null;
+      // this.timeout = setTimeout(function() {
+      //   _self.$router.push("mine");
+      // }, 2000);
     },
     onConfirm(date) {
       this.value = `${date.getFullYear()}-${date.getMonth() +
@@ -207,6 +232,54 @@ export default {
         });
       });
       _self.$toast("获取位置");
+    },
+    upload() {
+      var _self = this;
+      var radio = parseInt(_self.radio);
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/user/register",
+          params: {
+            username: _self.username,
+            password: "123456",
+            email: _self.email,
+            mobile: _self.phoneNum,
+            areaPath: _self.location,
+            gender: radio,
+            birthday: _self.value,
+            lon: _self.lon,
+            lat: _self.lat
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _self.token = res.data
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    login(){
+      var _self = this;
+      var radio = parseInt(_self.radio);
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/user/login",
+          params: {
+            account: 'aaaaa',
+            password: "123456",
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          var userInfo = JSON.stringify(res.data.data.userinfo)
+          window.localStorage.setItem('userinfo', userInfo)
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     }
   }
 };

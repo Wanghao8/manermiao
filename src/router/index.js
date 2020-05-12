@@ -19,6 +19,9 @@ import MyTeam from '../components/MyTeam.vue'
 import Registered from '../components/Registered.vue'
 import Pay from '../components/Pay.vue'
 import Withdraw from '../components/Withdraw.vue'
+import GoodsDetail from '../components/GoodsDetail.vue'
+import OrderDetail from '../components/OrderDetail.vue'
+import ConfirmOrder from '../components/ConfirmOrder.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -67,13 +70,6 @@ export default new Router({
       path: '/myAddress',
       name: 'myAddress',
       component: MyAddress,
-      // children:[
-      //   {
-      //     path: 'editAddress',
-      //     name: 'editAddress',
-      //     component: EditAddress
-      //   },
-      // ]
     },
     {
       path: '/buyRecord',
@@ -129,6 +125,21 @@ export default new Router({
       path: '/withdraw',
       name: 'withdraw',
       component: Withdraw
+    },
+    {
+      path: '/goodsDetail',
+      name: 'goodsDetail',
+      component: GoodsDetail
+    },
+    {
+      path: '/orderDetail',
+      name: 'orderDetail',
+      component: OrderDetail
+    },
+    {
+      path: '/confirmOrder',
+      name: 'confirmOrder',
+      component: ConfirmOrder
     },
   ]
 })

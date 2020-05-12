@@ -3,18 +3,18 @@
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <van-grid :border="false" :column-num="2">
         <van-grid-item v-for="item in list" :key="item.id">
-          <div class="content-box">
-            <img :src="item.img" alt class="goods-img" />
+          <div class="content-box" @click="gotoDetail(item.id)">
+            <img :src="item.goodsImg" alt class="goods-img" />
             <div class="content-detail-box">
-              <div class="content-detail-title col3 fz13">{{item.name}}</div>
+              <div class="content-detail-title col3 fz13">{{item.goodsName}}</div>
               <div class="content-detail-tags flexr fz9">
-                <div class="content-detail-tag fz9" v-for="items in item.tags" :key="items">
+                <!-- <div class="content-detail-tag fz9" v-for="items in item.tags" :key="items">
                   <span>{{items}}</span>
-                </div>
+                </div>-->
               </div>
               <div class="content-detail-bottom flexrbe">
-                <div class="content-detail-price red fz13">￥{{item.price}}</div>
-                <div class="content-detail-cart-icon iconfont" @click="addCart(item.id)">&#xe668;</div>
+                <div class="content-detail-price red fz13">￥{{item.level1Price}}</div>
+                <div class="content-detail-cart-icon iconfont" @click.stop="addCart(item.id)">&#xe668;</div>
                 <!-- <div class="content-detail-cart-icon iconfont" @click="addCart(item.id)">&#xe668;</div> -->
               </div>
             </div>
@@ -28,58 +28,9 @@
 export default {
   data() {
     return {
-      timeout:null,
+      timeout: null,
       isLoading: false,
-      list: [
-        {
-          id: 0,
-          img:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          name: "妙而曼红参阿胶五谷素1231351",
-          tags: ["通气血", "排毒素", "补能量"],
-          price: "131"
-        },
-        {
-          id: 1,
-          img:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          name: "妙而曼红参阿胶五谷素1231351",
-          tags: ["通气血", "排毒素", "补能量"],
-          price: "132"
-        },
-        {
-          id: 2,
-          img:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          name: "妙而曼红参阿胶五谷素1231351",
-          tags: ["通气血", "排毒素", "补能量"],
-          price: "133"
-        },
-        {
-          id: 3,
-          img:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          name: "妙而曼红参阿胶五谷素1231351",
-          tags: ["通气血", "排毒素", "补能量"],
-          price: "134"
-        },
-        {
-          id: 4,
-          img:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          name: "妙而曼红参阿胶五谷素1231351",
-          tags: ["通气血", "排毒素", "补能量"],
-          price: "135"
-        },
-        {
-          id: 5,
-          img:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          name: "妙而曼红参阿胶五谷素1231351",
-          tags: ["通气血", "排毒素", "补能量"],
-          price: "136"
-        }
-      ]
+      list: []
     };
   },
   props: {
@@ -100,13 +51,25 @@ export default {
     addCart(id) {
       this.$toast("添加购物车，ID为" + id);
     },
+    gotoDetail(id) {
+      this.$router.push({ name: "goodsDetail", params: { id: id } });
+    },
     jiekou() {
-      var id = this.packageIndex
-      console.log("diaoyongjiekou")
-      this.$axios
-        .get("/goods/goods_all")
+      var _self = this;
+      var id = this.packageIndex;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      console.log("diaoyongjiekou");
+      this.$axios({
+        method: "post",
+        url: "/api/goods/goodslist",
+        params: {
+          page: 1,
+          token: token
+        }
+      })
         .then(function(response) {
-          console.log(response.data.answer);
+          console.log(response.data.data);
+          _self.list = response.data.data;
         })
         .catch(function(error) {
           console.log(error);

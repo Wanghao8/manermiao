@@ -52,7 +52,7 @@
 export default {
   data() {
     return {
-      timeout:null,
+      timeout: null,
       empty: false,
       choosed: [],
       allChecked: false,
@@ -103,7 +103,7 @@ export default {
           price: 134,
           description:
             "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
-        },
+        }
       ]
     };
   },
@@ -111,7 +111,7 @@ export default {
     var _self = this;
   },
   mounted() {
-    this.getInfo()
+    this.getInfo();
   },
   computed: {
     total_price: function() {
@@ -141,7 +141,7 @@ export default {
       }
     }
   },
-  destroyed() {    
+  destroyed() {
     clearTimeout(this.timeout);
   },
   methods: {
@@ -157,19 +157,19 @@ export default {
         this.operate = "编辑";
       }
     },
-    getInfo(){
-      var _self = this
-      _self.$axios({
-        method: "get",
-        url: "/cart/index"
-        // data: {
-
-        // }
-      })
+    getInfo() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "get",
+          url: "/api/goods/cartslist",
+          params: {
+            token:token
+          }
+        })
         .then(function(response) {
           console.log(response);
-          // _self.list = response
-          // _self.swiperImages = response
         })
         .catch(function(error) {
           console.log(error);
@@ -187,7 +187,7 @@ export default {
       }, 100);
     },
     deletaGoods() {
-      var _self =this
+      var _self = this;
       this.$toast("点击删除按钮");
       // console.log(this.choosed);
       // _self.choosed.forEach(item2 => {
@@ -240,7 +240,10 @@ export default {
   font-size: 13px;
   color: #fff;
 }
-.van-checkbox-group{margin-top: 56px;margin-bottom: 110px;}
+.van-checkbox-group {
+  margin-top: 56px;
+  margin-bottom: 110px;
+}
 .goods-list-box {
   display: flex;
   background-color: #fff;

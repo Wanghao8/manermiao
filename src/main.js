@@ -22,10 +22,11 @@ Vue.prototype.wx = wx
 Vue.config.productionTip = false
 Vue.use(VueJsonp)
 
-Axios.defaults.baseURL = '/api';
-Axios.defaults.baseURL = 'http://www.hnkmx.com/public/index';
+Axios.defaults.baseURL = 'http://miao.ayunu.net';
+// Axios.defaults.baseURL = 'http://w3zb5z.natappfree.cc/';
+// Axios.defaults.baseURL = 'http://www.hnkmx.com/public/index';
 // Axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-// Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 AMapLoader.load({
   "key": "3f8af947f3de0c8bb9f6c5f19f5b2760",   // 申请好的Web端开发者Key，首次调用 load 时必填

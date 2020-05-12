@@ -25,6 +25,7 @@ export default {
     return {
       empty: false,
       chosenAddressId: "1",
+      from: "",
       list: [
         {
           id: "1",
@@ -53,12 +54,16 @@ export default {
       ]
     };
   },
-  created() {},
+  created() {
+    var aaa = this.$route.params.from;
+    this.from = this.$route.params.from;
+    console.log(aaa);
+  },
   mounted() {
     if (this.$route.params.isDefault) {
       this.chosenAddressId = this.$route.params.defaultId;
     }
-    this.getinfo()
+    // this.getinfo()
   },
   methods: {
     onClickLeft() {
@@ -75,8 +80,15 @@ export default {
         params: { id: index, info: item }
       });
     },
-    chooseAdd() {
+    chooseAdd(item, index) {
+      var from = this.from;
       this.$toast("选择此条地址");
+      if (from) {
+        console.log(555);
+        this.$router.push({ name: from, params: { info: item } });
+      } else {
+        console.log(666);
+      }
     },
     getinfo() {
       var _self = this;

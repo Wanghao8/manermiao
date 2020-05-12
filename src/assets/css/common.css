@@ -2,6 +2,7 @@
 .flexrbc{display: flex;justify-content: space-between;align-items: center;}
 .flexrcc{display: flex;justify-content: center;align-items: center;}
 .flexr0c{display: flex;align-items: center;}
+.flexr0s{display: flex;align-items: flex-start;}
 .flexrbe{display: flex;justify-content: space-between;align-items: flex-end;}
 .flexcbc{display: flex;flex-direction: column;justify-content: space-between;align-items: center;}
 .flexcac{display: flex;flex-direction: column;justify-content: space-around;align-items: center;}
