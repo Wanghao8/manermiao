@@ -24,50 +24,30 @@ export default {
   data() {
     return {
       empty: false,
-      chosenAddressId: "1",
+      chosenAddressId: "0",
       from: "",
-      list: [
-        {
-          id: "1",
-          name: "张三",
-          tel: "13812345678",
-          address: "浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室"
-        },
-        {
-          id: "2",
-          name: "李四",
-          tel: "13587654321",
-          address: "浙江省杭州市拱墅区莫干山路 50 号"
-        },
-        {
-          id: "3",
-          name: "王二",
-          tel: "13587654321",
-          address: "江西省南昌市拱墅区莫干山路 50 号"
-        },
-        {
-          id: "4",
-          name: "里的",
-          tel: "13587654321",
-          address: "北京市拱墅区莫干山路 50 号"
-        }
-      ]
+      list: []
     };
   },
   created() {
     var aaa = this.$route.params.from;
     this.from = this.$route.params.from;
+    this.goods = this.$route.params.goods;
     console.log(aaa);
   },
   mounted() {
     if (this.$route.params.isDefault) {
       this.chosenAddressId = this.$route.params.defaultId;
     }
-    // this.getinfo()
+    this.getinfo();
   },
   methods: {
     onClickLeft() {
-      this.$router.back(-1);
+      if (this.goods) {
+        this.$toast("请选择地址");
+      } else {
+        this.$router.back();
+      }
     },
     onAdd() {
       this.$toast("新增地址");
@@ -82,28 +62,45 @@ export default {
     },
     chooseAdd(item, index) {
       var from = this.from;
+      var _self = this;
+      console.log("index is", item.id);
+      this.chosenAddressId = item.id
       this.$toast("选择此条地址");
       if (from) {
         console.log(555);
-        this.$router.push({ name: from, params: { info: item } });
+        this.$router.push({
+          name: from,
+          params: { info: item, goods: _self.goods }
+        });
       } else {
         console.log(666);
       }
     },
     getinfo() {
       var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
-          method: "get",
-          url: "/address/index"
-          // data: {
-
-          // }
+          method: "post",
+          url: "/api/user/addrlist",
+          params: {
+            token: token,
+            page: 1
+          }
         })
         .then(function(response) {
-          console.log(response);
-          // _self.list = response
-          // _self.swiperImages = response
+          console.log(response, "dizhi");
+          var addlist = response.data.data;
+          _self.list = addlist.map(function(item) {
+            var list = {}
+            list.id = item.id;
+            list.name = item.userName;
+            list.tel = item.userPhone;
+            list.address = item.areaIdPath + item.userAddress;
+            list.isDefault = item.isDefault==1?true:false
+            return list
+          });
+          console.log(_self.list, "dizhi++++");
         })
         .catch(function(error) {
           console.log(error);

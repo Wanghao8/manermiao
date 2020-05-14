@@ -9,18 +9,25 @@
     />
     <van-checkbox-group v-model="choosed" ref="checkboxGroup">
       <div class="goods-list-box" v-for="item in list" :key="item.id">
-        <van-checkbox @click="chooseGoods" checked-color="#FF02FE" :name="item.id"></van-checkbox>
+        <van-checkbox @click="chooseGoods" checked-color="#FF02FE" :name="item"></van-checkbox>
         <img class="goods-img" :src="item.goodsImg" alt />
-        <div class="goods-list-right">
-          <div class="goods-list-right-title fz13">{{item.description}}}</div>
-          <div class="goods-list-right-format">
+        <div class="goods-list-right flexcb">
+          <div class="goods-list-right-title fz13">{{item.goodsDesc}}</div>
+          <!-- <div class="goods-list-right-format">
             <div class="goods-list-right-format-txt fz11 col9">20袋装</div>
             <div class="goods-list-right-format-icon iconfont">&#xe60b;</div>
-          </div>
+          </div>-->
           <div class="goods-list-right-price-num">
-            <div class="goods-list-right-price fz13 red">￥{{item.price}}</div>
+            <div class="goods-list-right-price fz13 red">￥{{item.level1Price}}</div>
             <div class="goods-list-right-num">
-              <van-stepper v-model="item.quantity" input-width="20px" button-size="16px" />
+              <van-stepper
+                @plus="addNum(item.id)"
+                @minus="delNum(item.id)"
+                v-model="item.cartNum"
+                disable-input
+                input-width="20px"
+                button-size="16px"
+              />
             </div>
           </div>
         </div>
@@ -58,53 +65,7 @@ export default {
       allChecked: false,
       isDelete: false,
       operate: "编辑",
-      list: [
-        {
-          id: 0,
-          quantity: 1,
-          goodsImg:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          price: 140,
-          description:
-            "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
-        },
-        {
-          id: 1,
-          quantity: 1,
-          goodsImg:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          price: 131,
-          description:
-            "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
-        },
-        {
-          id: 2,
-          quantity: 1,
-          goodsImg:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          price: 132,
-          description:
-            "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
-        },
-        {
-          id: 3,
-          quantity: 1,
-          goodsImg:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          price: 133,
-          description:
-            "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
-        },
-        {
-          id: 4,
-          quantity: 1,
-          goodsImg:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          price: 134,
-          description:
-            "妙而曼红参阿胶五谷素食餐，科学食料妙而曼红参阿胶五谷素食餐，科学食料"
-        }
-      ]
+      list: []
     };
   },
   created() {
@@ -121,7 +82,11 @@ export default {
         return 0;
       } else {
         var total_price1 = _self.choosed.map(function(item) {
-          total_price_now += _self.list[item].quantity * _self.list[item].price;
+          if (_self.list[_self.list.indexOf(item)]) {
+            total_price_now +=
+              _self.list[_self.list.indexOf(item)].cartNum *
+              _self.list[_self.list.indexOf(item)].level1Price;
+          }
           return total_price_now;
         });
         return total_price1[total_price1.length - 1];
@@ -134,7 +99,9 @@ export default {
         return 0;
       } else {
         var total_quantity1 = _self.choosed.map(function(item) {
-          total_quantity_now += _self.list[item].quantity;
+          if (_self.list[_self.list.indexOf(item)]) {
+            total_quantity_now += _self.list[_self.list.indexOf(item)].cartNum;
+          }
           return total_quantity_now;
         });
         return total_quantity1[total_quantity1.length - 1];
@@ -150,26 +117,79 @@ export default {
     },
     onClickRight() {
       if (!this.isDelete) {
+        console.log(123);
         this.isDelete = true;
         this.operate = "完成";
       } else {
+        console.log(321);
         this.isDelete = false;
         this.operate = "编辑";
       }
+    },
+    editCart() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      var cartId = [];
+      _self.choosed.forEach(item => {
+        cartId.push(item.id);
+      });
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/goods/editcart",
+          params: {
+            token: token,
+            cartId: cartId
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+          _self.getInfo();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    changeNum(type, id) {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/goods/numbercart",
+          params: {
+            token: token,
+            type: type,
+            cartId: id
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    addNum(item) {
+      this.changeNum("add", item);
+    },
+    delNum(item) {
+      this.changeNum("del", item);
     },
     getInfo() {
       var _self = this;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
-          method: "get",
+          method: "post",
           url: "/api/goods/cartslist",
           params: {
-            token:token
+            token: token
           }
         })
         .then(function(response) {
           console.log(response);
+          _self.list = response.data.data;
         })
         .catch(function(error) {
           console.log(error);
@@ -188,6 +208,7 @@ export default {
     },
     deletaGoods() {
       var _self = this;
+      this.editCart();
       this.$toast("点击删除按钮");
       // console.log(this.choosed);
       // _self.choosed.forEach(item2 => {
@@ -195,7 +216,15 @@ export default {
       // });
     },
     settle() {
-      this.$toast("点击结算按钮");
+      if (this.choosed.length==0) {
+        this.$toast("您还没有选择商品");
+      } else {
+        this.$toast("点击结算按钮");
+        this.$router.push({
+          name: "confirmOrder",
+          params: { goods: this.choosed, from:'c' }
+        });
+      }
     },
     checkAll() {
       if (!this.allChecked) {

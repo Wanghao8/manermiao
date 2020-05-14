@@ -1,13 +1,20 @@
 <template>
-  <div id="confirmOrder">
+  <div id="orderDetail">
     <van-nav-bar title="确认订单" left-arrow @click-left="onClickLeft" />
     <div class="add-box flexrbc" @click="gotoAdd">
-      <div class="add-left">
+      <div class="add-left" v-if="defaultAdd">
         <div class="add-left-name-tel flexr0c">
-          <div class="add-username col3 bold">用户名</div>
-          <div class="add-tel col6">1506700xxxx</div>
+          <div class="add-username col3 bold">{{addrInfo.userName}}</div>
+          <div class="add-tel col6">{{addrInfo.userPhone}}</div>
         </div>
-        <div class="add-item col9 fz14">河南省</div>
+        <div class="add-item col9 fz14">{{addrInfo.areaIdPath}}</div>
+      </div>
+      <div class="add-left" v-if="!defaultAdd">
+        <div class="add-left-name-tel flexr0c">
+          <div class="add-username col3 bold">{{addrInfo.name}}</div>
+          <div class="add-tel col6">{{addrInfo.tel}}</div>
+        </div>
+        <div class="add-item col9 fz14">{{addrInfo.address}}</div>
       </div>
       <div class="add-right iconfont">&#xe605;</div>
     </div>
@@ -21,21 +28,15 @@
         />
         <div class="username bold">妙而曼</div>
       </div>
-      <div class="goods-info-box flexr0s">
-        <img
-          src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
-          alt
-          class="goodsImg"
-        />
+      <div class="goods-info-box flexr0s" v-for="item in goods" :key="item.id">
+        <img :src="item.goodsImg" alt class="goodsImg" />
         <div class="goods-info-content">
-          <div
-            class="goods-name"
-          >产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名产品名</div>
+          <div class="goods-name">{{item.goodsName}}</div>
           <div class="type-price-num flexrbc">
             <div class="type-price-num-left fz14 col9">规格： xxxx</div>
             <div class="type-price-num-right flexr0c">
-              <div class="price fz14 col3">￥1999.00</div>
-              <div class="num fz12 col9">X 1</div>
+              <div class="price fz14 col3">￥{{item.level1Price}}</div>
+              <div class="num fz12 col9">X {{item.cartNum}}</div>
             </div>
           </div>
         </div>
@@ -43,30 +44,33 @@
     </div>
 
     <div class="deliver-pay">
-      <div class="deliver flexrbc">
+      <div class="deliver flexrbc" @click="deliver(0)">
         <div class="deliver-title col3 bold fz14">配送方式</div>
         <div class="deliver-options flexr0c">
-          <div class="deliver-txt col9 fz14">快递配送</div>
+          <div class="deliver-txt col9 fz14">{{deliverType}}</div>
           <div class="iconfont right-row">&#xe605;</div>
         </div>
       </div>
-      <div class="deliver flexrbc">
+      <div class="deliver flexrbc" @click="deliver(1)">
         <div class="deliver-title col3 bold fz14">支付方式</div>
         <div class="deliver-options flexr0c">
-          <div class="deliver-txt col9 fz14">线下支付</div>
+          <div class="deliver-txt col9 fz14">{{payType}}</div>
           <div class="iconfont right-row">&#xe605;</div>
         </div>
       </div>
     </div>
 
-    <div class="order-info-box col9 fz13">
-      <div class="order-id-box flexrbc">
-        <div class="order-id">订单编号：12345678987654321</div>
-        <div class="copy-btn bold" @click="copy">复制</div>
+    <!-- 底部弹出组件 -->
+    <van-action-sheet v-model="show" :actions="actions" @select="onSelect" />
+    <van-action-sheet v-model="showPay" :actions="actions" @select="onSelectPay" />
+
+    <div class="bottom flexrbc">
+      <div class="msg col3">
+        共
+        <span>{{total_num}}</span>件，合计：
+        <span class="pink">￥{{total_money}}</span>
       </div>
-      <div class="creattime">创建时间：2020-05-12 12：54：24</div>
-      <div class="paytime">付款时间：2020-05-12 13：23：44</div>
-      <div class="dealtime">成交时间：2020-05-14 08：11：28</div>
+      <div class="submit fz16" @click="submit">提交订单</div>
     </div>
   </div>
 </template>
@@ -74,32 +78,180 @@
 export default {
   data() {
     return {
-        addInfo:{}
+      addrInfo: {},
+      goods: [],
+      defaultAdd: true,
+      show: false, //配送方式底部弹出控制器
+      showPay: false, //支付方式底部弹出控制器
+      actions: [],
+      deliverType: "快递配送",
+      payType: "线下支付"
     };
   },
   created() {
+    var _self = this;
+
+    if (this.$route.params.goods) {
+      console.log(this.$route.params.goods, 88888888888);
+      _self.goods = this.$route.params.goods;
+    }
+    _self.from = _self.$route.params.from;
+  },
+  mounted() {
     if (this.$route.params.info) {
-      this.addInfo = this.$route.params.info;
+      this.defaultAdd = false;
+      this.addrInfo = this.$route.params.info;
+    } else {
+      this.defaultAdd = true;
+      this.getAddr();
+      this.getGoods();
     }
   },
-  mounted() {},
+  computed: {
+    total_num: function() {
+      var _self = this;
+      var num = 0;
+      _self.goods.forEach(function(item) {
+        num += parseInt(item.cartNum);
+        console.log(item, item.cartNum, 7777777, num);
+      });
+      console.log("num is", num);
+      return num;
+    },
+    total_money: function() {
+      var _self = this;
+      var money = 0;
+      _self.goods.forEach(function(item) {
+        money += parseInt(item.level1Price) * item.cartNum;
+        console.log(item, item.level1Price, 88888888);
+      });
+      console.log("money is", money);
+      return money;
+    }
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
     },
+    onSelect(item) {
+      this.show = false;
+      this.deliverType = item.name;
+    },
+    onSelectPay(item) {
+      this.showPay = false;
+      this.payType = item.name;
+    },
+    deliver(type) {
+      if (type == 0) {
+        this.actions = [{ name: "快递配送" }, { name: "慢递配送" }];
+        this.show = true;
+      } else {
+        this.actions = [{ name: "线下支付" }, { name: "线上支付" }];
+        this.showPay = true;
+      }
+    },
     gotoAdd() {
+      var _self = this;
       this.$router.push({
         name: "myAddress",
-        params: { from: "confirmOrder" }
+        params: { from: "confirmOrder", goods: _self.goods }
       });
     },
-    copy() {}
+    getGoods() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      var from = _self.from;
+      var type = "goods";
+      var cartId = 0;
+      var goodsId = 0;
+      var num = 0;
+      if (from === "c") {
+        type = "cart";
+        cartId = _self.goods.map(function(item) {
+          return item.id;
+        });
+      } else {
+        goodsId = _self.goods[0].goodsId;
+        num = _self.goods[0].num;
+      }
+      console.log("type is ", type, "cartId is ", cartId);
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/writeorder",
+          params: {
+            token: token,
+            cartId: cartId,
+            type: type,
+            goodsId: goodsId,
+            num: num,
+            shareId: 0
+          }
+        })
+        .then(function(res) {
+          console.log(res, "success");
+          _self.goods = res.data.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    getAddr() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      var addrId = JSON.parse(window.localStorage.getItem("userinfo")).addrId;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/address",
+          params: {
+            token: token,
+            addrId: addrId
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+          _self.addrInfo = response.data.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    submit() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      var payType;
+      if (_self.payType === "线上支付") {
+        payType = 1;
+      } else {
+        payType = 2;
+      }
+      _self.$toast("提交订单");
+      _self.$axios({
+        method: "post",
+        url: "/api/order/generateorder",
+        params: {
+          token: token,
+          deliverMoney: deliverMoney,
+          totalMoney: _self.total_money,
+          payType: payType,
+          payCode: payCode,
+          areaId: _self.addrInfo.id,
+          areaIdPath: _self.addrInfo.areaIdPath,
+          userName: _self.addrInfo.userName,
+          userAddress: _self.addrInfo.areaIdPath + _self.addrInfo.userAddress,
+          userPhone: _self.addrInfo.userPhone,
+          orderRemarks: orderRemarks,
+          goods: _self.goods
+        }
+      });
+    }
   }
 };
 </script>
 
 <style scoped>
-#confirmOrder {
+#orderDetail {
   background-color: #e4e4e4;
   height: 100%;
   width: 100%;
@@ -186,21 +338,21 @@ export default {
   color: #999;
   margin-left: 10px;
 }
-.order-info-box {
-  padding: 4px 14px;
+.bottom {
+  position: fixed;
+  bottom: 0;
   background-color: #fff;
-  margin-top: 2px;
+  width: 100%;
+  line-height: 50px;
 }
-.order-info-box > div {
-  line-height: 30px;
+.bottom div {
+  padding: 0 13px;
 }
-.copy-btn {
-  width: 48px;
-  height: 20px;
-  background-color: #e9e9e9;
-  color: #333;
-  text-align: center;
-  border-radius: 2px;
-  line-height: 20px;
+.submit {
+  background-color: #ff48bd;
+  color: #fff;
+  line-height: 25px;
+  border-radius: 25px;
+  margin-right: 13px;
 }
 </style>

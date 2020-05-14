@@ -2,12 +2,12 @@
   <div id="myOrder">
     <van-nav-bar title="我的订单" left-arrow @click-left="onClickLeft" />
     <van-tabs v-model="orderStatus" sticky color="#ff48bd" @click="onClick">
-      <van-tab title="待付款" name="0">
+      <van-tab title="待付款" name="-2">
         <van-empty
           v-if="empty"
           class="custom-image"
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
-          description="我的订单是空的"
+          description="您没有相关订单"
         />
         <div class="order-list-box fixed-margin9">
           <div class="order-list-item" v-for="item in list1" :key="item.id">
@@ -18,7 +18,7 @@
               </div>
               <div class="order-list-item-top-right col9 fz11">待付款</div>
             </div>
-            <div class="order-list-item-content">
+            <div class="order-list-item-content" @click="toDetail(item)">
               <img :src="item.img" alt class="goods-img" />
               <div class="order-list-item-content-right">
                 <div class="order-list-item-content-right-titleprice">
@@ -44,18 +44,18 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="cancelOrder(1)">取消订单</div>
+              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,1,-1)">取消订单</div>
               <div class="order-list-item-bottom-pay fz13" @click="toPay(1)">去支付</div>
             </div>
           </div>
         </div>
       </van-tab>
-      <van-tab title="待收货" name="1">
+      <van-tab title="待收货" name="0">
         <van-empty
           v-if="empty"
           class="custom-image"
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
-          description="我的订单是空的"
+          description="您没有相关订单"
         />
         <div class="order-list-box">
           <div class="order-list-item" v-for="item in list1" :key="item.id">
@@ -92,18 +92,18 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="deleteOrder(1)">删除订单</div>
+              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">删除订单</div>
               <div class="order-list-item-bottom-pay fz13" @click="requestRefund(1)">申请退款</div>
             </div>
           </div>
         </div>
       </van-tab>
-      <van-tab title="已完成" name="3">
+      <van-tab title="已完成" name="1">
         <van-empty
           v-if="empty"
           class="custom-image"
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
-          description="我的订单是空的"
+          description="您没有相关订单"
         />
         <div class="order-list-box">
           <div class="order-list-item" v-for="item in list1" :key="item.id">
@@ -140,7 +140,7 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="deleteOrder(1)">删除订单</div>
+              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">删除订单</div>
               <div class="order-list-item-bottom-pay fz13" @click="buyAgain(1)">再次购买</div>
             </div>
           </div>
@@ -151,7 +151,7 @@
           v-if="empty"
           class="custom-image"
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
-          description="我的订单是空的"
+          description="您没有相关订单"
         />
         <div class="order-list-box">
           <div class="order-list-item" v-for="item in list1" :key="item.id">
@@ -236,27 +236,39 @@ export default {
     console.log("订单状态码是" + this.orderStatus);
   },
   mounted() {
-    this.getInfo(0);
+    this.getInfo(this.orderStatus);
   },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
     },
-    cancelOrder(e) {
+    dealOrder(e,type,status) {
       var _self = this;
-      var id = this.orderStatus
+      var id = this.orderStatus;
+      console.log(e)
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
-          url: "/order/order" + id,
-          method: "get"
+          url: "/api/order/saveorder",
+          method: "post",
+          params: {
+            token: token,
+            orderId:e.id,
+            type:type,
+            status:status,
+            content:'shanchu'
+          }
         })
         .then(function(res) {
-          console.log(res);
+          console.log(res,'success');
         })
         .catch(function(error) {
           console.log(error);
         });
       this.$toast("点击取消订单");
+    },
+    toDetail(item){
+      this.$router.push({name:'orderDetail',params:{info:item}})
     },
     toPay(e) {
       var _self = this;
@@ -286,18 +298,28 @@ export default {
       var _self = this;
       this.$toast("点击挑选服务");
     },
-     onClick(name, title) {
-      this.getInfo(name)
+    onClick(name, title) {
+      console.log("name is", name, "-----", "title is", title);
+      this.getInfo(name);
     },
-    getInfo(name) {
+    getInfo(status) {
       var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
-          url: "/order/order" + name,
-          method: "get"
+          url: "/api/order/orderlist",
+          method: "post",
+          params: {
+            token: token,
+            page: 1,
+            status: status
+          }
         })
         .then(function(res) {
-          console.log(res);
+          console.log(res.data.data);
+          if(res.data.data.length==0){
+            _self.empty = true
+          }
         })
         .catch(function(error) {
           console.log(error);

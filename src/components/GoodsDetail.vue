@@ -4,7 +4,7 @@
     <div class="swiperbox">
       <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
         <van-swipe-item>
-          <img src="info.goodsImg" alt="">
+          <img src="info.goodsImg" alt />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -13,6 +13,16 @@
       <div class="goods-name fz18">{{info.goodsName}}</div>
       <div class="goods-intro fz14">{{info.goodsDesc}}</div>
     </div>
+    <van-sku
+      v-model="show"
+      :sku="sku"
+      :goods="goods"
+      :goods-id="goodsId"
+      disable-stepper-input
+      :hide-stock="sku.hide_stock"
+      @buy-clicked="onBuyClicked"
+      @add-cart="onAddCartClicked"
+    />
     <van-goods-action>
       <!-- <van-goods-action-icon icon="chat-o" text="客服" @click="onClickIcon" />
       <van-goods-action-icon icon="cart-o" text="购物车" @click="onClickIcon" />-->
@@ -25,17 +35,30 @@
 export default {
   data() {
     return {
-      goodsId:'-1',
-      info:{}
+      goodsId: "-1",
+      info: {},
+      show: false,
+      sku: {
+        // 数据结构见下方文档
+        tree: [],
+        list: [],
+        price: "1.00", // 默认价格（单位元）
+        stock_num: 227, // 商品总库存
+        none_sku: true // 是否无规格商品
+      },
+      goods: {
+        // 数据结构见下方文档
+        picture: ""
+      }
     };
   },
   created() {
-    var goodsId = this.$route.params.id
-    console.log(goodsId)
-    this.goodsId = goodsId
+    var goodsId = this.$route.params.id;
+    console.log(goodsId);
+    this.goodsId = goodsId;
   },
   mounted() {
-    this.getInfo()
+    this.getInfo();
   },
   methods: {
     onClickLeft() {
@@ -55,17 +78,36 @@ export default {
         })
         .then(function(res) {
           console.log(res.data.data);
-          _self.info = res.data.data
+          _self.info = res.data.data;
+          _self.goods.picture = res.data.data.goodsImg;
+          _self.sku.price = res.data.data.level1Price;
+          _self.sku.stock_num = res.data.data.stockNumber;
         })
         .catch(function(err) {
           console.log(err);
         });
     },
-    add2Cart(){
-      this.$toast('加入购物车')
+    onBuyClicked(skuData) {
+      var _self = this;
+      var goodsInfo = [];
+      goodsInfo.push({
+        goodsId: _self.info.id,
+        num: skuData.selectedNum
+      });
+      _self.$router.push({
+        name: "confirmOrder",
+        params: { from: "b", goods: goodsInfo }
+      });
     },
-    buy(){
-      this.$toast('购买')
+    onAddCartClicked(skuData) {},
+    add2Cart() {
+      this.show = true;
+      this.$toast("加入购物车");
+    },
+    buy() {
+      this.show = true;
+      var _self = this;
+      _self.$toast("购买");
     }
   }
 };

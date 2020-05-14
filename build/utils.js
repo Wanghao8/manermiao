@@ -21,7 +21,13 @@ exports.cssLoaders = function (options) {
       sourceMap: options.sourceMap
     }
   }
-
+  var px2remLoader = {
+    loader: 'px2rem-loader',
+    options: {
+      remUnit: 16, // 40px = 1rem
+      remPrecision: 8 // rem的小数点后位数
+    }
+  }
   const postcssLoader = {
     loader: 'postcss-loader',
     options: {
@@ -30,8 +36,9 @@ exports.cssLoaders = function (options) {
   }
 
   // generate loader string to be used with extract text plugin
-  function generateLoaders (loader, loaderOptions) {
-    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
+  function generateLoaders(loader, loaderOptions) {
+    // const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
+    const loaders =  [cssLoader, px2remLoader] 
 
     if (loader) {
       loaders.push({
@@ -48,7 +55,7 @@ exports.cssLoaders = function (options) {
       return ExtractTextPlugin.extract({
         use: loaders,
         fallback: 'vue-style-loader',
-        publicPath:'../../'
+        publicPath: '../../'
       })
     } else {
       return ['vue-style-loader'].concat(loaders)

@@ -1,15 +1,15 @@
 <template>
-  <div id="orderDetail">
+  <div id="confirmOrder">
     <van-nav-bar title="订单详情" left-arrow @click-left="onClickLeft" />
     <div class="add-box flexrbc">
-      <div class="add-left">
+       <div class="add-left">
         <div class="add-left-name-tel flexr0c">
-          <div class="add-username col3 bold">用户名</div>
-          <div class="add-tel col6">1506700xxxx</div>
+          <div class="add-username col3 bold">{{addrInfo.userName}}</div>
+          <div class="add-tel col6">{{addrInfo.userPhone}}</div>
         </div>
-        <div class="add-item col9 fz14">河南省</div>
+        <div class="add-item col9 fz14">{{addrInfo.areaIdPath}}{{addrInfo.userAddress}}</div>
       </div>
-      <div class="add-right iconfont">&#xe605;</div>
+      <!-- <div class="add-right iconfont">&#xe605;</div> -->
     </div>
 
     <div class="goods-box">
@@ -59,31 +59,91 @@
       </div>
     </div>
 
-    <div class="bottom flexrbc">
-      <div class="msg col3">
-        共<span>1</span>件，合计：<span class="pink">￥1999</span>
+    <div class="order-info-box col9 fz13">
+      <div class="order-id-box flexrbc">
+        <div class="order-id">订单编号：12345678987654321</div>
+        <div class="copy-btn bold" @click="copy">复制</div>
       </div>
-      <div class="submit fz16">提交订单</div>
+      <div class="creattime">创建时间：2020-05-12 12：54：24</div>
+      <div class="paytime">付款时间：2020-05-12 13：23：44</div>
+      <div class="dealtime">成交时间：2020-05-14 08：11：28</div>
     </div>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {};
+    return {
+      addrInfo: {},
+      goods: {},
+      orderInfo: {}
+    };
   },
-  created() {},
-  mounted() {},
+  created() {
+    this.orderInfo = this.$route.params.info;
+  },
+  mounted() {
+    this.getAddr();
+    this.getDetail();
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
-    }
+    },
+    gotoAdd() {
+      this.$router.push({
+        name: "myAddress",
+        params: { from: "confirmOrder" }
+      });
+    },
+    getAddr() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      var addrId = JSON.parse(window.localStorage.getItem("userinfo")).addrId;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/address",
+          params: {
+            token: token,
+            addrId: addrId
+          }
+        })
+        .then(function(response) {
+          console.log(response,555555);
+          _self.addrInfo = response.data.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    getDetail() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/orderdetail",
+          params: {
+            token: token,
+            orderId: _self.orderInfo.id,
+            orderGoodsId: _self.orderInfo.orderId
+          }
+        })
+        .then(function(res) {
+          console.log(res, "success");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    copy() {}
   }
 };
 </script>
 
 <style scoped>
-#orderDetail {
+#confirmOrder {
   background-color: #e4e4e4;
   height: 100%;
   width: 100%;
@@ -170,21 +230,21 @@ export default {
   color: #999;
   margin-left: 10px;
 }
-.bottom {
-  position: fixed;
-  bottom: 0;
+.order-info-box {
+  padding: 4px 14px;
   background-color: #fff;
-  width: 100%;
-  line-height: 50px;
+  margin-top: 2px;
 }
-.bottom div {
-  padding: 0 13px;
+.order-info-box > div {
+  line-height: 30px;
 }
-.submit {
-  background-color: #ff48bd;
-  color: #fff;
-  line-height: 25px;
-  border-radius: 25px;
-  margin-right: 13px;
+.copy-btn {
+  width: 48px;
+  height: 20px;
+  background-color: #e9e9e9;
+  color: #333;
+  text-align: center;
+  border-radius: 2px;
+  line-height: 20px;
 }
 </style>

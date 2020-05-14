@@ -27,15 +27,15 @@
           </div>
         </div>
         <div class="mylist-icon-box">
-          <div class="mylist-icon-pending-pay" @click="toMyOrder(0)">
+          <div class="mylist-icon-pending-pay" @click="toMyOrder(-2)">
             <div class="mylist-icon-pending-pay-icon iconfont">&#xe669;</div>
             <div class="mylist-icon-pending-pay-txt">待付款</div>
           </div>
-          <div class="mylist-icon-pending-delivery" @click="toMyOrder(1)">
+          <div class="mylist-icon-pending-delivery" @click="toMyOrder(0)">
             <div class="mylist-icon-pending-delivery-icon iconfont">&#xe600;</div>
             <div class="mylist-icon-pending-delivery-txt">待发货</div>
           </div>
-          <div class="mylist-icon-pending-received" @click="toMyOrder(2)">
+          <div class="mylist-icon-pending-received" @click="toMyOrder(1)">
             <div class="mylist-icon-pending-received-icon iconfont">&#xe63e;</div>
             <div class="mylist-icon-pending-received-txt">待收货</div>
           </div>

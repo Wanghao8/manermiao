@@ -97,7 +97,7 @@ export default {
       this.$router.back(-1);
     },
     toMyorder() {
-      this.$router.push({ name: "myOrder", params: { index: 3 } });
+      this.$router.push({ name: "myOrder", params: { index: 1 } });
     },
     toMyteam() {
       this.$router.push("myTeam");

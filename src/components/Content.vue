@@ -4,7 +4,7 @@
       <van-grid :border="false" :column-num="2">
         <van-grid-item v-for="item in list" :key="item.id">
           <div class="content-box" @click="gotoDetail(item.id)">
-            <img :src="item.goodsImg" alt class="goods-img" />
+            <img :src="item.goodsImg" alt='load fail' class="goods-img" />
             <div class="content-detail-box">
               <div class="content-detail-title col3 fz13">{{item.goodsName}}</div>
               <div class="content-detail-tags flexr fz9">
@@ -14,7 +14,10 @@
               </div>
               <div class="content-detail-bottom flexrbe">
                 <div class="content-detail-price red fz13">￥{{item.level1Price}}</div>
-                <div class="content-detail-cart-icon iconfont" @click.stop="addCart(item.id)">&#xe668;</div>
+                <div
+                  class="content-detail-cart-icon iconfont"
+                  @click.stop="addCart(item.id)"
+                >&#xe668;</div>
                 <!-- <div class="content-detail-cart-icon iconfont" @click="addCart(item.id)">&#xe668;</div> -->
               </div>
             </div>
@@ -50,6 +53,24 @@ export default {
   methods: {
     addCart(id) {
       this.$toast("添加购物车，ID为" + id);
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          methods: "post",
+          url: "/api/goods/addcart",
+          params: {
+            token: token,
+            goodsId: id,
+            cartNum: 1
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     gotoDetail(id) {
       this.$router.push({ name: "goodsDetail", params: { id: id } });
