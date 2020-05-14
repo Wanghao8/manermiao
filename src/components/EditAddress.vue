@@ -91,7 +91,7 @@ export default {
         })
         .then(function(response) {
           console.log(response);
-          this.$router.push({
+          _self.$router.push({
             name: "myAddress",
             params: { isDefault: _self.isDefault, defaultId: _self.info.id }
           });
