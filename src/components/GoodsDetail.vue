@@ -9,7 +9,7 @@
       </van-swipe>
     </div>
     <div class="goods-info-box">
-      <div class="goods-price red fz24">￥{{info.level1Price}}</div>
+      <div class="goods-price red fz24">￥{{info.goodsPrice}}</div>
       <div class="goods-name fz18">{{info.goodsName}}</div>
       <div class="goods-intro fz14">{{info.goodsDesc}}</div>
     </div>
@@ -56,6 +56,9 @@ export default {
     var goodsId = this.$route.params.id;
     console.log(goodsId);
     this.goodsId = goodsId;
+    if(goodsId){
+    window.localStorage.setItem("goodsDetail", goodsId);
+    }
   },
   mounted() {
     this.getInfo();
@@ -67,20 +70,24 @@ export default {
     getInfo() {
       var _self = this;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      var goodsId = _self.goodsId
+        ? _self.goodsId
+        : window.localStorage.getItem("goodsDetail");
+        console.log(window.localStorage.getItem("goodsDetail"),'ididididi')
       _self
         .$axios({
           method: "post",
           url: "/api/goods/goodsdetail",
           params: {
             token: token,
-            goodsId: _self.goodsId
+            goodsId: goodsId
           }
         })
         .then(function(res) {
           console.log(res.data.data);
           _self.info = res.data.data;
           _self.goods.picture = res.data.data.goodsImg;
-          _self.sku.price = res.data.data.level1Price;
+          _self.sku.price = res.data.data.goodsPrice;
           _self.sku.stock_num = res.data.data.stockNumber;
         })
         .catch(function(err) {
@@ -99,7 +106,26 @@ export default {
         params: { from: "b", goods: goodsInfo }
       });
     },
-    onAddCartClicked(skuData) {},
+    onAddCartClicked(skuData) {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          methods: "post",
+          url: "/api/goods/addcart",
+          params: {
+            token: token,
+            goodsId: _self.info.id,
+            cartNum: skuData.selectedNum
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     add2Cart() {
       this.show = true;
       this.$toast("加入购物车");

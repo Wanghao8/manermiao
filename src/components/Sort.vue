@@ -23,11 +23,11 @@
     <van-nav-bar title="商品列表" />
 
     <div class="top-tab">
-      <van-tabs color="#ff49bd" @click="onClick">
-        <van-tab v-for="index in taocan" :title="index" :key="index">
+      <!-- <van-tabs color="#ff49bd" @click="onClick">
+        <van-tab v-for="index in taocan" :title="index" :key="index"> -->
           <detail ref="detail" :packageIndex="packageIndex"></detail>
-        </van-tab>
-      </van-tabs>
+        <!-- </van-tab>
+      </van-tabs> -->
     </div>
   </div>
 </template>

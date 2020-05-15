@@ -153,13 +153,8 @@ export default {
     onSubmit(values) {
       var _self = this;
       console.log("submit", values);
-      // window.localStorage.setItem("isSignup", true);
-      this.show = true;
+
       this.upload();
-      // this.timeout = null;
-      // this.timeout = setTimeout(function() {
-      //   _self.$router.push("mine");
-      // }, 2000);
     },
     onConfirm(date) {
       this.value = `${date.getFullYear()}-${date.getMonth() +
@@ -241,6 +236,7 @@ export default {
           method: "post",
           url: "/api/user/register",
           params: {
+            pid:0,
             username: _self.username,
             password: "123456",
             email: _self.email,
@@ -254,13 +250,15 @@ export default {
         })
         .then(function(res) {
           console.log(res);
-          _self.token = res.data
+          _self.token = res.data;
+          window.localStorage.setItem("isSignup", true);
+          _self.login();
         })
         .catch(function(err) {
           console.log(err);
         });
     },
-    login(){
+    login() {
       var _self = this;
       var radio = parseInt(_self.radio);
       _self
@@ -268,14 +266,19 @@ export default {
           method: "post",
           url: "/api/user/login",
           params: {
-            account: 'aaaaa',
-            password: "123456",
+            account: "aaaaa",
+            password: "123456"
           }
         })
         .then(function(res) {
           console.log(res);
-          var userInfo = JSON.stringify(res.data.data.userinfo)
-          window.localStorage.setItem('userinfo', userInfo)
+          var userInfo = JSON.stringify(res.data.data.userinfo);
+          window.localStorage.setItem("userinfo", userInfo);
+          _self.show = true;
+          _self.timeout = null;
+          _self.timeout = setTimeout(function() {
+            _self.$router.push("mine");
+          }, 2000);
         })
         .catch(function(err) {
           console.log(err);

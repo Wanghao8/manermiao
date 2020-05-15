@@ -50,7 +50,7 @@ new Vue({
 
 // 全局路由守卫
 router.beforeEach((to, from, next) => {
-  const nextRoute = ['mine', 'cart'] // 需要登录的页面
+  const nextRoute = ['mine', 'cart','home','sort'] // 需要登录的页面
   let isLogin = window.localStorage.getItem('isSignup')  // 判断是否登录，本地存储有用户数据则视为已经登录
   // 未登录状态；当路由到 nextRoute 指定页时，跳转至 UserLogIn
   if (nextRoute.indexOf(to.name) >= 0) { // 检测是否登录的页面
@@ -67,7 +67,7 @@ router.beforeEach((to, from, next) => {
     }
   }
   // 已登录状态；当路由到 UserLogIn 时，跳转至 Home
-  if (to.name === 'registered') {
+  if (to.name === 'registered'||to.name === 'index') {
     if (isLogin) {
       next('/home')
       return

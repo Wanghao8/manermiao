@@ -18,7 +18,7 @@
             <div class="goods-list-right-format-icon iconfont">&#xe60b;</div>
           </div>-->
           <div class="goods-list-right-price-num">
-            <div class="goods-list-right-price fz13 red">￥{{item.level1Price}}</div>
+            <div class="goods-list-right-price fz13 red">￥{{item.goodsPrice}}</div>
             <div class="goods-list-right-num">
               <van-stepper
                 @plus="addNum(item.id)"
@@ -85,7 +85,7 @@ export default {
           if (_self.list[_self.list.indexOf(item)]) {
             total_price_now +=
               _self.list[_self.list.indexOf(item)].cartNum *
-              _self.list[_self.list.indexOf(item)].level1Price;
+              _self.list[_self.list.indexOf(item)].goodsPrice;
           }
           return total_price_now;
         });
@@ -189,6 +189,9 @@ export default {
         })
         .then(function(response) {
           console.log(response);
+          if (response.data.data.length === 0) {
+            _self.empty = true;
+          }
           _self.list = response.data.data;
         })
         .catch(function(error) {
@@ -216,13 +219,13 @@ export default {
       // });
     },
     settle() {
-      if (this.choosed.length==0) {
+      if (this.choosed.length == 0) {
         this.$toast("您还没有选择商品");
       } else {
         this.$toast("点击结算按钮");
         this.$router.push({
           name: "confirmOrder",
-          params: { goods: this.choosed, from:'c' }
+          params: { goods: this.choosed, from: "c" }
         });
       }
     },

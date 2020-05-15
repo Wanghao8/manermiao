@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Index from '../components/Index.vue'
 import Home from '../components/Home.vue'
 import Sort from '../components/Sort.vue'
 import Mine from '../components/Mine.vue'
@@ -28,8 +29,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: "/home",
-      meta: { requiresAuth: true }
+      name: 'index',
+      redirect: '/home',
+      component: Index, meta: { requiresAuth: true }
     },
     {
       path: '/home',
@@ -129,7 +131,10 @@ export default new Router({
     {
       path: '/goodsDetail',
       name: 'goodsDetail',
-      component: GoodsDetail
+      component: GoodsDetail,
+      meta: {
+        keepAlive: true 
+      },
     },
     {
       path: '/orderDetail',

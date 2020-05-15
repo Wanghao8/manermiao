@@ -26,8 +26,7 @@
     <div class="swiperbox">
       <van-swipe :autoplay="3000" indicator-color="#FE18FB">
         <van-swipe-item v-for="(image, index) in swiperImages" :key="index">
-          <!-- <img class="swiperImg" v-lazy="image.adFile" /> -->
-          <img class="swiperImg" v-lazy="image" />
+          <img class="swiperImg" v-lazy="image.adFile" />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -137,7 +136,7 @@ export default {
         })
         .then(function(res) {
           console.log(res.data.data);
-          // _self.swiperImages = res.data.data;
+          _self.swiperImages = res.data.data;
         })
         .catch(function(err) {
           console.log(err);

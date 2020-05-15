@@ -35,7 +35,7 @@
           <div class="type-price-num flexrbc">
             <div class="type-price-num-left fz14 col9">规格： xxxx</div>
             <div class="type-price-num-right flexr0c">
-              <div class="price fz14 col3">￥{{item.level1Price}}</div>
+              <div class="price fz14 col3">￥{{item.goodsPrice}}</div>
               <div class="num fz12 col9">X {{item.cartNum}}</div>
             </div>
           </div>
@@ -122,8 +122,8 @@ export default {
       var _self = this;
       var money = 0;
       _self.goods.forEach(function(item) {
-        money += parseInt(item.level1Price) * item.cartNum;
-        console.log(item, item.level1Price, 88888888);
+        money += parseInt(item.goodsPrice) * item.cartNum;
+        console.log(item, item.goodsPrice, 88888888);
       });
       console.log("money is", money);
       return money;
@@ -170,6 +170,9 @@ export default {
         cartId = _self.goods.map(function(item) {
           return item.id;
         });
+      } else if (from === "myOrder") {
+        goodsId = _self.goods[0].goodsId;
+        num = _self.goods[0].cartNum;
       } else {
         goodsId = _self.goods[0].goodsId;
         num = _self.goods[0].num;
@@ -220,31 +223,54 @@ export default {
     submit() {
       var _self = this;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
-      var payType;
+      var payType = 2;
       if (_self.payType === "线上支付") {
         payType = 1;
       } else {
         payType = 2;
       }
-      _self.$toast("提交订单");
-      _self.$axios({
-        method: "post",
-        url: "/api/order/generateorder",
-        params: {
-          token: token,
-          deliverMoney: deliverMoney,
-          totalMoney: _self.total_money,
-          payType: payType,
-          payCode: payCode,
-          areaId: _self.addrInfo.id,
-          areaIdPath: _self.addrInfo.areaIdPath,
-          userName: _self.addrInfo.userName,
-          userAddress: _self.addrInfo.areaIdPath + _self.addrInfo.userAddress,
-          userPhone: _self.addrInfo.userPhone,
-          orderRemarks: orderRemarks,
-          goods: _self.goods
-        }
+      var goods = _self.goods.map(function(item) {
+        var good2 = {};
+        good2.goodsId = item.goodsId;
+        good2.shareId = 0;
+        good2.cartNum = item.cartNum;
+        good2.goodsPrice = item.goodsPrice;
+        good2.goodsName = item.goodsName;
+        good2.goodsImg = item.goodsImg;
+        good2.goodsDesc = item.goodsDesc;
+        good2.goodsattrNames = item.goodsattrNames;
+        return good2;
       });
+      console.log(goods, 5454);
+      _self.$toast("提交订单");
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/generateorder",
+          params: {
+            token: token,
+            deliverMoney: 0,
+            totalMoney: _self.total_money,
+            payType: payType,
+            payCode: 1,
+            // payType: payType,
+            // payCode: payCode,
+            areaId: _self.addrInfo.id,
+            areaIdPath: _self.addrInfo.areaIdPath,
+            userName: _self.addrInfo.userName,
+            userAddress: _self.addrInfo.areaIdPath + _self.addrInfo.userAddress,
+            userPhone: _self.addrInfo.userPhone,
+            orderRemarks: "testAPI",
+            goods: goods,
+            realTotalMoney: _self.total_money + 0
+          }
+        })
+        .then(function(res) {
+          console.log(res, "success");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

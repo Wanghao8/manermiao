@@ -15,7 +15,7 @@
           </template>
         </van-tabbar-item>
         <van-tabbar-item replace to="/sort">
-          <span>商品分类</span>
+          <span>商品列表</span>
           <template #icon="props">
             <img :src="props.active ? icon.active2 : icon.inactive2" />
           </template>

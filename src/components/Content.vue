@@ -13,7 +13,7 @@
                 </div>-->
               </div>
               <div class="content-detail-bottom flexrbe">
-                <div class="content-detail-price red fz13">￥{{item.level1Price}}</div>
+                <div class="content-detail-price red fz13">￥{{item.goodsPrice}}</div>
                 <div
                   class="content-detail-cart-icon iconfont"
                   @click.stop="addCart(item.id)"

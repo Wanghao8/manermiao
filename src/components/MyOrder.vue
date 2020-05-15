@@ -2,6 +2,54 @@
   <div id="myOrder">
     <van-nav-bar title="我的订单" left-arrow @click-left="onClickLeft" />
     <van-tabs v-model="orderStatus" sticky color="#ff48bd" @click="onClick">
+      <van-tab title="全部" name="3">
+        <van-empty
+          v-if="empty"
+          class="custom-image"
+          image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+          description="您没有相关订单"
+        />
+        <div class="order-list-box" v-if="!empty">
+          <div class="order-list-item" v-for="item in list1" :key="item.id">
+            <div class="order-list-item-top">
+              <div class="order-list-item-top-left fz11 col3">
+                订单编号：
+                <span class="col9">{{item.orderNo}}</span>
+              </div>
+              <div class="order-list-item-top-right col9 fz11">{{item.status}}</div>
+            </div>
+            <div class="order-list-item-content" v-for="item1 in item.ordergoods" :key="item1.id">
+              <img :src="item1.goodsImg" alt class="goods-img" />
+              <div class="order-list-item-content-right">
+                <div class="order-list-item-content-right-titleprice">
+                  <div class="order-list-item-content-right-title fz13">{{item1.goodsName}}</div>
+                  <div class="order-list-item-content-right-price red fz12">￥{{item1.goodsPrice}}</div>
+                </div>
+                <div class="order-list-item-content-right-sortnum">
+                  <div class="order-list-item-content-right-sort col9 fz10">类别：{{item.type}}</div>
+                  <div class="order-list-item-content-right-num col9 fz11">
+                    X
+                    <span class="goos-num">{{item1.goodsNum}}</span>
+                  </div>
+                </div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
+              </div>
+            </div>
+            <div class="order-list-item-total">
+              <div class="order-list-item-total-left col6 fz11">
+                订单合计:
+                <span class="fz11 red">￥{{item.realTotalMoney}}</span>
+              </div>
+              <div class="order-list-item-total-right col6 fz11">共{{item.ordergoods.length}}件产品</div>
+            </div>
+            <van-divider />
+            <div class="order-list-item-bottom">
+              <div class="order-list-item-bottom-cancel fz13" @click="chooseSurvice(1)">挑选服务</div>
+              <div class="order-list-item-bottom-pay fz13" @click="lookDetail(1)">查看详情</div>
+            </div>
+          </div>
+        </div>
+      </van-tab>
       <van-tab title="待付款" name="-2">
         <van-empty
           v-if="empty"
@@ -9,38 +57,43 @@
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
           description="您没有相关订单"
         />
-        <div class="order-list-box fixed-margin9">
+        <div class="order-list-box fixed-margin9" v-if="!empty">
           <div class="order-list-item" v-for="item in list1" :key="item.id">
             <div class="order-list-item-top">
               <div class="order-list-item-top-left fz11 col3">
                 订单编号：
-                <span class="col9">{{item.orderId}}</span>
+                <span class="col9">{{item.orderNo}}</span>
               </div>
               <div class="order-list-item-top-right col9 fz11">待付款</div>
             </div>
-            <div class="order-list-item-content" @click="toDetail(item)">
-              <img :src="item.img" alt class="goods-img" />
+            <div
+              class="order-list-item-content"
+              @click="toDetail(item)"
+              v-for="item1 in item.ordergoods"
+              :key="item1.id"
+            >
+              <img :src="item1.goodsImg" alt class="goods-img" />
               <div class="order-list-item-content-right">
                 <div class="order-list-item-content-right-titleprice">
-                  <div class="order-list-item-content-right-title fz13">{{item.name}}</div>
-                  <div class="order-list-item-content-right-price red fz12">￥{{item.price}}</div>
+                  <div class="order-list-item-content-right-title fz13">{{item1.goodsName}}</div>
+                  <div class="order-list-item-content-right-price red fz12">￥{{item1.goodsPrice}}</div>
                 </div>
                 <div class="order-list-item-content-right-sortnum">
                   <div class="order-list-item-content-right-sort col9 fz10">类别：{{item.type}}</div>
                   <div class="order-list-item-content-right-num col9 fz11">
                     X
-                    <span class="goos-num">{{item.quantity}}</span>
+                    <span class="goos-num">{{item1.goodsNum}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.time}}</div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
               </div>
             </div>
             <div class="order-list-item-total">
               <div class="order-list-item-total-left col6 fz11">
                 订单合计:
-                <span class="fz11 red">￥{{item.totalPrice}}</span>
+                <span class="fz11 red">￥{{item.realTotalMoney}}</span>
               </div>
-              <div class="order-list-item-total-right col6 fz11">共{{item.quantity}}件产品</div>
+              <div class="order-list-item-total-right col6 fz11">共{{item.ordergoods.length}}件产品</div>
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
@@ -50,55 +103,55 @@
           </div>
         </div>
       </van-tab>
-      <van-tab title="待收货" name="0">
+      <van-tab title="待发货" name="0">
         <van-empty
           v-if="empty"
           class="custom-image"
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
           description="您没有相关订单"
         />
-        <div class="order-list-box">
+        <div class="order-list-box" v-if="!empty">
           <div class="order-list-item" v-for="item in list1" :key="item.id">
             <div class="order-list-item-top">
               <div class="order-list-item-top-left fz11 col3">
                 订单编号：
-                <span class="col9">{{item.orderId}}</span>
+                <span class="col9">{{item.orderNo}}</span>
               </div>
               <div class="order-list-item-top-right col9 fz11">待收货</div>
             </div>
-            <div class="order-list-item-content">
-              <img :src="item.img" alt class="goods-img" />
+            <div class="order-list-item-content" v-for="item1 in item.ordergoods" :key="item1.id">
+              <img :src="item1.goodsImg" alt class="goods-img" />
               <div class="order-list-item-content-right">
                 <div class="order-list-item-content-right-titleprice">
-                  <div class="order-list-item-content-right-title fz13">{{item.name}}</div>
-                  <div class="order-list-item-content-right-price red fz12">￥{{item.price}}</div>
+                  <div class="order-list-item-content-right-title fz13">{{item1.goodsName}}</div>
+                  <div class="order-list-item-content-right-price red fz12">￥{{item1.goodsPrice}}</div>
                 </div>
                 <div class="order-list-item-content-right-sortnum">
                   <div class="order-list-item-content-right-sort col9 fz10">类别：{{item.type}}</div>
                   <div class="order-list-item-content-right-num col9 fz11">
                     X
-                    <span class="goos-num">{{item.quantity}}</span>
+                    <span class="goos-num">{{item1.goodsNum}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.time}}</div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
               </div>
             </div>
             <div class="order-list-item-total">
               <div class="order-list-item-total-left col6 fz11">
                 订单合计:
-                <span class="fz11 red">￥{{item.totalPrice}}</span>
+                <span class="fz11 red">￥{{item.realTotalMoney}}</span>
               </div>
-              <div class="order-list-item-total-right col6 fz11">共{{item.quantity}}件产品</div>
+              <div class="order-list-item-total-right col6 fz11">共{{item.ordergoods.length}}件产品</div>
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">删除订单</div>
+              <div class="order-list-item-bottom-cancel fz13" @click="remindOrder">提醒发货</div>
               <div class="order-list-item-bottom-pay fz13" @click="requestRefund(1)">申请退款</div>
             </div>
           </div>
         </div>
       </van-tab>
-      <van-tab title="已完成" name="1">
+      <van-tab title="待收货" name="1">
         <van-empty
           v-if="empty"
           class="custom-image"
@@ -110,86 +163,86 @@
             <div class="order-list-item-top">
               <div class="order-list-item-top-left fz11 col3">
                 订单编号：
-                <span class="col9">{{item.orderId}}</span>
+                <span class="col9">{{item.orderNo}}</span>
               </div>
-              <div class="order-list-item-top-right col9 fz11">已完成</div>
+              <div class="order-list-item-top-right col9 fz11">待收货</div>
             </div>
-            <div class="order-list-item-content">
-              <img :src="item.img" alt class="goods-img" />
+            <div class="order-list-item-content" v-for="item1 in item.ordergoods" :key="item1.id">
+              <img :src="item1.goodsImg" alt class="goods-img" />
               <div class="order-list-item-content-right">
                 <div class="order-list-item-content-right-titleprice">
-                  <div class="order-list-item-content-right-title fz13">{{item.name}}</div>
-                  <div class="order-list-item-content-right-price red fz12">￥{{item.price}}</div>
+                  <div class="order-list-item-content-right-title fz13">{{item1.goodsName}}</div>
+                  <div class="order-list-item-content-right-price red fz12">￥{{item1.goodsPrice}}</div>
                 </div>
                 <div class="order-list-item-content-right-sortnum">
                   <div class="order-list-item-content-right-sort col9 fz10">类别：{{item.type}}</div>
                   <div class="order-list-item-content-right-num col9 fz11">
                     X
-                    <span class="goos-num">{{item.quantity}}</span>
+                    <span class="goos-num">{{item1.goodsNum}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.time}}</div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
               </div>
             </div>
             <div class="order-list-item-total">
               <div class="order-list-item-total-left col6 fz11">
                 订单合计:
-                <span class="fz11 red">￥{{item.totalPrice}}</span>
+                <span class="fz11 red">￥{{item.realTotalMoney}}</span>
               </div>
-              <div class="order-list-item-total-right col6 fz11">共{{item.quantity}}件产品</div>
+              <div class="order-list-item-total-right col6 fz11">共{{item.ordergoods.length}}件产品</div>
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">删除订单</div>
-              <div class="order-list-item-bottom-pay fz13" @click="buyAgain(1)">再次购买</div>
+              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,1,2)">确认收货</div>
+              <div class="order-list-item-bottom-pay fz13" @click="requestRefund(1)">申请退款</div>
             </div>
           </div>
         </div>
       </van-tab>
-      <van-tab title="退换货" name="2">
+      <van-tab title="已完成" name="2">
         <van-empty
           v-if="empty"
           class="custom-image"
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
           description="您没有相关订单"
         />
-        <div class="order-list-box">
+        <div class="order-list-box" v-if="!empty">
           <div class="order-list-item" v-for="item in list1" :key="item.id">
             <div class="order-list-item-top">
               <div class="order-list-item-top-left fz11 col3">
                 订单编号：
-                <span class="col9">{{item.orderId}}</span>
+                <span class="col9">{{item.orderNo}}</span>
               </div>
-              <div class="order-list-item-top-right col9 fz11">退款中</div>
+              <div class="order-list-item-top-right col9 fz11">已完成</div>
             </div>
-            <div class="order-list-item-content">
-              <img :src="item.img" alt class="goods-img" />
+            <div class="order-list-item-content" v-for="item1 in item.ordergoods" :key="item1.id">
+              <img :src="item1.goodsImg" alt class="goods-img" />
               <div class="order-list-item-content-right">
                 <div class="order-list-item-content-right-titleprice">
-                  <div class="order-list-item-content-right-title fz13">{{item.name}}</div>
-                  <div class="order-list-item-content-right-price red fz12">￥{{item.price}}</div>
+                  <div class="order-list-item-content-right-title fz13">{{item1.goodsName}}</div>
+                  <div class="order-list-item-content-right-price red fz12">￥{{item1.goodsPrice}}</div>
                 </div>
                 <div class="order-list-item-content-right-sortnum">
                   <div class="order-list-item-content-right-sort col9 fz10">类别：{{item.type}}</div>
                   <div class="order-list-item-content-right-num col9 fz11">
                     X
-                    <span class="goos-num">{{item.quantity}}</span>
+                    <span class="goos-num">{{item1.goodsNum}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.time}}</div>
+                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
               </div>
             </div>
             <div class="order-list-item-total">
               <div class="order-list-item-total-left col6 fz11">
                 订单合计:
-                <span class="fz11 red">￥{{item.totalPrice}}</span>
+                <span class="fz11 red">￥{{item.realTotalMoney}}</span>
               </div>
-              <div class="order-list-item-total-right col6 fz11">共{{item.quantity}}件产品</div>
+              <div class="order-list-item-total-right col6 fz11">共{{item.ordergoods.length}}件产品</div>
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="chooseSurvice(1)">挑选服务</div>
-              <div class="order-list-item-bottom-pay fz13" @click="lookDetail(1)">查看详情</div>
+              <!-- <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">删除订单</div> -->
+              <div class="order-list-item-bottom-pay fz13" @click="buyAgain(item.id)">再次购买</div>
             </div>
           </div>
         </div>
@@ -203,32 +256,7 @@ export default {
     return {
       empty: false,
       orderStatus: -1,
-      list1: [
-        {
-          id: 1,
-          orderId: "C012354693522",
-          img:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          name: "果蔬果冻（10袋装）",
-          price: "1639.00",
-          type: "酵素果冻",
-          quantity: "1",
-          time: "2019-02-10",
-          totalPrice: "1639.00"
-        },
-        {
-          id: 2,
-          orderId: "C012354693522",
-          img:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-          name: "果蔬果冻（10袋装）",
-          price: "1639.00",
-          type: "酵素果冻",
-          quantity: "1",
-          time: "2019-02-10",
-          totalPrice: "1639.00"
-        }
-      ]
+      list1: []
     };
   },
   created() {
@@ -236,16 +264,16 @@ export default {
     console.log("订单状态码是" + this.orderStatus);
   },
   mounted() {
-    this.getInfo(this.orderStatus);
+    this.getInfo(parseInt(this.orderStatus));
   },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
     },
-    dealOrder(e,type,status) {
+    dealOrder(e, type, status) {
       var _self = this;
-      var id = this.orderStatus;
-      console.log(e)
+      var id = _self.orderStatus;
+      console.log(e);
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
@@ -253,22 +281,73 @@ export default {
           method: "post",
           params: {
             token: token,
-            orderId:e.id,
-            type:type,
-            status:status,
-            content:'shanchu'
+            orderId: e.id,
+            type: type,
+            status: status,
+            content: "shanchu"
           }
         })
         .then(function(res) {
-          console.log(res,'success');
+          console.log(res, "success");
         })
         .catch(function(error) {
           console.log(error);
         });
       this.$toast("点击取消订单");
     },
-    toDetail(item){
-      this.$router.push({name:'orderDetail',params:{info:item}})
+    toDetail(item) {
+      this.$router.push({ name: "orderDetail", params: { info: item } });
+    },
+
+    onClick(name, title) {
+      console.log("name is", name, "-----", "title is", title);
+      this.empty = false;
+      this.getInfo(name);
+    },
+    getInfo(status) {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          url: "/api/order/orderlist",
+          method: "post",
+          params: {
+            token: token,
+            page: 1,
+            status: status
+          }
+        })
+        .then(function(res) {
+          console.log(res.data.data);
+          if (res.data.data.length == 0) {
+            _self.empty = true;
+            _self.list1 = [];
+          } else {
+            _self.list1 = res.data.data;
+            res.data.data.forEach(function(item) {
+              switch (item.orderStatus) {
+                case -2:
+                  item.status = "待付款";
+                  break;
+                case 0:
+                  item.status = "待发货";
+                  break;
+                case 1:
+                  item.status = "待收货";
+                  break;
+                case 2:
+                  item.status = "已完成";
+                  break;
+
+                default:
+                  break;
+              }
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     toPay(e) {
       var _self = this;
@@ -290,40 +369,37 @@ export default {
       var _self = this;
       this.$toast("点击查看详情");
     },
-    buyAgain(e) {
+    buyAgain(id) {
       var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/againorder",
+          params: {
+            token: token,
+            orderId: id
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _self.$router.push({
+            name: "confirmOrder",
+            params: { goods: res.data.data, from: "myOrder" }
+          });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
       this.$toast("点击再次购买");
     },
     chooseSurvice(e) {
       var _self = this;
       this.$toast("点击挑选服务");
     },
-    onClick(name, title) {
-      console.log("name is", name, "-----", "title is", title);
-      this.getInfo(name);
-    },
-    getInfo(status) {
+    remindOrder(e) {
       var _self = this;
-      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
-      _self
-        .$axios({
-          url: "/api/order/orderlist",
-          method: "post",
-          params: {
-            token: token,
-            page: 1,
-            status: status
-          }
-        })
-        .then(function(res) {
-          console.log(res.data.data);
-          if(res.data.data.length==0){
-            _self.empty = true
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      this.$toast("点击挑选服务");
     }
   }
 };
