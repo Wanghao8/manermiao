@@ -106,18 +106,18 @@ export default {
     },
     getInfo() {
       var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
           method: "get",
-          url: "/team/index"
-          // data: {
-
-          // }
+          url: "/api/user/myteam",
+          parama: {
+            token:token,
+            page:1
+          }
         })
         .then(function(response) {
           console.log(response);
-          // _self.list = response
-          // _self.swiperImages = response
         })
         .catch(function(error) {
           console.log(error);

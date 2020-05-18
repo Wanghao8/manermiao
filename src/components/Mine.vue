@@ -11,9 +11,9 @@
       </div>
       <div class="mylist">
         <div class="mylist-username">{{userInfo.userName}}</div>
-        <van-progress color="#FF49BD" :percentage="userInfo.progressRat" />
+        <van-progress color="#FF49BD" :percentage="userInfo.achievement" />
         <div class="mylist-exp-level">
-          <div class="exp">经验：{{userInfo.exp}}</div>
+          <div class="exp">经验：{{userInfo.achievement}}</div>
           <div class="level">等级: {{userInfo.level}}</div>
         </div>
         <div class="mylist-list" @click="toMyOrder(0)">
@@ -39,7 +39,7 @@
             <div class="mylist-icon-pending-received-icon iconfont">&#xe63e;</div>
             <div class="mylist-icon-pending-received-txt">待收货</div>
           </div>
-          <div class="mylist-icon-return" @click="toMyOrder(3)">
+          <div class="mylist-icon-return" @click="toRefund">
             <div class="mylist-icon-return-icon iconfont">&#xe607;</div>
             <div class="mylist-icon-return-txt">退换货</div>
           </div>
@@ -59,13 +59,13 @@
           <img src="../../static/image/fenxiao.png" class="info-center-icon-center-icon" />
           <div class="info-center-icon-center-txt">分销中心</div>
         </div>
-        <div class="info-center-icon-pay-record" @click="toRechargeRecord">
-          <img src="../../static/image/chongzhi.png" class="info-center-icon-pay-record-icon" />
-          <div class="info-center-icon-pay-record-txt">充值记录</div>
-        </div>
         <div class="info-center-icon-buy-record" @click="toBuyRecord">
           <img src="../../static/image/goumai.png" class="info-center-icon-buy-record-icon" />
-          <div class="info-center-icon-buy-record-txt">购买记录</div>
+          <div class="info-center-icon-buy-record-txt">消费记录</div>
+        </div>
+        <div class="info-center-icon-pay-record" @click="toMeeting">
+          <img src="../../static/image/chongzhi.png" class="info-center-icon-pay-record-icon" />
+          <div class="info-center-icon-pay-record-txt">会议记录</div>
         </div>
         <div class="info-center-icon-location" @click="toMyAddress">
           <img src="../../static/image/dizhi.png" class="info-center-icon-location-icon" />
@@ -84,13 +84,16 @@ export default {
         progressRat: 33,
         male: false,
         exp: "12345",
-        level: "2/5",
-        avatar:
-          "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg"
+        level: "1",
+        avatar: ""
       }
     };
   },
-  created() {},
+  created() {
+    this.userInfo = JSON.parse(
+      window.localStorage.getItem("userinfo")
+    );
+  },
   methods: {
     onClickLeft() {
       this.$toast("返回");
@@ -98,11 +101,14 @@ export default {
     onClickRight() {
       this.$toast("按钮");
     },
+    toRefund() {
+      this.$router.push("refund");
+    },
     toSellCenter() {
       this.$router.push("sellCenter");
     },
-    toRechargeRecord() {
-      this.$router.push("rechargeRecord");
+    toMeeting() {
+      this.$router.push("meeting");
     },
     toBuyRecord() {
       this.$router.push("buyRecord");

@@ -133,7 +133,13 @@
                     <span class="goos-num">{{item1.goodsNum}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
+                <div class="flexrbc">
+                  <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
+                  <div
+                    class="order-list-item-bottom-refund fz13"
+                    @click="requestRefund('申请退款',item,item1)"
+                  >申请退款</div>
+                </div>
               </div>
             </div>
             <div class="order-list-item-total">
@@ -145,8 +151,7 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="remindOrder">提醒发货</div>
-              <div class="order-list-item-bottom-pay fz13" @click="requestRefund(1)">申请退款</div>
+              <div class="order-list-item-bottom-pay fz13" @click="remindOrder">提醒发货</div>
             </div>
           </div>
         </div>
@@ -181,7 +186,13 @@
                     <span class="goos-num">{{item1.goodsNum}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
+                <div class="flexrbc">
+                  <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
+                  <div
+                    class="order-list-item-bottom-refund fz13"
+                    @click="requestRefund('退货退款',item,item1)"
+                  >申请退款</div>
+                </div>
               </div>
             </div>
             <div class="order-list-item-total">
@@ -193,8 +204,7 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,1,2)">确认收货</div>
-              <div class="order-list-item-bottom-pay fz13" @click="requestRefund(1)">申请退款</div>
+              <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2)">确认收货</div>
             </div>
           </div>
         </div>
@@ -242,7 +252,7 @@
             <van-divider />
             <div class="order-list-item-bottom">
               <!-- <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">删除订单</div> -->
-              <div class="order-list-item-bottom-pay fz13" @click="buyAgain(item.id)">再次购买</div>
+              <div class="order-list-item-bottom-pay fz13" @click="buyAgain(item)">再次购买</div>
             </div>
           </div>
         </div>
@@ -264,7 +274,12 @@ export default {
     console.log("订单状态码是" + this.orderStatus);
   },
   mounted() {
-    this.getInfo(parseInt(this.orderStatus));
+    console.log("order is", this.orderStatus);
+    if (this.orderStatus != "undefined") {
+      this.getInfo(parseInt(this.orderStatus));
+    } else {
+      this.getInfo(3);
+    }
   },
   methods: {
     onClickLeft() {
@@ -357,8 +372,12 @@ export default {
       var _self = this;
       this.$toast("点击删除订单");
     },
-    requestRefund(e) {
+    requestRefund(e, info, goods) {
       var _self = this;
+      _self.$router.push({
+        name: "requestRefund",
+        params: { refundType: e, info: info, goods: goods }
+      });
       this.$toast("点击申请退款");
     },
     confirmRecive(e) {
@@ -369,28 +388,32 @@ export default {
       var _self = this;
       this.$toast("点击查看详情");
     },
-    buyAgain(id) {
+    buyAgain(item) {
       var _self = this;
-      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
-      _self
-        .$axios({
-          method: "post",
-          url: "/api/order/againorder",
-          params: {
-            token: token,
-            orderId: id
-          }
-        })
-        .then(function(res) {
-          console.log(res);
-          _self.$router.push({
-            name: "confirmOrder",
-            params: { goods: res.data.data, from: "myOrder" }
-          });
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      // var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      // _self
+      //   .$axios({
+      //     method: "post",
+      //     url: "/api/order/againorder",
+      //     params: {
+      //       token: token,
+      //       orderId: id
+      //     }
+      //   })
+      //   .then(function(res) {
+      //     console.log(res);
+
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   });
+      item.ordergoods.forEach(function(item) {
+        item.cartNum = item.goodsNum;
+      });
+      _self.$router.push({
+        name: "confirmOrder",
+        params: { goods: item.ordergoods, from: "myOrder" }
+      });
       this.$toast("点击再次购买");
     },
     chooseSurvice(e) {
@@ -399,7 +422,22 @@ export default {
     },
     remindOrder(e) {
       var _self = this;
-      this.$toast("点击挑选服务");
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/remindorder",
+          params: {
+            token: token
+          }
+        })
+        .then(function(res) {
+          console.log(res, "tixing");
+          _self.$toast("提醒成功");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };
@@ -514,5 +552,12 @@ export default {
   color: #fff;
   border-radius: 3px;
   padding: 2px;
+}
+.order-list-item-bottom-refund {
+  color: #ff48bd;
+  border: 1px solid #ff48bd;
+  border-radius: 3px;
+  padding: 2px;
+  width: 20%;
 }
 </style>

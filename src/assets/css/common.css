@@ -4,6 +4,7 @@
 .flexr0c{display: flex;align-items: center;}
 .flexr0s{display: flex;align-items: flex-start;}
 .flexrbe{display: flex;justify-content: space-between;align-items: flex-end;}
+.flexrec{display: flex;justify-content: flex-end;align-items: center;}
 .flexcb{display: flex;flex-direction: column;justify-content: space-between;}
 .flexcbc{display: flex;flex-direction: column;justify-content: space-between;align-items: center;}
 .flexcac{display: flex;flex-direction: column;justify-content: space-around;align-items: center;}

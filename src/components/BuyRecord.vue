@@ -126,17 +126,17 @@ export default {
     },
     getInfo() {
       var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
-          method: "get",
-          url: "/order/order3"
-          // data: {
-
-          // }
+          method: "post",
+          url: "/api/user/moneylog",
+          params: {
+            token: token
+          }
         })
-        .then(function(response) {
-          console.log(response);
-          // _self.list = response
+        .then(function(res) {
+          console.log(res, "jilu");
         })
         .catch(function(error) {
           console.log(error);

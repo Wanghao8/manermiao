@@ -23,6 +23,9 @@ import Withdraw from '../components/Withdraw.vue'
 import GoodsDetail from '../components/GoodsDetail.vue'
 import OrderDetail from '../components/OrderDetail.vue'
 import ConfirmOrder from '../components/ConfirmOrder.vue'
+import Refund from '../components/Refund.vue'
+import RefundDetail from '../components/RefundDetail.vue'
+import RequestRefund from '../components/RequestRefund.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -146,5 +149,21 @@ export default new Router({
       name: 'confirmOrder',
       component: ConfirmOrder
     },
+    {
+      path: '/refund',
+      name: 'refund',
+      component: Refund
+    },
+    {
+      path: '/refundDetail',
+      name: 'refundDetail',
+      component: RefundDetail
+    },
+    {
+      path: '/requestRefund',
+      name: 'requestRefund',
+      component: RequestRefund
+    },
+   
   ]
 })

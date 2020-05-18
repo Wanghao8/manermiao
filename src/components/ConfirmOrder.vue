@@ -94,6 +94,10 @@ export default {
     if (this.$route.params.goods) {
       console.log(this.$route.params.goods, 88888888888);
       _self.goods = this.$route.params.goods;
+      var orderinfo = JSON.stringify(_self.goods);
+      window.localStorage.setItem("confirmorder", orderinfo);
+    } else {
+      _self.goods = JSON.parse(window.localStorage.getItem("confirmorder"));
     }
     _self.from = _self.$route.params.from;
   },
@@ -241,6 +245,18 @@ export default {
         good2.goodsattrNames = item.goodsattrNames;
         return good2;
       });
+      console.log("userADD IS", userAddress);
+      if (!_self.addrInfo.name) {
+        var userAddress =
+          _self.addrInfo.areaIdPath + _self.addrInfo.userAddress;
+        var userName = _self.addrInfo.userName;
+        var userPhone = _self.addrInfo.userPhone;
+      } else {
+        var userAddress = _self.addrInfo.address;
+        var userName = _self.addrInfo.name;
+        var userPhone = _self.addrInfo.tel;
+      }
+
       console.log(goods, 5454);
       _self.$toast("提交订单");
       _self
@@ -256,10 +272,10 @@ export default {
             // payType: payType,
             // payCode: payCode,
             areaId: _self.addrInfo.id,
-            areaIdPath: _self.addrInfo.areaIdPath,
-            userName: _self.addrInfo.userName,
-            userAddress: _self.addrInfo.areaIdPath + _self.addrInfo.userAddress,
-            userPhone: _self.addrInfo.userPhone,
+            areaIdPath: userAddress,
+            userName: userName,
+            userAddress: userAddress,
+            userPhone: userPhone,
             orderRemarks: "testAPI",
             goods: goods,
             realTotalMoney: _self.total_money + 0

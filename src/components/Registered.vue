@@ -22,7 +22,7 @@
         placeholder="请输入您的姓名"
         :rules="[{ required: true, message: '请填写姓名' }]"
       />
-      <van-field name="radio" label="单选框">
+      <van-field name="radio" label="性别">
         <template #input>
           <van-radio-group v-model="radio" direction="horizontal">
             <van-radio name="1">男</van-radio>
@@ -77,6 +77,7 @@
         <van-button class="fz18" round block type="info" color="#ff48bd" native-type="submit">提交</van-button>
       </div>
     </van-form>
+    <div class="signuped" @click="login">已有账号</div>
   </div>
 </template>
 <script>
@@ -236,7 +237,7 @@ export default {
           method: "post",
           url: "/api/user/register",
           params: {
-            pid:0,
+            pid: 0,
             username: _self.username,
             password: "123456",
             email: _self.email,
@@ -251,6 +252,7 @@ export default {
         .then(function(res) {
           console.log(res);
           _self.token = res.data;
+          _self.show = true;
           window.localStorage.setItem("isSignup", true);
           _self.login();
         })
@@ -272,12 +274,12 @@ export default {
         })
         .then(function(res) {
           console.log(res);
+          window.localStorage.setItem("isSignup", true);
           var userInfo = JSON.stringify(res.data.data.userinfo);
           window.localStorage.setItem("userinfo", userInfo);
-          _self.show = true;
           _self.timeout = null;
           _self.timeout = setTimeout(function() {
-            _self.$router.push("mine");
+            _self.$router.push({name:"mine"});
           }, 2000);
         })
         .catch(function(err) {
@@ -333,5 +335,14 @@ export default {
 .van-cell /deep/ .van-radio__icon--checked .van-icon {
   background-color: #ff49bd;
   border-color: #ff49bd;
+}
+.signuped{
+  font-size: 16px;
+  color: #3088FF;
+  text-align: center;
+}
+.signuped:hover{
+  cursor: pointer;
+  text-decoration: underline;
 }
 </style>

@@ -9,7 +9,7 @@
         </div>
         <div class="last-money-detail flexrcc">
           <div class="income-box flexc0c">
-            <div class="income-num fz18">{{userInfo.income}}</div>
+            <div class="income-num fz18">{{income}}</div>
             <div class="income-txt fz11">总收入（元）</div>
           </div>
           <div class="divider bgwhite"></div>
@@ -44,11 +44,20 @@
       <div class="withdraw-list-box">
         <div class="withdraw-list-item flexrbc" v-for="item in list" :key="item.id">
           <div class="withdraw-list-item-left flexc">
-            <div class="withdraw-list-item-left-title fz14 col3">{{item.userName}}</div>
+            <div class="withdraw-list-item-left-title fz14 col3">{{item.status}}</div>
             <div class="withdraw-list-item-left-time fz11 col9">{{item.time}}</div>
           </div>
           <div class="withdraw-list-item-right fz16 pink">+{{item.money}}元</div>
         </div>
+      </div>
+    </div>
+    <van-overlay :show="showOverlay" @click="showOverlay = false" />
+    <div class="pop-box" v-if="showOverlay">
+      <div class="pop-content">
+        <van-field v-model="money" type="number" label="提现金额" />
+        <van-field v-model="account" type="digit" label="提现账户" />
+        <van-field v-model="remark" label="备注" />
+        <div class="submit-btn" @click="submit">确定提现</div>
       </div>
     </div>
   </div>
@@ -58,6 +67,11 @@ export default {
   data() {
     return {
       empty: false,
+      showOverlay: false,
+      money: "",
+      account: "",
+      remark: "",
+      income:'',
       userInfo: {
         overage: "8690.20",
         income: "300.20",
@@ -73,29 +87,92 @@ export default {
   },
   created() {},
   mounted() {
-    this.getInfo();
+    this.getMoney();
+    this.getWithDrawList();
   },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
     },
-    withdraw() {
-      this.$toast("点击提现按钮");
-    },
-    getInfo() {
+    getWithDrawList() {
       var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
-          method: "get",
-          url: "https://yesno.wtf/api"
-          // data: {
-
-          // }
+          method: "post",
+          url: "/api/user/caselist",
+          params: {
+            token: token,
+            page: 1
+          }
         })
-        .then(function(response) {
-          console.log(response);
-          // _self.list = response
-          // _self.swiperImages = response
+        .then(function(res) {
+          console.log(res, "liebiao");
+          var list = res.data.data;
+          list.forEach(function(item) {
+            var date = new Date(1000 * item.createTime);
+            item.time =
+              date.getFullYear() +
+              "-" +
+              (date.getMonth() + 1 + "").padStart(2, "0") +
+              "-" +
+              (date.getDate() + "").padStart(2, "0");
+            item.status = ["待处理", "审核成功", "审核失败"][item.cashSatus];
+          });
+          console.log(list, "8989");
+          _self.list = list;
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    submit() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      if (_self.money == "") {
+        _self.$toast("请输入提现金额");
+        return;
+      } else if (_self.account == "") {
+        _self.$toast("请输入提现金额");
+        return;
+      }
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/user/addcase",
+          params: {
+            token: token,
+            money: _self.money,
+            accTargetName: _self.account,
+            cashRemarks: _self.remark
+          }
+        })
+        .then(function(res) {
+          console.log(res, "tixian");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    withdraw() {
+      var _self = this;
+      _self.showOverlay = true;
+      _self.$toast("点击提现按钮");
+    },
+    getMoney() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/user/mydistribution",
+          params: {
+            token: token
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _self.income = res.data.data
         })
         .catch(function(error) {
           console.log(error);
@@ -175,5 +252,22 @@ export default {
 }
 .withdraw-list-item-left-time {
   margin-top: 5px;
+}
+.pop-box {
+  z-index: 3;
+  width: 80%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+}
+.submit-btn {
+  background-color: #ff48bd;
+  color: #fff;
+  width: 100px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
 }
 </style>

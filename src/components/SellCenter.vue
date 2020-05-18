@@ -90,7 +90,8 @@ export default {
   },
   created() {},
   mounted() {
-    this.getInfo();
+    // this.getInfo();
+    this.getMoney();
   },
   methods: {
     onClickLeft() {
@@ -125,6 +126,25 @@ export default {
           console.log(response);
           // _self.userInfo = response
           // _self.swiperImages = response
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    getMoney() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/user/mydistribution",
+          params: {
+            token: token
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _self.income = res.data.data
         })
         .catch(function(error) {
           console.log(error);
