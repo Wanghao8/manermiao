@@ -3,10 +3,10 @@
     <van-nav-bar title="佣金提现" left-arrow @click-left="onClickLeft" />
     <div class="content-box bgwhite fixed-margin">
       <div class="card-box flexcac white">
-        <div class="last-money flexc0c white">
+        <!-- <div class="last-money flexc0c white">
           <div class="last-money-num fz24">{{userInfo.overage}}</div>
           <div class="last-money-txt fz14">账户余额（元）</div>
-        </div>
+        </div>-->
         <div class="last-money-detail flexrcc">
           <div class="income-box flexc0c">
             <div class="income-num fz18">{{income}}</div>
@@ -14,7 +14,7 @@
           </div>
           <div class="divider bgwhite"></div>
           <div class="withdraw-box flexc0c">
-            <div class="withdraw-num fz18">{{userInfo.withdrawed}}</div>
+            <div class="withdraw-num fz18">{{withdrawed}}</div>
             <div class="withdraw-txt fz11">已提取（元）</div>
           </div>
         </div>
@@ -22,7 +22,7 @@
       <div class="withdraw-button-box flexrbc">
         <div class="withdraw-left flexr0c">
           <div class="withdraw-left-label fz15 col3">可提现（元）</div>
-          <div class="withdraw-left-num fz21 pink bold">{{userInfo.canWithdraw}}</div>
+          <div class="withdraw-left-num fz21 pink bold">{{canWithdraw}}</div>
         </div>
         <div class="withdraw-button white fz16" @click="withdraw">提现</div>
       </div>
@@ -71,7 +71,9 @@ export default {
       money: "",
       account: "",
       remark: "",
-      income:'',
+      income: "0",
+      canWithdraw: "",
+      withdrawed: "0",
       userInfo: {
         overage: "8690.20",
         income: "300.20",
@@ -85,7 +87,11 @@ export default {
       ]
     };
   },
-  created() {},
+  created() {
+    this.canWithdraw = JSON.parse(
+      window.localStorage.getItem("userinfo")
+    ).commmoney;
+  },
   mounted() {
     this.getMoney();
     this.getWithDrawList();
@@ -149,6 +155,13 @@ export default {
         })
         .then(function(res) {
           console.log(res, "tixian");
+          _self.showOverlay = false;
+          window.localStorage.setItem(
+            "userinfo",
+            JSON.stringify(res.data.data.userinfo)
+          );
+          _self.$toast("提现申请成功");
+          _self.$router.go(0);
         })
         .catch(function(error) {
           console.log(error);
@@ -172,7 +185,14 @@ export default {
         })
         .then(function(res) {
           console.log(res);
-          _self.income = res.data.data
+          var data = res.data.data;
+          data.forEach(function(item) {
+            if (item.type == 1) {
+              _self.income = item.sum;
+            } else if (item.type == 2) {
+              _self.withdrawed = item.sum;
+            }
+          });
         })
         .catch(function(error) {
           console.log(error);

@@ -26,8 +26,11 @@
             <div class="meeting-address-label col3">会议地址：</div>
             <div class="meeting-address-txt col6">{{item.areapath}}</div>
           </div>
-          <div class="join-meeting-box">
+          <div class="join-meeting-box" v-if="item.ismeet==0">
             <div class="join-meeting" @click="join(item.id)">报名参加</div>
+          </div>
+          <div class="join-meeting-box" v-if="item.ismeet!=0">
+            <div class="join-meeting" @click="joined">已参与</div>
           </div>
         </div>
       </van-tab>
@@ -55,10 +58,10 @@
             <div class="meeting-address-label col3">会议地址：</div>
             <div class="meeting-address-txt col6">{{item.areapath}}</div>
           </div>
-          <div class="meeting-person">
+          <!-- <div class="meeting-person">
             <div class="meeting-person-label col3">参会人员：</div>
             <div class="meeting-person-txt col6">露西、黛西、安娜</div>
-          </div>
+          </div> -->
         </div>
       </van-tab>
     </van-tabs>
@@ -106,11 +109,14 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res.data.data, "daikai");
+          _self.$toast("报名成功");
         })
         .catch(function(error) {
           console.log(error);
         });
+    },
+    joined(){
+      this.$toast('您已经参与')
     },
     toBeHeld() {
       var _self = this;
@@ -158,7 +164,7 @@ export default {
         })
         .then(function(res) {
           console.log(res.data.data, "lishijilu");
-          _self.list1 = res.data.data
+          _self.list1 = res.data.data;
         })
         .catch(function(error) {
           console.log(error);

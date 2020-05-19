@@ -37,8 +37,8 @@
         <div class="label">爆单信息</div>
       </div>
       <div class="right-icon">
-        <div class="content">更多</div>
-        <van-icon name="arrow" />
+        <!-- <div class="content">更多</div>
+        <van-icon name="arrow" />-->
       </div>
     </div>
 

@@ -15,19 +15,19 @@
     <div class="refund-goods-box">
       <div class="refund-title bold">退款信息</div>
       <div class="goods-info flexr">
-        <img :src="goodsinfo.img" class="goodsImg" alt />
+        <img :src="goodsinfo.goodsImg" class="goodsImg" alt />
         <div class="goods-name-desc">
-          <div class="goods-name bold">{{goodsinfo.name}}</div>
-          <div class="goods-desc">{{goodsinfo.desc}}</div>
+          <div class="goods-name bold">{{goodsinfo.goodsName}}</div>
+          <div class="goods-desc">{{goodsinfo.goodsDesc}}</div>
         </div>
       </div>
       <div class="refund-reason flexr0c">
         <div class="label">退款原因：</div>
-        <div class="refund-reason-item">{{goodsinfo.reason}}</div>
+        <div class="refund-reason-item">{{goodsinfo.reson}}</div>
       </div>
       <div class="refund-money flexr0c">
         <div class="label">退款金额：</div>
-        <div class="refund-money-item">￥{{goodsinfo.money}}</div>
+        <div class="refund-money-item">￥{{goodsinfo.goodsPrice*goodsinfo.goodsNum}}</div>
       </div>
       <div class="refund-time flexr0c">
         <div class="label">申请时间：</div>
@@ -35,7 +35,7 @@
       </div>
       <div class="refund-orderId flexr0c">
         <div class="label">退款编号：</div>
-        <div class="refund-id-item">{{goodsinfo.orderId}}</div>
+        <div class="refund-id-item">{{goodsinfo.refundTradeNo}}</div>
       </div>
     </div>
     <div class="bottom-btn" @click="toHome">返回首页</div>
@@ -45,26 +45,19 @@
 export default {
   data() {
     return {
-      goodsinfo: {},
+      goodsinfo: {goodsImg:''},
       time: ""
     };
   },
   created() {
     this.goodsinfo = this.$route.params.goods;
-    var time = new Date(Date.parse(this.goodsinfo.requestTime));
-    var dateTime =
-      time.getFullYear() +
-      "." +
-      (time.getMonth() + 1 + "").padStart(2, "0") +
-      "." +
-      (time.getDate() + "").padStart(2, "0") +
-      " " +
-      (time.getHours() + "").padStart(2, "0") +
-      ":" +
-      (time.getMinutes() + "").padStart(2, "0");
-    this.time = dateTime;
+    if (this.$route.params.id) {
+      this.goodsId = this.$route.params.id;
+    }
   },
-  mounted() {},
+  mounted() {
+    this.getDeatil();
+  },
   methods: {
     onClickLeft() {
       this.$router.back(-1);
@@ -77,6 +70,38 @@ export default {
     },
     edit() {
       this.$toast("点击修改");
+    },
+    getDeatil() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/refunddetail",
+          params: {
+            token: token,
+            id: _self.goodsId
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _self.goodsinfo = res.data.data;
+          var time = new Date(res.data.data.createTime*1000);
+          var dateTime =
+            time.getFullYear() +
+            "." +
+            (time.getMonth() + 1 + "").padStart(2, "0") +
+            "." +
+            (time.getDate() + "").padStart(2, "0") +
+            " " +
+            (time.getHours() + "").padStart(2, "0") +
+            ":" +
+            (time.getMinutes() + "").padStart(2, "0");
+          _self.time = dateTime;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };
@@ -174,6 +199,9 @@ export default {
 .refund-orderId {
   line-height: 30px;
   margin-left: 20px;
+}
+.refund-title{
+  line-height: 40px;
 }
 .bottom-btn {
   border-radius: 4px;

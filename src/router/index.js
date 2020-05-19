@@ -33,7 +33,7 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      redirect: '/home',
+      // redirect: '/home',
       component: Index, meta: { requiresAuth: true }
     },
     {

@@ -27,7 +27,7 @@
               </div>
             </div>
             <template #footer>
-              <van-button size="small" round type="danger" @click="lookDetail(item)">查看详情</van-button>
+              <van-button size="small" round type="danger" @click="lookDetail(item.id)">查看详情</van-button>
             </template>
           </van-panel>
         </div>
@@ -44,7 +44,7 @@ export default {
       status: ["未退款", "审核中", "已退款"]
     };
   },
-  created() {}, 
+  created() {},
   mounted() {
     this.getInfo();
   },
@@ -52,8 +52,8 @@ export default {
     onClickLeft() {
       this.$router.back(-1);
     },
-    lookDetail(info) {
-      this.$router.push({ name: "refundDetail", params: {} });
+    lookDetail(id) {
+      this.$router.push({ name: "refundDetail", params: { id: id } });
     },
     getInfo() {
       var _self = this;

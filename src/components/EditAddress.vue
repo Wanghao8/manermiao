@@ -10,7 +10,7 @@
       :tel-validator="phoneRE"
       :area-columns-placeholder="['请选择', '请选择', '请选择']"
       @save="onSave"
-      @delete="onDelete"
+      @delete="editAdd(info.id,'del')"
       @change-default="changeDefault"
     />
   </div>
@@ -21,6 +21,7 @@ export default {
   data() {
     return {
       navTitle: "修改地址",
+      isDefault: false,
       info: {},
       areaList
     };
@@ -30,15 +31,16 @@ export default {
       this.navTitle = "新增地址";
     } else {
       this.info = this.$route.params.info;
+      this.isDefault = this.info.isDefault;
       console.log(this.info, 555);
     }
   },
   mounted() {},
   methods: {
     onClickLeft() {
-      if(this.goods){
-        this.$toast('请选择地址')
-      }else{
+      if (this.goods) {
+        this.$toast("请选择地址");
+      } else {
         this.$router.back();
       }
     },
@@ -49,10 +51,14 @@ export default {
       } else {
         this.$toast("修改成功");
       }
-      this.addAdd(content);
+      if (this.navTitle == "新增地址") {
+        this.addAdd(content);
+      } else {
+        this.editAdd(this.$route.params.id, "edit");
+      }
     },
     changeDefault(e) {
-      this.isDefault = e;
+      this.isDefault = !this.isDefault;
     },
     onDelete() {
       this.$toast("delete");
@@ -86,15 +92,38 @@ export default {
             userPhone: content.tel,
             areaIdPath: content.province + content.city + content.county,
             userAddress: content.addressDetail,
+            isDefault: _self.isDefault
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+          _self.$router.go({
+            name: "myAddress",
+            params: { isDefault: _self.isDefault, defaultId: _self.info.id }
+          });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    editAdd(id, type) {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      var isDefault = 0;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/user/editaddr",
+          params: {
+            token: token,
+            addrId: id,
+            type: type,
             isDefault: isDefault
           }
         })
         .then(function(response) {
           console.log(response);
-          _self.$router.push({
-            name: "myAddress",
-            params: { isDefault: _self.isDefault, defaultId: _self.info.id }
-          });
+          _self.$router.back();
         })
         .catch(function(error) {
           console.log(error);

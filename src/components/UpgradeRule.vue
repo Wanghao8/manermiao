@@ -40,7 +40,7 @@ export default {
   computed: {},
   created() {},
   mounted() {
-    this.getInfo();
+    // this.getInfo();
   },
   watch: {},
   methods: {

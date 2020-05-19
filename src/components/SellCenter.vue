@@ -2,15 +2,11 @@
   <div id="sellCenter">
     <van-nav-bar title="分销中心" left-arrow @click-left="onClickLeft" />
     <div class="top-info-box">
-      <img
-        src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1351835355,520411539&fm=26&gp=0.jpg"
-        alt
-        class="user-avatar"
-      />
+      <img :src="avatar" alt class="user-avatar" />
       <div class="user-info-box">
         <div class="username">{{userInfo.username}}</div>
         <div class="user-info-level-box flexr0c fz12 white">
-          <div class="level fz12">等级：{{userInfo.level}}</div>
+          <div class="level fz12">等级：{{level}}</div>
           <div class="recommend fz12">推荐人：{{userInfo.referrer}}</div>
         </div>
         <div class="upgrade-time fz11 white">升级时间：{{userInfo.upgradeTime}}</div>
@@ -31,11 +27,11 @@
       </div>
     </div>
     <div class="number-box fz16">
-      <div class="total-num fz16">累计佣金：￥{{userInfo.totalMoney}}</div>
+      <div class="total-num fz16">累计佣金：￥{{totalMoney}}</div>
       <div class="last-withdraw" @click="toWithdraw">
         <div class="last-withdraw-left fz16">
           可提现余额：
-          <span class="pink">￥{{userInfo.canWithdraw}}</span>
+          <span class="pink">￥{{canWithdraw}}</span>
         </div>
         <div class="last-withdraw-right">
           <div class="last-withdraw-right-txt pink fz16">提现</div>
@@ -78,6 +74,9 @@
 export default {
   data() {
     return {
+      avatar: "",
+      canWithdraw: "",
+      totalMoney: 0,
       userInfo: {
         userName: "安琪拉",
         level: "2",
@@ -88,7 +87,13 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    this.avatar = JSON.parse(window.localStorage.getItem("userinfo")).avatar;
+    this.level = JSON.parse(window.localStorage.getItem("userinfo")).level;
+    this.canWithdraw = JSON.parse(
+      window.localStorage.getItem("userinfo")
+    ).commmoney;
+  },
   mounted() {
     // this.getInfo();
     this.getMoney();
@@ -98,7 +103,7 @@ export default {
       this.$router.back(-1);
     },
     toMyorder() {
-      this.$router.push({ name: "myOrder", params: { index: 1 } });
+      this.$router.push({ name: "myOrder", params: { index: 3 } });
     },
     toMyteam() {
       this.$router.push("myTeam");
@@ -144,7 +149,14 @@ export default {
         })
         .then(function(res) {
           console.log(res);
-          _self.income = res.data.data
+          var data = res.data.data;
+          data.forEach(function(item) {
+            if (item.type == 1) {
+              _self.totalMoney = item.sum;
+            } else if (item.type == 2) {
+              _self.withdrawed = item.sum;
+            }
+          });
         })
         .catch(function(error) {
           console.log(error);

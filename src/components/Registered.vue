@@ -2,10 +2,25 @@
   <div id="registered">
     <van-nav-bar title="注册信息" left-arrow @click-left="onClickLeft" />
 
-    <!-- 弹出框 -->
+    <!-- 注册成功弹出框 -->
     <van-overlay :show="show" @click="show = false">
       <div class="wrapper">
         <img @click.stop src="../../static/image/register.png" alt class="registered" />
+      </div>
+    </van-overlay>
+    <!-- 短信验证弹出框 -->
+    <van-overlay :show="mail">
+      <!-- <van-overlay :show="mail" @click="mail = false"> -->
+      <div class="verify-phone flexc" @click.stop>
+        <van-field v-model="phone" type="digit" label="手机号" />
+        <div class="flexrbc">
+          <van-field v-model="verifyCode" type="digit" label="验证码" />
+          <div class="verify-btn" @click.stop="sendVerify">
+            获取验证码
+            <span v-if="lastTime!=''">({{lastTime}})</span>
+          </div>
+        </div>
+        <div class="verify-submit" @click="submitVerify">提交验证</div>
       </div>
     </van-overlay>
 
@@ -81,11 +96,16 @@
   </div>
 </template>
 <script>
+import { wxApi } from "../assets/js/wxApi.js";
 export default {
   data() {
     return {
       timeout: null,
       show: false,
+      mail: false,
+      phone: "",
+      verifyCode: "",
+      lastTime: "",
       username: "",
       phoneNum: "",
       email: "",
@@ -102,30 +122,21 @@ export default {
       emailRE: /^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/
     };
   },
-  created() {},
+  created() {
+    if (localStorage.getItem("token")) {
+      history.go(-1);
+      return;
+    }
+    if (wxApi.getUrlParams().code != undefined) {
+      this.getToken(wxApi.getUrlParams().code);
+      return;
+    }
+    // const redirect_uri = 'https://www.hnkmx.com/api/wei/cehsi';
+    // wxApi.author(redirect_uri);
+  },
   mounted() {
     var _self = this;
 
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(
-    //     //locationSuccess 获取成功的话
-    //     function(position) {
-    //       _self.getLongitude = position.coords.longitude;
-    //       _self.getLatitude = position.coords.latitude;
-    //       alert(_self.getLongitude); //弹出经度测试
-    //       alert(_self.getLatitude);
-    //     },
-    //     //locationError  获取失败的话
-    //     function(error) {
-    //       var errorType = [
-    //         "您拒绝共享位置信息",
-    //         "获取不到位置信息",
-    //         "获取位置信息超时"
-    //       ];
-    //       alert(errorType[error.code - 1]);
-    //     }
-    //   );
-    // }
 
     // _self.$axios.get("https://yesno.wtf/api").then(res => {
     //   _self.wx.config({
@@ -148,6 +159,14 @@ export default {
     clearTimeout(this.timeout);
   },
   methods: {
+    getToken(code) {
+      this.$ajax.get("", { code }, res => {
+        if (res.data.code == 1) {
+          localStorage.setItem("token", res.data.token);
+          history.go(-2);
+        }
+      });
+    },
     onClickLeft() {
       this.$router.back(-1);
     },
@@ -262,6 +281,8 @@ export default {
     },
     login() {
       var _self = this;
+      _self.mail = true;
+      return;
       var radio = parseInt(_self.radio);
       _self
         .$axios({
@@ -279,12 +300,45 @@ export default {
           window.localStorage.setItem("userinfo", userInfo);
           _self.timeout = null;
           _self.timeout = setTimeout(function() {
-            _self.$router.push({name:"mine"});
+            _self.$router.push({ name: "mine" });
           }, 2000);
         })
         .catch(function(err) {
           console.log(err);
         });
+    },
+    sendVerify() {
+      var _self = this;
+      if (_self.lastTime == "") {
+        _self
+          .$axios({
+            method: "post",
+            url: "/api/Sms/send",
+            params: {
+              mobile: _self.phone,
+              event: "register"
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+            _self.lastTime = 60;
+            var daojishi = setInterval(function() {
+              _self.lastTime--;
+              if (_self.lastTime == 0) {
+                _self.lastTime = "";
+                clearInterval(daojishi);
+              }
+            }, 1000);
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+      } else {
+        _self.$toast("请稍后再获取");
+      }
+    },
+    submitVerify() {
+      this.mail = false;
     }
   }
 };
@@ -336,13 +390,29 @@ export default {
   background-color: #ff49bd;
   border-color: #ff49bd;
 }
-.signuped{
+.signuped {
   font-size: 16px;
-  color: #3088FF;
+  color: #3088ff;
   text-align: center;
 }
-.signuped:hover{
+.signuped:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+.verify-phone {
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+.verify-btn {
+  background-color: #fff;
+  line-height: 42px;
+  border: 1px solid #f4f4f4;
+  padding: 0 10px;
+}
+.verify-submit {
+  background-color: #fff;
+  text-align: center;
+  line-height: 40px;
 }
 </style>

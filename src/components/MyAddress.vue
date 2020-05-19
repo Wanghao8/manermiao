@@ -144,4 +144,7 @@ export default {
   background-color: #ff48bd;
   border: 1px solid #ff48bd;
 }
+.van-address-item:last-child{
+  margin-bottom: 60px;
+}
 </style>

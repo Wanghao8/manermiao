@@ -16,7 +16,7 @@
           <div class="exp">经验：{{userInfo.achievement}}</div>
           <div class="level">等级: {{userInfo.level}}</div>
         </div>
-        <div class="mylist-list" @click="toMyOrder(0)">
+        <div class="mylist-list" @click="toMyOrder(3)">
           <div class="mylist-list-left">
             <div class="mylist-list-left-icon iconfont col6">&#xe62e;</div>
             <div class="mylist-list-left-title col3">我的订单</div>

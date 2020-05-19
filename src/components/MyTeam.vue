@@ -4,15 +4,15 @@
     <div class="top-card-box fixed-margin">
       <div class="top-card">
         <div class="top-cad-left">
-          <img :src="userInfo.avatar" alt class="avatar" />
+          <img :src="avatar" alt class="avatar" />
           <div class="card-info">
             <div class="card-info-left">
-              <div class="card-username">{{userInfo.userName}}</div>
-              <div class="card-level">Lv.{{userInfo.level}}</div>
+              <div class="card-username">{{username}}</div>
+              <div class="card-level">Lv.{{level}}</div>
             </div>
           </div>
         </div>
-        <div class="my-team-num fz12">我的团队{{userInfo.teamNum}}人</div>
+        <div class="my-team-num fz12">我的团队{{list.totalnum}}人</div>
       </div>
     </div>
     <div class="team-menber-box">
@@ -22,30 +22,30 @@
         image="https://img.yzcdn.cn/vant/custom-empty-image.png"
         description="暂无团队成员，快去邀请"
       />
-      <div v-for="item in list" :key="item.userId">
+      <div v-for="item in list.info" :key="item.userId">
         <div class="meeting-box fz12">
           <div class="meeting-time">
             <div class="meeting-time-label col3 fw400">用户编号：</div>
-            <div class="meeting-time-date col6">{{item.userId}}</div>
+            <div class="meeting-time-date col6">{{item.id}}</div>
           </div>
           <div class="meeting-theme">
             <div class="meeting-theme-label col3">用户姓名：</div>
-            <div class="meeting-theme-txt col6">{{item.userName}}</div>
+            <div class="meeting-theme-txt col6">{{item.username}}</div>
           </div>
           <div class="meeting-address">
             <div class="meeting-address-label col3">手机号码：</div>
-            <div class="meeting-address-txt col6">{{item.phone}}</div>
+            <div class="meeting-address-txt col6">{{item.mobule}}</div>
           </div>
           <div class="meeting-address">
             <div class="meeting-person-label col3">佣金价格：</div>
-            <div class="meeting-person-txt col6">{{item.commission}}元</div>
+            <div class="meeting-person-txt col6">{{item.commmoney}}元</div>
           </div>
           <div class="meeting-person">
             <div class="meeting-person-label col3">注册时间：</div>
-            <div class="meeting-person-txt col6">{{item.signupTime}}</div>
+            <div class="meeting-person-txt col6">{{item.dateTime}}</div>
           </div>
         </div>
-        <div class="team-num-spread">
+        <!-- <div class="team-num-spread">
           <div class="team-num-spnum">
             <div class="team-num">
               团队人数：
@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="iconfont right-icon">&#xe605;</div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -74,29 +74,16 @@ export default {
           "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
         teamNum: 204
       },
-      list: [
-        {
-          userId: "1",
-          userName: "李四",
-          phone: "13012345678",
-          commission: "12",
-          signupTime: "2019-02-20",
-          teamNum: 280,
-          speardNum: 10
-        },
-        {
-          userId: "2",
-          userName: "王二",
-          phone: "13012345678",
-          commission: "12",
-          signupTime: "2019-02-20",
-          teamNum: 280,
-          speardNum: 10
-        }
-      ]
+      list: []
     };
   },
-  created() {},
+  created() {
+    this.avatar = JSON.parse(window.localStorage.getItem("userinfo")).avatar;
+    this.username = JSON.parse(
+      window.localStorage.getItem("userinfo")
+    ).username;
+    this.level = JSON.parse(window.localStorage.getItem("userinfo")).level;
+  },
   mounted() {
     this.getInfo();
   },
@@ -109,15 +96,34 @@ export default {
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
-          method: "get",
+          method: "post",
           url: "/api/user/myteam",
-          parama: {
-            token:token,
-            page:1
+          params: {
+            token: token,
+            page: 1
           }
         })
-        .then(function(response) {
-          console.log(response);
+        .then(function(res) {
+          console.log(res);
+          _self.list = res.data.data;
+          console.log(res, "123", res.data.data);
+          if (res.data.data.info.length == 0) {
+            _self.empty = true;
+          }
+          res.data.data.info.forEach(function(item) {
+            var time = new Date(item.createtime * 1000);
+            var dateTime =
+              time.getFullYear() +
+              "." +
+              (time.getMonth() + 1 + "").padStart(2, "0") +
+              "." +
+              (time.getDate() + "").padStart(2, "0") +
+              " " +
+              (time.getHours() + "").padStart(2, "0") +
+              ":" +
+              (time.getMinutes() + "").padStart(2, "0");
+            item.dateTime = dateTime;
+          });
         })
         .catch(function(error) {
           console.log(error);

@@ -1,13 +1,13 @@
 <template>
   <div id="buyRecord">
     <div class="container">
-      <van-nav-bar title="购买记录" left-arrow @click-left="onClickLeft" />
+      <van-nav-bar title="消费记录" left-arrow @click-left="onClickLeft" />
       <div class="top-box">
         <img src="../../static/image/buyRecordBack.jpg" alt class="backimg fixed-margin" />
-        <div class="top-box-content">
+        <div class="top-box-content flexc0c">
           <div class="deal-price fz16">交易总额</div>
           <div class="divider-line"></div>
-          <div class="price-num fz30">10500.00</div>
+          <div class="price-num fz30">{{total_money}}</div>
         </div>
       </div>
       <van-empty
@@ -16,27 +16,33 @@
         image="https://img.yzcdn.cn/vant/custom-empty-image.png"
         description="暂无购买记录"
       />
-      <van-collapse v-model="activeNames" class="fixed-margin">
+      <!-- <van-collapse v-model="activeNames" class="fixed-margin">
         <van-collapse-item
           :title="item[0].date"
           :name="index"
           v-for="(item,index) in list"
           :key="index"
-        >
-          <div class="deal-detail-box">
-            <div class="deal-detail-item" v-for="items in item" :key="items.id">
-              <img :src="items.img" class="deal-detail-item-left" />
-              <div class="deal-detail-item-right">
-                <div class="deal-detail-item-right-top">
-                  <div class="deal-detail-item-right-title fz12 bold col24">{{items.name}}</div>
-                  <div class="deal-detail-item-right-txt fz10">{{items.type}}</div>
-                </div>
-                <div class="deal-detail-item-right-price pink fz12">￥{{items.price}}</div>
+      >-->
+      <div class="deal-detail-box">
+        <div class="deal-detail-item" v-for="item in list" :key="item.id">
+          <div v-for="items in item.goods" :key="items.id" class="flexr0c goods-info-box">
+            <img :src="items.goodsImg" class="deal-detail-item-left" />
+            <div class="deal-detail-item-right flexcb">
+              <div class="deal-detail-item-right-top">
+                <div class="deal-detail-item-right-title fz12 bold col24">{{items.goodsName}}</div>
+                <div class="deal-detail-item-right-txt fz10">{{items.goodsDesc}}</div>
+              </div>
+              <div class="flexrbc">
+                <div class="deal-detail-item-right-price pink fz12">￥{{items.goodsPrice}}</div>
+                <div class="deal-detail-item-right-price fz12">X{{items.goodsNum}}</div>
               </div>
             </div>
           </div>
-        </van-collapse-item>
-      </van-collapse>
+          <div class="time fz14">消费日期：{{item.dateTime}}</div>
+        </div>
+      </div>
+      <!-- </van-collapse-item>
+      </van-collapse>-->
     </div>
   </div>
 </template>
@@ -46,74 +52,8 @@ export default {
     return {
       empty: false,
       activeNames: [0],
-      list: [
-        [
-          {
-            id: 1,
-            name: "套餐一",
-            type: "果蔬生鲜",
-            price: "2200.00",
-            img:
-              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-            num: "1",
-            date: "2019.03.08"
-          },
-          {
-            id: 2,
-            name: "套餐二",
-            type: "面膜",
-            price: "3000.00",
-            img:
-              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-            num: "1",
-            date: "2019.03.08"
-          }
-        ],
-        [
-          {
-            id: 1,
-            name: "套餐一",
-            type: "果蔬生鲜",
-            price: "2200.00",
-            img:
-              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-            num: "1",
-            date: "2019.02.15"
-          },
-          {
-            id: 2,
-            name: "套餐二",
-            type: "面膜",
-            price: "3000.00",
-            img:
-              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-            num: "1",
-            date: "2019.02.15"
-          }
-        ],
-        [
-          {
-            id: 1,
-            name: "套餐一",
-            type: "果蔬生鲜",
-            price: "2200.00",
-            img:
-              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-            num: "1",
-            date: "2019.02.08"
-          },
-          {
-            id: 2,
-            name: "套餐二",
-            type: "面膜",
-            price: "3000.00",
-            img:
-              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=245502197,1356326955&fm=26&gp=0.jpg",
-            num: "1",
-            date: "2019.02.08"
-          }
-        ]
-      ]
+      total_money: 0,
+      list: []
     };
   },
   created() {},
@@ -137,6 +77,22 @@ export default {
         })
         .then(function(res) {
           console.log(res, "jilu");
+          _self.total_money = res.data.data.totalmoney;
+          res.data.data.info.forEach(function(item) {
+            var time = new Date(item.createtime * 1000);
+            var dateTime =
+              time.getFullYear() +
+              "." +
+              (time.getMonth() + 1 + "").padStart(2, "0") +
+              "." +
+              (time.getDate() + "").padStart(2, "0") +
+              " " +
+              (time.getHours() + "").padStart(2, "0") +
+              ":" +
+              (time.getMinutes() + "").padStart(2, "0");
+            item.dateTime = dateTime;
+          });
+          _self.list = res.data.data.info;
         })
         .catch(function(error) {
           console.log(error);
@@ -192,9 +148,6 @@ export default {
 .top-box-content {
   position: absolute;
   top: 46px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
   color: #fff;
   height: 140px;
@@ -214,8 +167,6 @@ export default {
   background-color: #e6e3e6;
 }
 .deal-detail-item {
-  display: flex;
-  align-items: center;
   margin-bottom: 2px;
   background-color: #fff;
   border-radius: 5px;
@@ -228,10 +179,8 @@ export default {
 }
 .deal-detail-item-right {
   height: 84px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 20px;
+  flex: 2;
 }
 .van-collapse >>> .van-collapse-item__content {
   background-color: #e6e3e6;
@@ -239,5 +188,13 @@ export default {
 }
 .deal-detail-item-right-txt {
   margin-top: 5px;
+}
+.goods-info-box {
+  background-color: #fff;
+  position: relative;
+  top: 50px;
+}
+.time {
+  margin: 0 12px;
 }
 </style>
