@@ -85,7 +85,8 @@ export default {
       showPay: false, //支付方式底部弹出控制器
       actions: [],
       deliverType: "快递配送",
-      payType: "线下支付"
+      payType: "线下支付",
+      express: []
     };
   },
   created() {
@@ -110,6 +111,7 @@ export default {
       this.getAddr();
       this.getGoods();
     }
+    this.getExpress();
   },
   computed: {
     total_num: function() {
@@ -147,7 +149,7 @@ export default {
     },
     deliver(type) {
       if (type == 0) {
-        this.actions = [{ name: "快递配送" }, { name: "慢递配送" }];
+        this.actions = this.express;
         this.show = true;
       } else {
         this.actions = [{ name: "线下支付" }, { name: "线上支付" }];
@@ -179,7 +181,7 @@ export default {
         num = _self.goods[0].cartNum;
       } else {
         goodsId = _self.goods[0].goodsId;
-        num = _self.goods[0].num;
+        num = _self.goods[0].cartNum;
       }
       console.log("type is ", type, "cartId is ", cartId);
       _self
@@ -286,6 +288,61 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
+        });
+    },
+    wxpay(id) {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/pay/orderpay",
+          params: {
+            token: token,
+            order_id: id
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      wx.chooseWXPay({
+        timestamp: 0, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+        nonceStr: "", // 支付签名随机串，不长于 32 位
+        package: "", // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+        signType: "", // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+        paySign: "", // 支付签名
+        success: res => {
+          // 支付成功后的回调函数
+        },
+        cancel: err => {
+          // 支付失败后的回调函数
+        }
+      });
+    },
+    getExpress() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/expresslist",
+          params: {
+            token: token
+          }
+        })
+        .then(function(res) {
+          console.log(res.data.data, "wuliu");
+          var list = res.data.data;
+          list.forEach(function(item) {
+            item.name = item.expressName;
+          });
+          _self.express = list;
+        })
+        .catch(function(err) {
+          console.log(err);
         });
     }
   }

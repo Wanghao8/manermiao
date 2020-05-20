@@ -32,7 +32,9 @@ AMapLoader.load({
   "version": "2.0",   // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
   "plugins": ['AMap.Geocoder']  //插件列表
 }).then((AMap) => {
-  map = new AMap.Map();
+  map = new AMap.Map('container', {
+    resizeEnable: true
+  });
 }).catch(e => {
   console.log(e);
 })

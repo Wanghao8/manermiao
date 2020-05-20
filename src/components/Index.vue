@@ -2,12 +2,10 @@
   <div id></div>
 </template>
 <script>
+import { wxApi } from "../assets/js/wxApi.js";
 export default {
   beforeRouteEnter(to, from, next) {
-    // console.log(this, "beforeRouteEnter"); // undefined
-    // console.log(to, "组件独享守卫beforeRouteEnter第一个参数");
-    // console.log(from, "组件独享守卫beforeRouteEnter第二个参数");
-    // console.log(next, "组件独享守卫beforeRouteEnter第三个参数");
+    var _self = this;
     var isLogin = window.localStorage.getItem("isSignup");
     if (isLogin) {
       next("/home");
@@ -23,7 +21,21 @@ export default {
   data() {
     return {};
   },
-  created() {},
+  created() {
+    _self
+      .$axios({
+        method: "post",
+        url: "/api/wei/code"
+      })
+      .then(function(res) {
+        console.log(res);
+        return;
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+    wxApi.getUrlParams().code;
+  },
   mounted() {},
   methods: {}
 };

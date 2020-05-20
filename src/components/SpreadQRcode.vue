@@ -3,7 +3,7 @@
     <van-nav-bar title="我的推广码" left-arrow @click-left="onClickLeft" />
     <div class="top-background"></div>
     <div class="QR-box">
-      <!-- <img src="../../static/image/QR-border.png" alt class="QR-border" /> -->
+      <img src="../../static/image/QR-border.png" alt class="QR-border" />
       <div class="QR-border"></div>
       <!-- <img :src="qrimg" alt class="QRcode" /> -->
       <div id="qrcode" ref="qrcode" class="QRcode"></div>
@@ -17,13 +17,11 @@ import QRCode from "qrcodejs2";
 export default {
   data() {
     return {
-      qrimg:
-        "https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=376029017,2622921745&fm=26&gp=0.jpg"
+     
     };
   },
   mounted() {
     var pid = JSON.parse(window.localStorage.getItem("userinfo")).id;
-    this.getInfo();
     this.payOrder(pid);
   },
   created() {},
@@ -71,25 +69,7 @@ export default {
     lookTeam() {
       this.$router.push("myTeam");
     },
-    getInfo() {
-      var _self = this;
-      _self
-        .$axios({
-          method: "get",
-          url: "/code/index"
-          // data: {
-
-          // }
-        })
-        .then(function(response) {
-          console.log(response);
-          // _self.list = response
-          // _self.swiperImages = response
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    }
+    
   }
 };
 </script>

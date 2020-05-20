@@ -54,7 +54,7 @@ export default {
       if (this.navTitle == "新增地址") {
         this.addAdd(content);
       } else {
-        this.editAdd(this.$route.params.id, "edit");
+        this.editAdd(this.$route.params.id, "edit", content);
       }
     },
     changeDefault(e) {
@@ -97,19 +97,26 @@ export default {
         })
         .then(function(response) {
           console.log(response);
-          _self.$router.go({
-            name: "myAddress",
-            params: { isDefault: _self.isDefault, defaultId: _self.info.id }
-          });
+          _self.$router.back()
+          // _self.$router.go({
+          //   name: "myAddress",
+          //   params: { isDefault: _self.isDefault, defaultId: _self.info.id }
+          // });
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    editAdd(id, type) {
+    editAdd(id, type, content) {
       var _self = this;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       var isDefault = 0;
+      if (type == "edit") {
+        var userName = content.name;
+        var userPhone = content.tel;
+        var areaIdPath = content.province + content.city + content.county;
+        var userAddress = content.address;
+      }
       _self
         .$axios({
           method: "post",
@@ -118,7 +125,11 @@ export default {
             token: token,
             addrId: id,
             type: type,
-            isDefault: isDefault
+            isDefault: isDefault,
+            userName: userName,
+            userPhone: userPhone,
+            areaIdPath: areaIdPath,
+            userAddress: userAddress
           }
         })
         .then(function(response) {

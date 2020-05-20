@@ -67,7 +67,6 @@ export default {
       this.chosenAddressId = item.id
       this.$toast("选择此条地址");
       if (from) {
-        console.log(555);
         this.$router.push({
           name: from,
           params: { info: item, goods: _self.goods }

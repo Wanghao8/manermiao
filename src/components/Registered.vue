@@ -8,28 +8,27 @@
         <img @click.stop src="../../static/image/register.png" alt class="registered" />
       </div>
     </van-overlay>
-    <!-- 短信验证弹出框 -->
-    <van-overlay :show="mail">
-      <!-- <van-overlay :show="mail" @click="mail = false"> -->
-      <div class="verify-phone flexc" @click.stop>
-        <van-field v-model="phone" type="digit" label="手机号" />
+    <!-- 表单 -->
+    <div class="label">
+      <div class="left-icon"></div>
+      <div class="base-info" @click="login">基本信息</div>
+    </div>
+    <van-form v-if="mail">
+      <!-- 短信验证 -->
+      <div class="verify-phone flexc">
+        <van-field v-model="phone" type="digit" placeholder="请输入您的手机号" label="手机号" />
         <div class="flexrbc">
-          <van-field v-model="verifyCode" type="digit" label="验证码" />
-          <div class="verify-btn" @click.stop="sendVerify">
+          <van-field v-model="verifyCode" placeholder="请输入验证码" type="digit" label="验证码" />
+          <div class="verify-btn" @click="sendVerify">
             获取验证码
             <span v-if="lastTime!=''">({{lastTime}})</span>
           </div>
         </div>
         <div class="verify-submit" @click="submitVerify">提交验证</div>
       </div>
-    </van-overlay>
-
-    <!-- 表单 -->
-    <div class="label">
-      <div class="left-icon"></div>
-      <div class="base-info" @click="login">基本信息</div>
-    </div>
-    <van-form @submit="onSubmit">
+      <div class="signuped" @click="signup">注册</div>
+    </van-form>
+    <van-form @submit="onSubmit" v-if="!mail">
       <van-field
         v-model="username"
         name="姓名"
@@ -91,8 +90,8 @@
       <div style="margin: 16px;">
         <van-button class="fz18" round block type="info" color="#ff48bd" native-type="submit">提交</van-button>
       </div>
+      <div class="signuped" @click="login">已有账号</div>
     </van-form>
-    <div class="signuped" @click="login">已有账号</div>
   </div>
 </template>
 <script>
@@ -100,6 +99,7 @@ import { wxApi } from "../assets/js/wxApi.js";
 export default {
   data() {
     return {
+      code: "",
       timeout: null,
       show: false,
       mail: false,
@@ -123,21 +123,43 @@ export default {
     };
   },
   created() {
-    if (localStorage.getItem("token")) {
-      history.go(-1);
-      return;
-    }
+    var _self = this;
+    var code = wxApi.getUrlParams().code;
     if (wxApi.getUrlParams().code != undefined) {
-      this.getToken(wxApi.getUrlParams().code);
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/wei/getuseropenid",
+          params: {
+            code: code
+          }
+        })
+        .then(function(res) {
+          console.log(res, "openid");
+          window.localStorage.setItem("wxinfo", JSON.stringify(res.data.data));
+          window.localStorage.setItem("openid", res.data.data.openid);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
       return;
+    } else {
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/wei/getcode"
+        })
+        .then(function(res) {
+          console.log(res);
+          window.location.href = res.data.data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     }
-    // const redirect_uri = 'https://www.hnkmx.com/api/wei/cehsi';
-    // wxApi.author(redirect_uri);
   },
   mounted() {
     var _self = this;
-
-
     // _self.$axios.get("https://yesno.wtf/api").then(res => {
     //   _self.wx.config({
     //     debug: true, // 开启调试模式,
@@ -173,7 +195,6 @@ export default {
     onSubmit(values) {
       var _self = this;
       console.log("submit", values);
-
       this.upload();
     },
     onConfirm(date) {
@@ -265,7 +286,8 @@ export default {
             gender: radio,
             birthday: _self.value,
             lon: _self.lon,
-            lat: _self.lat
+            lat: _self.lat,
+            openid: window.localStorage.getItem("openid")
           }
         })
         .then(function(res) {
@@ -282,19 +304,20 @@ export default {
     login() {
       var _self = this;
       _self.mail = true;
-      return;
+      // return;
       var radio = parseInt(_self.radio);
       _self
         .$axios({
           method: "post",
           url: "/api/user/login",
           params: {
-            account: "aaaaa",
-            password: "123456"
+            // account: "aaaaa",
+            // password: "123456"
+            openid: window.localStorage.getItem("openid")
           }
         })
         .then(function(res) {
-          console.log(res);
+          console.log(res, "login ed");
           window.localStorage.setItem("isSignup", true);
           var userInfo = JSON.stringify(res.data.data.userinfo);
           window.localStorage.setItem("userinfo", userInfo);
@@ -320,7 +343,8 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
+            console.log(res, res.data.msg, "res");
+            _self.$toast(res.data.msg);
             _self.lastTime = 60;
             var daojishi = setInterval(function() {
               _self.lastTime--;
@@ -338,6 +362,9 @@ export default {
       }
     },
     submitVerify() {
+      this.mail = false;
+    },
+    signup(){
       this.mail = false;
     }
   }
@@ -386,6 +413,9 @@ export default {
   background-color: #ff49bd;
   margin-right: 8px;
 }
+.van-cell {
+  flex: 1;
+}
 .van-cell /deep/ .van-radio__icon--checked .van-icon {
   background-color: #ff49bd;
   border-color: #ff49bd;
@@ -399,11 +429,11 @@ export default {
   cursor: pointer;
   text-decoration: underline;
 }
-.verify-phone {
+/* .verify-phone {
   position: relative;
   top: 50%;
   transform: translate(0, -50%);
-}
+} */
 .verify-btn {
   background-color: #fff;
   line-height: 42px;
@@ -411,8 +441,12 @@ export default {
   padding: 0 10px;
 }
 .verify-submit {
-  background-color: #fff;
+  background-color: #ff48bd;
+  color: #fff;
   text-align: center;
-  line-height: 40px;
+  line-height: 44px;
+  border-radius: 44px;
+  width: 90%;
+  margin: 10px 0 10px 5%;
 }
 </style>

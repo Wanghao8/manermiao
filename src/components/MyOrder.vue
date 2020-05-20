@@ -32,7 +32,17 @@
                     <span class="goos-num">{{item1.goodsNum}}</span>
                   </div>
                 </div>
-                <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
+                <div
+                  class="order-list-item-content-right-time col9 fz10"
+                  v-if="item.status!='待发货'&&item.status!='待收货'"
+                >订单时间：{{item.saveTime}}</div>
+                <div class="flexrbc" v-if="item.status=='待发货'||item.status=='待收货'">
+                  <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
+                  <div
+                    class="order-list-item-bottom-refund fz13"
+                    @click="requestRefund('申请退款',item,item1)"
+                  >申请退款</div>
+                </div>
               </div>
             </div>
             <div class="order-list-item-total">
@@ -43,9 +53,23 @@
               <div class="order-list-item-total-right col6 fz11">共{{item.ordergoods.length}}件产品</div>
             </div>
             <van-divider />
-            <div class="order-list-item-bottom">
+            <!-- <div class="order-list-item-bottom">
               <div class="order-list-item-bottom-cancel fz13" @click="chooseSurvice(1)">挑选服务</div>
               <div class="order-list-item-bottom-pay fz13" @click="lookDetail(1)">查看详情</div>
+            </div>-->
+            <div class="order-list-item-bottom" v-if="item.status=='待付款'">
+              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">取消订单</div>
+              <div class="order-list-item-bottom-pay fz13" @click="toPay(1)">去支付</div>
+            </div>
+            <div class="order-list-item-bottom" v-if="item.status=='待发货'">
+              <div class="order-list-item-bottom-pay fz13" @click="remindOrder">提醒发货</div>
+            </div>
+            <div class="order-list-item-bottom" v-if="item.status=='待收货'">
+              <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2)">确认收货</div>
+            </div>
+            <div class="order-list-item-bottom" v-if="item.status=='已完成'">
+              <!-- <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">删除订单</div> -->
+              <div class="order-list-item-bottom-pay fz13" @click="buyAgain(item)">再次购买</div>
             </div>
           </div>
         </div>
@@ -97,7 +121,7 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,1,-1)">取消订单</div>
+              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">取消订单</div>
               <div class="order-list-item-bottom-pay fz13" @click="toPay(1)">去支付</div>
             </div>
           </div>
@@ -288,7 +312,9 @@ export default {
     dealOrder(e, type, status) {
       var _self = this;
       var id = _self.orderStatus;
-      console.log(e);
+      if (type == 2) {
+        _self.$toast("取消成功");
+      }
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
@@ -304,11 +330,11 @@ export default {
         })
         .then(function(res) {
           console.log(res, "success");
+          _self.$router.go(0);
         })
         .catch(function(error) {
           console.log(error);
         });
-      this.$toast("点击取消订单");
     },
     toDetail(item) {
       this.$router.push({ name: "orderDetail", params: { info: item } });
