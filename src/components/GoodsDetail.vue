@@ -2,9 +2,9 @@
   <div id="goodsDetail">
     <van-nav-bar title="商品详情" left-arrow @click-left="onClickLeft" />
     <div class="swiperbox">
-      <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-        <van-swipe-item>
-          <img src="info.goodsImg" alt />
+      <van-swipe class="my-swipe" :autoplay="4000" indicator-color="white">
+        <van-swipe-item v-for="(image, index) in imglist" :key="index">
+          <img class="swiper-img" v-lazy="image" alt />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -49,15 +49,16 @@ export default {
       goods: {
         // 数据结构见下方文档
         picture: ""
-      }
+      },
+      imglist: []
     };
   },
   created() {
     var goodsId = this.$route.params.id;
     console.log(goodsId);
     this.goodsId = goodsId;
-    if(goodsId){
-    window.localStorage.setItem("goodsDetail", goodsId);
+    if (goodsId) {
+      window.localStorage.setItem("goodsDetail", goodsId);
     }
   },
   mounted() {
@@ -73,7 +74,7 @@ export default {
       var goodsId = _self.goodsId
         ? _self.goodsId
         : window.localStorage.getItem("goodsDetail");
-        console.log(window.localStorage.getItem("goodsDetail"),'ididididi')
+      console.log(window.localStorage.getItem("goodsDetail"), "ididididi");
       _self
         .$axios({
           method: "post",
@@ -85,6 +86,7 @@ export default {
         })
         .then(function(res) {
           console.log(res.data.data);
+          _self.imglist = res.data.data.goodsImgs.split(",");
           _self.info = res.data.data;
           _self.goods.picture = res.data.data.goodsImg;
           _self.sku.price = res.data.data.goodsPrice;
@@ -121,6 +123,7 @@ export default {
         })
         .then(function(response) {
           console.log(response);
+          _self.$router.push("cart");
         })
         .catch(function(error) {
           console.log(error);
@@ -166,9 +169,8 @@ export default {
 .my-swipe .van-swipe-item {
   color: #fff;
   font-size: 20px;
-  line-height: 300px;
   text-align: center;
-  background-color: #39a9ed;
+  /* background-color: #39a9ed; */
 }
 .goods-info-box {
   padding: 10px;
@@ -182,5 +184,10 @@ export default {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.swiper-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

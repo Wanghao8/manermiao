@@ -93,6 +93,9 @@ export default {
             item.dateTime = dateTime;
           });
           _self.list = res.data.data.info;
+          if(_self.list.length==0){
+            _self.empty=true
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -165,6 +168,7 @@ export default {
 }
 .deal-detail-box {
   background-color: #e6e3e6;
+  margin-top: 100px;
 }
 .deal-detail-item {
   margin-bottom: 2px;

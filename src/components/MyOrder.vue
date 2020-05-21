@@ -59,7 +59,7 @@
             </div>-->
             <div class="order-list-item-bottom" v-if="item.status=='待付款'">
               <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">取消订单</div>
-              <div class="order-list-item-bottom-pay fz13" @click="toPay(1)">去支付</div>
+              <div class="order-list-item-bottom-pay fz13" @click="toPay(item)">去支付</div>
             </div>
             <div class="order-list-item-bottom" v-if="item.status=='待发货'">
               <div class="order-list-item-bottom-pay fz13" @click="remindOrder">提醒发货</div>
@@ -122,7 +122,7 @@
             <van-divider />
             <div class="order-list-item-bottom">
               <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">取消订单</div>
-              <div class="order-list-item-bottom-pay fz13" @click="toPay(1)">去支付</div>
+              <div class="order-list-item-bottom-pay fz13" @click="toPay(item)">去支付</div>
             </div>
           </div>
         </div>
@@ -390,9 +390,10 @@ export default {
           console.log(error);
         });
     },
-    toPay(e) {
+    toPay(item) {
       var _self = this;
       this.$toast("点击去支付");
+      this.$router.push({ name: "orderDetail", params: { info: item } });
     },
     deleteOrder(e) {
       var _self = this;

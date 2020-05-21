@@ -97,7 +97,7 @@ export default {
         })
         .then(function(response) {
           console.log(response);
-          _self.$router.back()
+          _self.$router.back();
           // _self.$router.go({
           //   name: "myAddress",
           //   params: { isDefault: _self.isDefault, defaultId: _self.info.id }
@@ -110,12 +110,17 @@ export default {
     editAdd(id, type, content) {
       var _self = this;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
-      var isDefault = 0;
+      if (_self.isDefault) {
+        var isDefault = 1;
+      }else{
+        var isDefault = 0;
+      }
+
       if (type == "edit") {
         var userName = content.name;
         var userPhone = content.tel;
         var areaIdPath = content.province + content.city + content.county;
-        var userAddress = content.address;
+        var userAddress = content.addressDetail;
       }
       _self
         .$axios({

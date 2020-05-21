@@ -1,28 +1,7 @@
 <template>
   <div id="Home">
     <van-nav-bar title="首页" />
-    <!-- <div class="topNav">
-      <div class="leftIcon">
-        <van-icon name="chat-o" size="16" />
-        <div class="botword">消息</div>
-      </div>
-      <van-search
-        class="search"
-        :value="searchContent"
-        shape="round"
-        background="#FF49BD"
-        placeholder="搜索您想要的商品"
-        use-action-slot
-        left-icon="none"
-        right-icon="search"
-        bind:change="onChange"
-        bind:search="onSearch"
-      ></van-search>
-      <div class="rightIcon" @click="navigate">
-        <van-icon name="apps-o" size="16" />
-        <div class="botword">列表</div>
-      </div>
-    </div>-->
+
     <div class="swiperbox">
       <van-swipe :autoplay="3000" indicator-color="#FE18FB">
         <van-swipe-item v-for="(image, index) in swiperImages" :key="index">
@@ -43,8 +22,13 @@
     </div>
 
     <div class="list-container">
+      <van-empty
+        v-if="empty"
+        class="custom-image fixed-margin"
+        image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+        description="暂无爆单信息"
+      />
       <div class="list-item" v-for="item in hotSell" :key="item.id">
-        <!-- <div>{{item.user}}</div> -->
         <div class="list-item-top">
           <div class="list-item-top-left">
             <div class="list-avatar">
@@ -75,6 +59,7 @@ export default {
   data() {
     return {
       searchContent: "",
+      empty: false,
       swiperImages: [
         "../../static/image/homeSwiper1.jpg",
         "../../static/image/homeSwiper2.jpg",
@@ -85,7 +70,7 @@ export default {
     };
   },
   mounted() {
-    this.login();
+    // this.login();
     var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
     this.getSwiper(token);
     this.getHot(token);
@@ -98,30 +83,6 @@ export default {
     gotoDetail() {
       console.log("123detail");
       this.$router.push({ path: "/detail" });
-    },
-    login() {
-      var _self = this;
-      var radio = parseInt(_self.radio);
-      _self
-        .$axios({
-          method: "post",
-          url: "/api/user/login",
-          params: {
-            account: "aaaaa",
-            password: "123456"
-          }
-        })
-        .then(function(res) {
-          console.log(res);
-          var userInfo = JSON.stringify(res.data.data.userinfo);
-          window.localStorage.setItem("userinfo", userInfo);
-          var token = res.data.data.userinfo.token;
-          // _self.getSwiper(token);
-          // _self.getHot(token);
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
     },
     getSwiper(token) {
       var _self = this;
@@ -166,6 +127,9 @@ export default {
             item.createTime = date;
           });
           _self.hotSell = hotSell;
+          if (_self.hotSell.length == 0) {
+            _self.empty = true;
+          }
           console.log(
             _self.hotSell[0].user.avatar,
             _self.hotSell[0].createTime,
@@ -192,7 +156,31 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    }
+    },
+    login() {
+      var _self = this;
+      var radio = parseInt(_self.radio);
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/user/login",
+          params: {
+            account: "aaaaa",
+            password: "123456"
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          var userInfo = JSON.stringify(res.data.data.userinfo);
+          window.localStorage.setItem("userinfo", userInfo);
+          var token = res.data.data.userinfo.token;
+          // _self.getSwiper(token);
+          // _self.getHot(token);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
   }
 };
 </script>

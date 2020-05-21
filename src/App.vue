@@ -44,14 +44,14 @@ export default {
     return {
       active: 0,
       icon: {
-        active1: "../static/image/home-act.png",
-        inactive1: "../static/image/home.png",
-        active2: "../static/image/sort-act.png",
-        inactive2: "../static/image/sort.png",
-        active3: "../static/image/cart-act.png",
-        inactive3: "../static/image/cart.png",
-        active4: "../static/image/mine-act.png",
-        inactive4: "../static/image/mine.png"
+        active1: "static/image/home-act.png",
+        inactive1: "static/image/home.png",
+        active2: "static/image/sort-act.png",
+        inactive2: "static/image/sort.png",
+        active3: "static/image/cart-act.png",
+        inactive3: "static/image/cart.png",
+        active4: "static/image/mine-act.png",
+        inactive4: "static/image/mine.png"
       }
     };
   }

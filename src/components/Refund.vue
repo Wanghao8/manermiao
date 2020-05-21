@@ -2,15 +2,14 @@
   <div id="refund">
     <van-nav-bar title="退款/退货" left-arrow @click-left="onClickLeft" />
 
-    <van-empty
-      v-if="empty"
-      class="custom-image"
-      image="https://img.yzcdn.cn/vant/custom-empty-image.png"
-      description="您没有相关订单"
-    />
-
-    <div class="order-list-box" v-if="!empty">
-      <div class="list-box">
+    <div class="order-list-box">
+      <van-empty
+        v-if="empty"
+        class="custom-image"
+        image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+        description="您没有相关订单"
+      />
+      <div class="list-box" v-if="!empty">
         <div class="list-box" v-for="item in list" :key="item.id">
           <van-panel title="退款状态" :status="status[item.refundStatus]">
             <div class="goods-info-box flexr0c">
@@ -70,6 +69,9 @@ export default {
         .then(function(res) {
           console.log(res, "success");
           _self.list = res.data.data;
+          if (_self.list.length == 0) {
+            _self.empty = true;
+          }
         })
         .catch(function(err) {
           console.log(err);

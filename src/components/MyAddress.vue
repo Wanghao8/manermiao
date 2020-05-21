@@ -57,7 +57,7 @@ export default {
       this.$toast("编辑地址:" + index);
       this.$router.push({
         name: "editAddress",
-        params: { id: index, info: item }
+        params: { id: item.id, info: item }
       });
     },
     chooseAdd(item, index) {

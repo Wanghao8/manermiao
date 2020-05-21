@@ -11,7 +11,7 @@
     <!-- 表单 -->
     <div class="label">
       <div class="left-icon"></div>
-      <div class="base-info" @click="login">基本信息</div>
+      <div class="base-info" @click="login2">基本信息</div>
     </div>
     <van-form v-if="mail">
       <!-- 短信验证 -->
@@ -293,7 +293,7 @@ export default {
         .then(function(res) {
           console.log(res);
           _self.token = res.data;
-          _self.show = true;
+          // _self.show = true;
           window.localStorage.setItem("isSignup", true);
           _self.login();
         })
@@ -362,10 +362,36 @@ export default {
       }
     },
     submitVerify() {
-      this.mail = false;
+      // this.mail = false;
     },
     signup(){
       this.mail = false;
+    },
+    login2(){
+      var _self =this
+     _self
+        .$axios({
+          method: "post",
+          url: "/api/user/login",
+          params: {
+            // account: "aaaaa",
+            // password: "123456"
+            openid: 'oHJ77v4dqFojGbJ_x18jDVTP89-E'
+          }
+        })
+        .then(function(res) {
+          console.log(res, "login ed");
+          window.localStorage.setItem("isSignup", true);
+          var userInfo = JSON.stringify(res.data.data.userinfo);
+          window.localStorage.setItem("userinfo", userInfo);
+          _self.timeout = null;
+          _self.timeout = setTimeout(function() {
+            _self.$router.push({ name: "mine" });
+          }, 2000);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     }
   }
 };

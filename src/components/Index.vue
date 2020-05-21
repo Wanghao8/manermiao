@@ -22,19 +22,6 @@ export default {
     return {};
   },
   created() {
-    _self
-      .$axios({
-        method: "post",
-        url: "/api/wei/code"
-      })
-      .then(function(res) {
-        console.log(res);
-        return;
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-    wxApi.getUrlParams().code;
   },
   mounted() {},
   methods: {}
