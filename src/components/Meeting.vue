@@ -110,6 +110,7 @@ export default {
         })
         .then(function(res) {
           _self.$toast("报名成功");
+          _self.$router.go(0)
         })
         .catch(function(error) {
           console.log(error);

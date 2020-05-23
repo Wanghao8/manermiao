@@ -15,10 +15,9 @@
         <div class="sign"></div>
         <div class="label">爆单信息</div>
       </div>
-      <div class="right-icon">
-        <!-- <div class="content">更多</div>
-        <van-icon name="arrow" />-->
-      </div>
+      <!-- <div class="right-icon">
+        <van-notice-bar text="通知内容通知内容通知内容通知内容通知内容" left-icon="volume-o" />
+      </div> -->
     </div>
 
     <div class="list-container">
@@ -50,6 +49,7 @@
         <div class="list-item-bottom">{{item.createTime}}</div>
       </div>
     </div>
+    <div @click="clear" style="width:200px;height:100px">清除缓存</div>
   </div>
 </template>
 
@@ -60,14 +60,16 @@ export default {
     return {
       searchContent: "",
       empty: false,
-      swiperImages: [
-        "../../static/image/homeSwiper1.jpg",
-        "../../static/image/homeSwiper2.jpg",
-        "../../static/image/homeSwiper3.png"
-      ],
-
+      swiperImages: [],
+      tips:{},
       hotSell: []
     };
+  },
+  created(){
+    // this.getTips()
+    if(!window.localStorage.getItem("userinfo")){
+      this.login()
+    }
   },
   mounted() {
     // this.login();
@@ -76,6 +78,36 @@ export default {
     this.getHot(token);
   },
   methods: {
+    clear(){
+      window.localStorage.clear()
+    },
+    login() {
+      var _self = this;
+      _self.mail = true;
+      var radio = parseInt(_self.radio);
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/user/login",
+          params: {
+            openid: window.localStorage.getItem("openid")
+          }
+        })
+        .then(function(res) {
+          _self.$toast('denglu')
+          if (res.data.code == 1) {
+            _self.$toast('denglu2')
+            var userInfo = JSON.stringify(res.data.data.userinfo);
+            window.localStorage.setItem("userinfo", userInfo);
+            window.localStorage.setItem("isSignup", true);
+          } else {
+            _self.$toast(res.data.msg);
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
     navigate() {
       console.log(123);
       this.$router.push({ path: "/list" });
@@ -140,18 +172,16 @@ export default {
           console.log(err);
         });
     },
-    getInfo() {
+    getTips() {
       var _self = this;
       _self
         .$axios({
-          method: "get",
-          url: "/index/index",
-          data: {}
+          method: "post",
+          url: "/api/index/tips",
         })
-        .then(function(response) {
-          console.log(response);
-          // _self.list = response
-          // _self.swiperImages = response
+        .then(function(res) {
+          console.log(res);
+          _self.tips = res.data.data
         })
         .catch(function(error) {
           console.log(error);
@@ -186,6 +216,9 @@ export default {
 </script>
 
 <style scoped>
+[class*=van-hairline]:after{
+  border:none
+}
 .van-nav-bar {
   width: 100% !important;
   background-color: #ff48bd;
@@ -267,7 +300,8 @@ export default {
 .bottomTxt {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  align-items: center;
   margin: 10px 0;
   background-color: #fff;
   padding: 10px 7px;
@@ -276,6 +310,9 @@ export default {
 .right-icon {
   display: flex;
   align-items: center;
+}
+.van-notice-bar{
+  width: 68vw;
 }
 .label {
   font-size: 15px;

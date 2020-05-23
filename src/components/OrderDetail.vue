@@ -4,7 +4,7 @@
     <div class="add-box flexrbc">
       <div class="add-left">
         <div class="add-left-name-tel flexr0c">
-          <div class="add-username col3 bold">{{addrInfo.userName}}</div>
+          <div class="add-username col3 bold">{{addrInfo.userName?addrInfo.userName:'请先选择地址'}}</div>
           <div class="add-tel col6">{{addrInfo.userPhone}}</div>
         </div>
         <div class="add-item col9 fz14">{{addrInfo.areaIdPath}}{{addrInfo.userAddress}}</div>
@@ -44,7 +44,8 @@
           <div class="iconfont right-row">&#xe605;</div>
         </div>
       </div>-->
-      <div class="deliver flexrbc" @click="deliver(1)">
+      <!-- <div class="deliver flexrbc" @click="deliver(1)"> -->
+      <div class="deliver flexrbc">
         <div class="deliver-title col3 bold fz14">支付方式</div>
         <div class="deliver-options flexr0c">
           <div class="deliver-txt col9 fz14">{{payType}}</div>
@@ -76,7 +77,7 @@ export default {
       order: {},
       showPay: false,
       actions: [],
-      payType: "线下支付",
+      payType: "线上支付",
       time: "2020-05-12 12:54:24"
     };
   },

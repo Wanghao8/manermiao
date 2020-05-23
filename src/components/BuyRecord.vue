@@ -3,7 +3,7 @@
     <div class="container">
       <van-nav-bar title="消费记录" left-arrow @click-left="onClickLeft" />
       <div class="top-box">
-        <img src="../../static/image/buyRecordBack.jpg" alt class="backimg fixed-margin" />
+        <img src="static/image/buyRecordBack.jpg" alt class="backimg fixed-margin" />
         <div class="top-box-content flexc0c">
           <div class="deal-price fz16">交易总额</div>
           <div class="divider-line"></div>
@@ -58,7 +58,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.getInfo();
+    // this.getInfo();
   },
   methods: {
     onClickLeft() {

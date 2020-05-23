@@ -88,7 +88,7 @@ export default {
     };
   },
   created() {
-    this.avatar = JSON.parse(window.localStorage.getItem("userinfo")).avatar;
+    this.avatar = JSON.parse(window.localStorage.getItem("wxinfo")).headimgurl;
     this.level = JSON.parse(window.localStorage.getItem("userinfo")).level;
     this.canWithdraw = JSON.parse(
       window.localStorage.getItem("userinfo")

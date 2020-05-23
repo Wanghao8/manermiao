@@ -92,7 +92,7 @@ export default {
             userPhone: content.tel,
             areaIdPath: content.province + content.city + content.county,
             userAddress: content.addressDetail,
-            isDefault: _self.isDefault
+            isDefault: isDefault
           }
         })
         .then(function(response) {

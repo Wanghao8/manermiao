@@ -147,6 +147,7 @@ export default {
   width: 100% !important;
   background-color: #ff48bd;
   position: fixed;
+  top:0
 }
 .van-nav-bar >>> .van-icon {
   color: #fff !important;

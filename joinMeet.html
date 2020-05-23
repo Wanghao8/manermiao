@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会议报名</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .form-item {
+            display: flex;
+            line-height: 40px;
+            padding: 2px 20px;
+        }
+
+        .form-item>label {
+            margin-right: 40px;
+        }
+
+        .flexr0c {
+            display: flex;
+            align-items: center;
+        }
+
+        .banner {
+            background-color: #ff49bd;
+            color: #fff;
+            text-align: center;
+            font-size: 16px;
+            height: 46px;
+            line-height: 46px;
+        }
+
+        .label {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .label1 {
+            width: 64px;
+        }
+
+        .left-icon {
+            width: 4px;
+            height: 20px;
+            border-radius: 4px;
+            background-color: #ff49bd;
+            margin-right: 8px;
+        }
+
+        .submit {
+            height: 44px;
+            border-radius: 44px;
+            background-color: #ff49bd;
+            color: #fff;
+            border: none;
+            margin: 10px 5%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner">会议报名</div>
+    <form action="#" id='register' method="post">
+        <div class="label">
+            <div class="left-icon"></div>
+            <div class="base-info">会议报名</div>
+        </div>
+        <!-- <div class="form-item">
+            <label class="label1" for="meet">选择会议</label>
+            <select name="meet" id="meet">
+                <option value="meet1">meet1</option>
+                <option value="meet2">meet2</option>
+                <option value="meet3">meet3</option>
+                <option value="meet4">meet4</option>
+            </select></div> -->
+        <div class="form-item">
+            <label class="label1" for="name">参与人</label>
+            <input type="text" style="width: 60%;" name="username" id="name" placeholder="请输入参与人">
+        </div>
+        <div class="form-item">
+            <div class="sex" style="margin-right: 40px;width: 64px;">性别</div>
+            <div class="flexr0c">
+                <label for="male" style="margin-right: 0;">男</label>
+                <input type="radio" name="gender" id="male" value='1' checked/>
+                <br />
+            </div>
+            <div class="flexr0c">
+                <label for="female" style="margin-right: 0;">女</label>
+                <input type="radio" name="gender" id="female" value='2' />
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="phone">联系方式</label>
+            <input type="text" style="width: 60%;" name="phone" id="phone" required="required" maxlength="11"
+                placeholder="请输入您的联系方式">
+        </div>
+        <div class="form-item">
+            <label for="personnum">参与人数</label>
+            <input type="text" style="width: 60%;" name="personnum" id="personnum" placeholder="请输入参与人数">
+        </div>
+
+
+        <!-- <div class="form-item">
+            <label for="addr">位置</label>
+            <input type="text" style="width: 70%;" name="addr" id="addr" placeholder="请输入您的位置">
+        </div> -->
+        <!-- <input type="text" name='pid' value='{$pid}' style='display: none;'> -->
+        <input type="button" style="width: 90%;" class="submit" value='报名提交'>
+    </form>
+</body>
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.js"></script>
+<script>
+    $('.submit').click(function checkMobile() {
+        var _phone = $("#phone").val();
+        if (!(/^1[3|4|5|8][0-9]\d{8}$/.test(_phone))) {
+            alert("请输入正确的手机号");
+            return false;
+        }
+        var _personnum = $("#personnum").val();
+        if (!(/^\d+$|^\d+[.]?\d+$/.test(_personnum))) {
+            alert("参与人数请输入数字");
+            return false;
+        }
+    })
+
+</script>
+
+</html>

@@ -5,13 +5,14 @@
         <img class="back-img" src="../../static/image/mine-back.png" alt />
         <van-nav-bar title="个人中心" />
         <div class="top-nav"></div>
-        <img :src="userInfo.avatar" alt class="top-avatar" />
+        <!-- <img :src="userInfo.avatar" alt class="top-avatar" /> -->
+        <img :src="wxuserInfo.headimgurl" alt class="top-avatar" />
         <div v-show="userInfo.male" class="iconfont gender male fz13">&#xe6ef;</div>
         <div v-show="!userInfo.male" class="iconfont gender famale fz13">&#xe6f0;</div>
       </div>
       <div class="mylist">
         <div class="mylist-username">{{userInfo.userName}}</div>
-        <van-progress color="#FF49BD" :percentage="userInfo.achievement" />
+        <!-- <van-progress color="#FF49BD" :percentage="userInfo.achievement" /> -->
         <div class="mylist-exp-level">
           <div class="exp">经验：{{userInfo.achievement}}</div>
           <div class="level">等级: {{userInfo.level}}</div>
@@ -85,14 +86,22 @@ export default {
         male: false,
         exp: "12345",
         level: "1",
-        avatar: ""
-      }
+        avatar: "",
+        dingshi: ""
+      },
+      wxuserInfo: {}
     };
   },
   created() {
-    this.userInfo = JSON.parse(
-      window.localStorage.getItem("userinfo")
-    );
+    var _self = this;
+    _self.userInfo = JSON.parse(window.localStorage.getItem("userinfo"));
+    _self.wxuserInfo = JSON.parse(window.localStorage.getItem("wxinfo"));
+    // _self.dingshi = setInterval(() => {
+    //   _self.getuserInfo();
+    // }, 1000);
+  },
+  destroyed() {
+    this.dingshi = null;
   },
   methods: {
     onClickLeft() {
@@ -119,19 +128,19 @@ export default {
     toMyOrder(e) {
       this.$router.push({ name: "myOrder", params: { index: e } });
     },
-    getInfo() {
+    getuserInfo() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
         .$axios({
-          method: "get",
-          url: "/member/index"
-          // data: {
-
-          // }
+          method: "post",
+          url: "/api/user/index",
+          params: {
+            token: token
+          }
         })
-        .then(function(response) {
-          console.log(response);
-          // _self.list = response
-          // _self.swiperImages = response
+        .then(function(res) {
+          console.log(res);
         })
         .catch(function(error) {
           console.log(error);

@@ -4,7 +4,7 @@
     <div class="add-box flexrbc" @click="gotoAdd">
       <div class="add-left" v-if="defaultAdd">
         <div class="add-left-name-tel flexr0c">
-          <div class="add-username col3 bold">{{addrInfo.userName}}</div>
+          <div class="add-username col3 bold">{{addrInfo.userName?addrInfo.userName:'请先选择地址'}}</div>
           <div class="add-tel col6">{{addrInfo.userPhone}}</div>
         </div>
         <div class="add-item col9 fz14">{{addrInfo.areaIdPath}}</div>
@@ -108,7 +108,6 @@ export default {
       this.addrInfo = this.$route.params.info;
     } else {
       this.defaultAdd = true;
-      this.getAddr();
       this.getGoods();
     }
     // this.getExpress();
@@ -137,7 +136,7 @@ export default {
   },
   methods: {
     onClickLeft() {
-      this.$router.back(-1);
+      this.$router.replace("home");
     },
     onSelect(item) {
       this.show = false;
@@ -207,6 +206,7 @@ export default {
         })
         .then(function(res) {
           _self.goods = res.data.data;
+          _self.getAddr();
         })
         .catch(function(error) {
           console.log(error);
@@ -267,34 +267,66 @@ export default {
 
       console.log(goods, 5454);
       _self.$toast("提交订单");
-      _self
-        .$axios({
-          method: "post",
-          url: "/api/order/generateorder",
-          params: {
-            token: token,
-            deliverMoney: 0,
-            totalMoney: _self.total_money,
-            payType: payType,
-            payCode: 1,
-            // payType: payType,
-            // payCode: payCode,
-            areaId: _self.addrInfo.id,
-            areaIdPath: userAddress,
-            userName: userName,
-            userAddress: userAddress,
-            userPhone: userPhone,
-            orderRemarks: "testAPI",
-            goods: goods,
-            realTotalMoney: _self.total_money + 0
-          }
-        })
-        .then(function(res) {
-          _self.wxpay();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      if (payType == 2) {
+        _self
+          .$axios({
+            method: "post",
+            url: "/api/order/generateorder",
+            params: {
+              token: token,
+              deliverMoney: 0,
+              totalMoney: _self.total_money,
+              payType: payType,
+              payCode: 1,
+              // payType: payType,
+              // payCode: payCode,
+              areaId: _self.addrInfo.id,
+              areaIdPath: userAddress,
+              userName: userName,
+              userAddress: userAddress,
+              userPhone: userPhone,
+              orderRemarks: "testAPI",
+              goods: goods,
+              realTotalMoney: _self.total_money + 0
+            }
+          })
+          .then(function(res) {
+            _self.$toast("提交成功，等待线下付款");
+            _self.$router.push({name:'home'})
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+        _self
+          .$axios({
+            method: "post",
+            url: "/api/order/generateorder",
+            params: {
+              token: token,
+              deliverMoney: 0,
+              totalMoney: _self.total_money,
+              payType: payType,
+              payCode: 1,
+              // payType: payType,
+              // payCode: payCode,
+              areaId: _self.addrInfo.id,
+              areaIdPath: userAddress,
+              userName: userName,
+              userAddress: userAddress,
+              userPhone: userPhone,
+              orderRemarks: "testAPI",
+              goods: goods,
+              realTotalMoney: _self.total_money + 0
+            }
+          })
+          .then(function(res) {
+            _self.wxpay(res.data.data);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     },
     wxpay(id) {
       var _self = this;
@@ -323,6 +355,8 @@ export default {
               paySign: params.paySign // 微信签名
             },
             function(res) {
+              console.log(res, "支付回调");
+              _self.$toast(res, "支付回调");
               if (res.err_msg == "get_brand_wcpay_request:ok") {
                 _self.$router.push({ name: "mine" });
               } else if (res.err_msg == "get_brand_wcpay_request:fail") {

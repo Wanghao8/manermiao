@@ -32,6 +32,11 @@ export default {
   created() {
     var aaa = this.$route.params.from;
     this.from = this.$route.params.from;
+    console.log(this.from)
+    if(this.$route.params.from == 'confirmOrder'){
+      window.localStorage.setItem('fromC',true)
+      console.log('asdasd')
+    }
     this.goods = this.$route.params.goods;
     console.log(aaa);
   },
@@ -63,6 +68,7 @@ export default {
     chooseAdd(item, index) {
       var from = this.from;
       var _self = this;
+      var fromc = window.localStorage.getItem('fromC')
       console.log("index is", item.id);
       this.chosenAddressId = item.id
       this.$toast("选择此条地址");
@@ -73,6 +79,13 @@ export default {
         });
       } else {
         console.log(666);
+      }
+      if(fromc){
+        window.localStorage.removeItem('fromC')
+        _self.$router.push({
+          name: 'confirmOrder',
+          params: { info: item, goods: _self.goods }
+        });
       }
     },
     getinfo() {

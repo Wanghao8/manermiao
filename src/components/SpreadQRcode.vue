@@ -14,14 +14,14 @@
 </template>
 <script>
 import QRCode from "qrcodejs2";
+import html2canvas from 'html2canvas';
 export default {
   data() {
-    return {
-     
-    };
+    return {};
   },
   mounted() {
     var pid = JSON.parse(window.localStorage.getItem("userinfo")).id;
+    console.log(pid)
     this.payOrder(pid);
   },
   created() {},
@@ -33,7 +33,8 @@ export default {
     payOrder(pid) {
       this.innerVisible = true;
       // 二维码内容,一般是由后台返回的跳转链接,这里是写死的一个链接
-      this.qrcode = "http://miao.ayunu.net/index/index/register?pid=" + pid;
+      this.qrcode = "https://www.hnkmx.com/index/index/register?pid=" + pid;
+      console.log(this.qrcode)
       // 使用$nextTick确保数据渲染
       this.$nextTick(() => {
         this.crateQrcode();
@@ -50,10 +51,24 @@ export default {
         // foreground: '#ff0'
       });
       // console.log(this.qrcode)
+      // this.createPicture()
     },
     // 关闭弹框,清除已经生成的二维码
     closeCode() {
       this.$refs.qrcode.innerHTML = "";
+    },
+    createPicture() {
+      html2canvas(this.$refs.qrcode, {
+        backgroundColor: null,
+        width: 165,
+        height: 165
+      }).then(canvas => {
+        var imgData = canvas.toDataURL("image/jpeg");
+        this.imgData = imgData;
+        console.log(imgData,'imgdata')
+      }).catch(err=>{
+        console.log(err)
+      });
     },
     saveQR() {
       this.$toast("保存推广码");
@@ -68,8 +83,7 @@ export default {
     },
     lookTeam() {
       this.$router.push("myTeam");
-    },
-    
+    }
   }
 };
 </script>

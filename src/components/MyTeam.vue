@@ -34,7 +34,7 @@
           </div>
           <div class="meeting-address">
             <div class="meeting-address-label col3">手机号码：</div>
-            <div class="meeting-address-txt col6">{{item.mobule}}</div>
+            <div class="meeting-address-txt col6">{{item.mobile}}</div>
           </div>
           <div class="meeting-address">
             <div class="meeting-person-label col3">佣金价格：</div>
@@ -78,7 +78,7 @@ export default {
     };
   },
   created() {
-    this.avatar = JSON.parse(window.localStorage.getItem("userinfo")).avatar;
+    this.avatar = JSON.parse(window.localStorage.getItem("wxinfo")).headimgurl;
     this.username = JSON.parse(
       window.localStorage.getItem("userinfo")
     ).username;
@@ -166,10 +166,10 @@ export default {
   margin-bottom: 2px;
 }
 .top-card {
-  width: 350px;
+  width: 94%;
   height: 110px;
   background-color: #e569ab;
-  margin: 9px 14px;
+  margin: 9px 3%;
   border-radius: 10px;
   display: flex;
   justify-content: space-between;

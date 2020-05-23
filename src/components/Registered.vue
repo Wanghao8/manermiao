@@ -11,7 +11,7 @@
     <!-- 表单 -->
     <div class="label">
       <div class="left-icon"></div>
-      <div class="base-info" @click="login2">基本信息</div>
+      <div class="base-info">基本信息</div>
     </div>
     <van-form v-if="mail">
       <!-- 短信验证 -->
@@ -90,7 +90,8 @@
       <div style="margin: 16px;">
         <van-button class="fz18" round block type="info" color="#ff48bd" native-type="submit">提交</van-button>
       </div>
-      <div class="signuped" @click="login">已有账号</div>
+
+      <div class="signuped" @click="login2">已有账号</div>
     </van-form>
   </div>
 </template>
@@ -110,6 +111,7 @@ export default {
       phoneNum: "",
       email: "",
       location: "",
+      lnglat: [],
       minDate: new Date(1900, 0, 1),
       maxDate: new Date(),
       currentDate: new Date(),
@@ -121,6 +123,9 @@ export default {
       phoneRE: /^1[3456789]\d{9}$/,
       emailRE: /^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/
     };
+  },
+  beforeCreate() {
+    // window.localStorage.clear();
   },
   created() {
     var _self = this;
@@ -138,11 +143,11 @@ export default {
           console.log(res, "openid");
           window.localStorage.setItem("wxinfo", JSON.stringify(res.data.data));
           window.localStorage.setItem("openid", res.data.data.openid);
+          _self.login();
         })
         .catch(function(err) {
           console.log(err);
         });
-      return;
     } else {
       _self
         .$axios({
@@ -160,22 +165,6 @@ export default {
   },
   mounted() {
     var _self = this;
-    // _self.$axios.get("https://yesno.wtf/api").then(res => {
-    //   _self.wx.config({
-    //     debug: true, // 开启调试模式,
-    //     appId: res.appId, // 必填，企业号的唯一标识，此处填写企业号corpid
-    //     timestamp: res.timestamp, // 必填，生成签名的时间戳
-    //     nonceStr: res.nonceStr, // 必填，生成签名的随机串
-    //     signature: res.signature, // 必填，签名，见附录1
-    //     jsApiList: ["openLocation", "getLocation"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    //   });
-    //   _self.wx.ready(function() {
-    //     console.log("jssdk成功");
-    //   });
-    //   _self.wx.error(function(res) {
-    //     console.log("jssdk失败");
-    //   });
-    // });
   },
   destroyed() {
     clearTimeout(this.timeout);
@@ -204,50 +193,39 @@ export default {
     },
     getLocation() {
       var _self = this;
-      // 腾讯地图逆地址解析API,跨域使用vue-jsonp
-      // let url = "https://apis.map.qq.com/ws/geocoder/v1";
-      // this.$jsonp(url, {
-      //   location: "34.7593666700,113.6606653000",
-      //   key: "JO5BZ-HWOKU-QSUV5-2MGN5-VYSQT-EPFTQ"
-      // })
-      //   .then(e => {
-      //     console.log(e);
-      //     //终于不会报跨域错误了！真乃神器也！
-      //   })
-      //   .catch(e => {
-      //     console.log(e);
-      //   });
+      AMap.plugin("AMap.CitySearch", function() {
+        var citySearch = new AMap.CitySearch();
+        citySearch.getLocalCity(function(status, result) {
+          if (status === "complete" && result.info === "OK") {
+            // 查询成功，result即为当前所在城市信息
+            console.log("通过ip获取当前城市：", result);
+            _self.lnglat = result.rectangle.split(";")[0];
+            _self.lnglat = _self.lnglat.split(",");
+            _self.lon = parseFloat(_self.lnglat[0]);
+            _self.lat = parseFloat(_self.lnglat[1]);
+          }
+        });
+      });
 
-      // _self.$axios
-      //   .get("/ws/geocoder/v1", {
-      //     params: {
-      //       location: "34.7593666700,113.6606653000",
-      //       key: "JO5BZ-HWOKU-QSUV5-2MGN5-VYSQT-EPFTQ"
-      //     }
+      // AMap.plugin('AMap.Geolocation', function () {
+      //   var geolocation = new AMap.Geolocation({
+      //     // 是否使用高精度定位，默认：true
+      //     enableHighAccuracy: true,
+      //     // 设置定位超时时间，默认：无穷大
+      //     timeout: 5000,
       //   })
-      //   .then(function(response) {
-      //     console.log(response);
-      //     // _self.list = response
-      //     // _self.swiperImages = response
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
-
-      // 微信js-sdk获取当前位置的经纬度
-      // _self.wx.getLocation({
-      //   type: "wgs84", // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-      //   success: function(res) {
-      //     var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-      //     var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-      //     var speed = res.speed; // 速度，以米/每秒计
-      //     var accuracy = res.accuracy; // 位置精度
-      //     console.log(res)
-      //   },
-      //   fail(error){
-      //     console.log(error)
+      //   geolocation.getCurrentPosition()
+      //   AMap.event.addListener(geolocation, 'complete', onComplete);
+      //   AMap.event.addListener(geolocation, 'error', onError);
+      //   // data是具体的定位信息
+      //   function onComplete(data) {
+      //     console.log('具体的定位信息',data)
       //   }
-      // });
+      //   function onError(data) {
+      //     // 失败 启用 ip定位
+
+      //   }
+      // })
 
       // 高德地图逆地址解析
       AMap.plugin("AMap.Geocoder", function() {
@@ -257,7 +235,11 @@ export default {
         });
 
         // 经纬度
-        var lnglat = [113.665412, 34.757993];
+        var lnglat = [];
+        lnglat.push(_self.lon);
+        lnglat.push(_self.lat);
+        console.log(lnglat, 12);
+        // return
 
         geocoder.getAddress(lnglat, function(status, result) {
           if (status === "complete" && result.info === "OK") {
@@ -287,15 +269,19 @@ export default {
             birthday: _self.value,
             lon: _self.lon,
             lat: _self.lat,
-            openid: window.localStorage.getItem("openid")
+            openid: window.localStorage.getItem("openid"),
+            avatar:JSON.parse(window.localStorage.getItem("wxinfo")).headimgurl
           }
         })
         .then(function(res) {
           console.log(res);
-          _self.token = res.data;
-          // _self.show = true;
-          window.localStorage.setItem("isSignup", true);
-          _self.login();
+          if (res.data.code == 1) {
+            _self.token = res.data;
+            _self.show = true;
+            _self.login();
+          } else {
+            _self.$toast(res.data.msg);
+          }
         })
         .catch(function(err) {
           console.log(err);
@@ -303,32 +289,35 @@ export default {
     },
     login() {
       var _self = this;
-      _self.mail = true;
-      // return;
       var radio = parseInt(_self.radio);
       _self
         .$axios({
           method: "post",
           url: "/api/user/login",
           params: {
-            // account: "aaaaa",
-            // password: "123456"
             openid: window.localStorage.getItem("openid")
           }
         })
         .then(function(res) {
-          console.log(res, "login ed");
-          window.localStorage.setItem("isSignup", true);
-          var userInfo = JSON.stringify(res.data.data.userinfo);
-          window.localStorage.setItem("userinfo", userInfo);
-          _self.timeout = null;
-          _self.timeout = setTimeout(function() {
-            _self.$router.push({ name: "mine" });
-          }, 2000);
+          if (res.data.msg == "登录成功") {
+            var userInfo = JSON.stringify(res.data.data.userinfo);
+            window.localStorage.setItem("userinfo", userInfo);
+            _self.$toast("登陆成功");
+            _self.timeout = null;
+            _self.timeout = setTimeout(function() {
+              _self.$router.push({ name: "mine" });
+            }, 2000);
+          } else {
+            _self.$toast(res.data.msg);
+          }
         })
         .catch(function(err) {
           console.log(err);
         });
+    },
+    login2() {
+      var _self = this;
+      _self.mail = true;
     },
     sendVerify() {
       var _self = this;
@@ -363,35 +352,34 @@ export default {
     },
     submitVerify() {
       // this.mail = false;
-    },
-    signup(){
-      this.mail = false;
-    },
-    login2(){
-      var _self =this
-     _self
+      var _self = this;
+      _self
         .$axios({
           method: "post",
-          url: "/api/user/login",
+          url: "/api/user/verification",
           params: {
-            // account: "aaaaa",
-            // password: "123456"
-            openid: 'oHJ77v4dqFojGbJ_x18jDVTP89-E'
+            mobile: _self.phone,
+            wxopenid: window.localStorage.getItem("openid"),
+            code: _self.verifyCode,
+            avatar: JSON.parse(window.localStorage.getItem("wxinfo")).headimgurl
           }
         })
         .then(function(res) {
-          console.log(res, "login ed");
-          window.localStorage.setItem("isSignup", true);
-          var userInfo = JSON.stringify(res.data.data.userinfo);
-          window.localStorage.setItem("userinfo", userInfo);
-          _self.timeout = null;
-          _self.timeout = setTimeout(function() {
-            _self.$router.push({ name: "mine" });
-          }, 2000);
+          console.log(res, res.data.msg, "res");
+          _self.login();
+          // var userInfo = JSON.stringify(res.data.data.userinfo);
+          // window.localStorage.setItem("userinfo", userInfo);
+          // _self.timeout = null;
+          // _self.timeout = setTimeout(function() {
+          //   _self.$router.push({ name: "mine" });
+          // }, 2000);
         })
         .catch(function(err) {
           console.log(err);
         });
+    },
+    signup() {
+      this.mail = false;
     }
   }
 };

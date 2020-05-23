@@ -12,7 +12,7 @@
         <van-checkbox @click="chooseGoods" checked-color="#FF02FE" :name="item"></van-checkbox>
         <img class="goods-img" :src="item.goodsImg" alt />
         <div class="goods-list-right flexcb">
-          <div class="goods-list-right-title fz13">{{item.goodsDesc}}</div>
+          <div class="goods-list-right-title fz13">{{item.goodsName}}</div>
           <!-- <div class="goods-list-right-format">
             <div class="goods-list-right-format-txt fz11 col9">20袋装</div>
             <div class="goods-list-right-format-icon iconfont">&#xe60b;</div>

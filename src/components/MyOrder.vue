@@ -364,7 +364,6 @@ export default {
             _self.empty = true;
             _self.list1 = [];
           } else {
-            _self.list1 = res.data.data;
             res.data.data.forEach(function(item) {
               switch (item.orderStatus) {
                 case -2:
@@ -383,7 +382,22 @@ export default {
                 default:
                   break;
               }
+              var time = new Date(item.saveTime * 1000);
+              var dateTime =
+                time.getFullYear() +
+                "." +
+                (time.getMonth() + 1 + "").padStart(2, "0") +
+                "." +
+                (time.getDate() + "").padStart(2, "0") +
+                " " +
+                (time.getHours() + "").padStart(2, "0") +
+                ":" +
+                (time.getMinutes() + "").padStart(2, "0") +
+                ":" +
+                (time.getSeconds() + "").padStart(2, "0");
+              item.saveTime = dateTime;
             });
+            _self.list1 = res.data.data;
           }
         })
         .catch(function(error) {

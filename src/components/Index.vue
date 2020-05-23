@@ -6,8 +6,8 @@ import { wxApi } from "../assets/js/wxApi.js";
 export default {
   beforeRouteEnter(to, from, next) {
     var _self = this;
-    var isLogin = window.localStorage.getItem("isSignup");
-    if (isLogin) {
+    var token = window.localStorage.getItem("userinfo")
+    if (token) {
       next("/home");
     } else {
       next("/registered");
