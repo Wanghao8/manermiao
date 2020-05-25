@@ -56,10 +56,10 @@ export default {
       list: []
     };
   },
-  created() {},
-  mounted() {
-    // this.getInfo();
+  created() {
+    this.getInfo();
   },
+  mounted() {},
   methods: {
     onClickLeft() {
       this.$router.back(-1);
@@ -93,8 +93,8 @@ export default {
             item.dateTime = dateTime;
           });
           _self.list = res.data.data.info;
-          if(_self.list.length==0){
-            _self.empty=true
+          if (_self.list.length == 0) {
+            _self.empty = true;
           }
         })
         .catch(function(error) {
@@ -145,9 +145,9 @@ export default {
   width: 100%;
   height: 140px;
 }
-.top-box {
+/* .top-box {
   height: 140px;
-}
+} */
 .top-box-content {
   position: absolute;
   top: 46px;
@@ -168,10 +168,10 @@ export default {
 }
 .deal-detail-box {
   background-color: #e6e3e6;
-  margin-top: 100px;
+  margin-top: -3px;
 }
 .deal-detail-item {
-  margin-bottom: 2px;
+  margin-bottom: 10px;
   background-color: #fff;
   border-radius: 5px;
 }
@@ -195,8 +195,6 @@ export default {
 }
 .goods-info-box {
   background-color: #fff;
-  position: relative;
-  top: 50px;
 }
 .time {
   margin: 0 12px;

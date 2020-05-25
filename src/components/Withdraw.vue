@@ -135,11 +135,11 @@ export default {
     submit() {
       var _self = this;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
-      if (_self.money == "") {
+      if (_self.money === "") {
         _self.$toast("请输入提现金额");
         return;
       } else if (_self.account == "") {
-        _self.$toast("请输入提现金额");
+        _self.$toast("请输入提现账户");
         return;
       }
       _self
@@ -155,13 +155,18 @@ export default {
         })
         .then(function(res) {
           console.log(res, "tixian");
-          _self.showOverlay = false;
-          window.localStorage.setItem(
-            "userinfo",
-            JSON.stringify(res.data.data.userinfo)
-          );
-          _self.$toast("提现申请成功");
-          _self.$router.go(0);
+          if (res.data.code == 1) {
+            _self.showOverlay = false;
+            window.localStorage.setItem(
+              "userinfo",
+              JSON.stringify(res.data.data.userinfo)
+            );
+            _self.$toast("提现申请成功");
+            _self.$router.go(0);
+          } else {
+            _self.$toast(res.data.msg);
+            _self.showOverlay = false;
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -285,7 +290,7 @@ export default {
 .submit-btn {
   background-color: #ff48bd;
   color: #fff;
-  width: 100px;
+  width: 100%;
   height: 40px;
   text-align: center;
   line-height: 40px;

@@ -59,13 +59,19 @@ export default {
       this.$router.push({ name: "editAddress", params: { id: -1 } });
     },
     onEdit(item, index) {
-      this.$toast("编辑地址:" + index);
+      console.log('edit')
+      window.localStorage.setItem('edit',true)
       this.$router.push({
         name: "editAddress",
         params: { id: item.id, info: item }
       });
     },
     chooseAdd(item, index) {
+      if(window.localStorage.getItem('edit')){
+        window.localStorage.removeItem('edit')
+        return
+      }
+      console.log('test')
       var from = this.from;
       var _self = this;
       var fromc = window.localStorage.getItem('fromC')

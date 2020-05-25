@@ -7,14 +7,14 @@
         <div class="top-nav"></div>
         <!-- <img :src="userInfo.avatar" alt class="top-avatar" /> -->
         <img :src="wxuserInfo.headimgurl" alt class="top-avatar" />
-        <div v-show="userInfo.male" class="iconfont gender male fz13">&#xe6ef;</div>
-        <div v-show="!userInfo.male" class="iconfont gender famale fz13">&#xe6f0;</div>
+        <div v-show="wxuserInfo.sex==1" class="iconfont gender male fz13">&#xe6ef;</div>
+        <div v-show="wxuserInfo.sex!=1" class="iconfont gender famale fz13">&#xe6f0;</div>
       </div>
       <div class="mylist">
         <div class="mylist-username">{{userInfo.userName}}</div>
         <!-- <van-progress color="#FF49BD" :percentage="userInfo.achievement" /> -->
         <div class="mylist-exp-level">
-          <div class="exp">经验：{{userInfo.achievement}}</div>
+          <!-- <div class="exp">经验：{{userInfo.achievement}}</div> -->
           <div class="level">等级: {{userInfo.level}}</div>
         </div>
         <div class="mylist-list" @click="toMyOrder(3)">
@@ -66,7 +66,7 @@
         </div>
         <div class="info-center-icon-pay-record" @click="toMeeting">
           <img src="../../static/image/chongzhi.png" class="info-center-icon-pay-record-icon" />
-          <div class="info-center-icon-pay-record-txt">会议记录</div>
+          <div class="info-center-icon-pay-record-txt">升级规则</div>
         </div>
         <div class="info-center-icon-location" @click="toMyAddress">
           <img src="../../static/image/dizhi.png" class="info-center-icon-location-icon" />
@@ -95,6 +95,28 @@ export default {
   created() {
     var _self = this;
     _self.userInfo = JSON.parse(window.localStorage.getItem("userinfo"));
+    switch (_self.userInfo.level) {
+      case 0:
+        _self.userInfo.level = '游客'
+        break;
+      case 1:
+        _self.userInfo.level = '代理'
+        break;
+      case 2:
+        _self.userInfo.level = '初级'
+        break;
+      case 3:
+        _self.userInfo.level = '中级'
+        break;
+      case 4:
+        _self.userInfo.level = '高级'
+        break;
+      case 5:
+        _self.userInfo.level = '总代理'
+        break;
+      default:
+        break;
+    }
     _self.wxuserInfo = JSON.parse(window.localStorage.getItem("wxinfo"));
     // _self.dingshi = setInterval(() => {
     //   _self.getuserInfo();
@@ -117,7 +139,7 @@ export default {
       this.$router.push("sellCenter");
     },
     toMeeting() {
-      this.$router.push("meeting");
+      this.$router.push("upgradeRule");
     },
     toBuyRecord() {
       this.$router.push("buyRecord");
@@ -234,7 +256,7 @@ export default {
 }
 .mylist-exp-level {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 50%;
   margin-top: 10px;
 }

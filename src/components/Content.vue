@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     addCart(id) {
-      this.$toast("添加购物车，ID为" + id);
+      this.$toast("添加购物车成功");
       var _self = this;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self

@@ -71,13 +71,13 @@
         placeholder="请输入您的手机号"
         :rules="[{required: true, pattern: phoneRE, message: '请填写正确的手机号' }]"
       />
-      <van-field
+      <!-- <van-field
         v-model="email"
         name="邮箱"
         label="邮箱"
         placeholder="请输入您的邮箱"
         :rules="[{required: true, pattern:  emailRE, message: '请填写正确的邮箱号' }]"
-      />
+      /> -->
       <van-field
         :value="location"
         name="位置"
@@ -156,7 +156,7 @@ export default {
         })
         .then(function(res) {
           console.log(res);
-          window.location.href = res.data.data;
+          // window.location.href = res.data.data;
         })
         .catch(function(err) {
           console.log(err);
@@ -262,7 +262,7 @@ export default {
             pid: 0,
             username: _self.username,
             password: "123456",
-            email: _self.email,
+            // email: _self.email,
             mobile: _self.phoneNum,
             areaPath: _self.location,
             gender: radio,

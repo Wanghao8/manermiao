@@ -6,7 +6,7 @@
         <div class="top-title fz18 bold white">{{userInfo.username}}</div>
         <div class="top-level fz10">LV.{{userInfo.level}}</div>
       </div>
-      <div class="status fz14 white">已获得{{userInfo.title}}级称号</div>
+      <!-- <div class="status fz14 white">已获得{{userInfo.title}}级称号</div> -->
     </div>
     <div class="content-box">
       <div class="content-left">
@@ -30,15 +30,37 @@ export default {
   props: {},
   data() {
     return {
-      userInfo:{
-        userName:'安琪拉',
-        level:'3',
-        title:'XX'
-      }
+      userInfo: {}
     };
   },
   computed: {},
-  created() {},
+  created() {
+    var _self = this;
+    _self.userInfo = JSON.parse(window.localStorage.getItem("userinfo"));
+    switch (_self.userInfo.level) {
+      case 0:
+        _self.userInfo.level = "游客";
+        break;
+      case 1:
+        _self.userInfo.level = "代理";
+        break;
+      case 2:
+        _self.userInfo.level = "初级";
+        break;
+      case 3:
+        _self.userInfo.level = "中级";
+        break;
+      case 4:
+        _self.userInfo.level = "高级";
+        break;
+      case 5:
+        _self.userInfo.level = "总代理";
+        break;
+      default:
+        break;
+    }
+    _self.wxuserInfo = JSON.parse(window.localStorage.getItem("wxinfo"));
+  },
   mounted() {
     // this.getInfo();
   },

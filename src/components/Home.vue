@@ -49,7 +49,7 @@
         <div class="list-item-bottom">{{item.createTime}}</div>
       </div>
     </div>
-    <div @click="clear" style="width:200px;height:100px">清除缓存</div>
+    <!-- <div @click="clear" style="width:200px;height:100px">清除缓存</div> -->
   </div>
 </template>
 
@@ -99,7 +99,6 @@ export default {
             _self.$toast('denglu2')
             var userInfo = JSON.stringify(res.data.data.userinfo);
             window.localStorage.setItem("userinfo", userInfo);
-            window.localStorage.setItem("isSignup", true);
           } else {
             _self.$toast(res.data.msg);
           }
