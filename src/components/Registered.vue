@@ -124,9 +124,7 @@ export default {
       emailRE: /^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/
     };
   },
-  beforeCreate() {
-    // window.localStorage.clear();
-  },
+
   created() {
     var _self = this;
     var code = wxApi.getUrlParams().code;
@@ -140,7 +138,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res, "openid");
           window.localStorage.setItem("wxinfo", JSON.stringify(res.data.data));
           window.localStorage.setItem("openid", res.data.data.openid);
           _self.login();
@@ -155,8 +152,7 @@ export default {
           url: "/api/wei/getcode"
         })
         .then(function(res) {
-          console.log(res);
-          // window.location.href = res.data.data;
+          window.location.href = res.data.data;
         })
         .catch(function(err) {
           console.log(err);
@@ -183,7 +179,6 @@ export default {
     },
     onSubmit(values) {
       var _self = this;
-      console.log("submit", values);
       this.upload();
     },
     onConfirm(date) {
@@ -274,7 +269,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.code == 1) {
             _self.token = res.data;
             _self.show = true;
@@ -332,7 +326,6 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res, res.data.msg, "res");
             _self.$toast(res.data.msg);
             _self.lastTime = 60;
             var daojishi = setInterval(function() {
@@ -365,7 +358,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res, res.data.msg, "res");
           _self.login();
           // var userInfo = JSON.stringify(res.data.data.userinfo);
           // window.localStorage.setItem("userinfo", userInfo);

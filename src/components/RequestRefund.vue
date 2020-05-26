@@ -7,9 +7,11 @@
       <div class="goods-box">
         <div class="goods-info flexr">
           <img :src="refundGoods.goodsImg" alt class="goodsImg" />
-          <div class="goods-name-desc">
+          <div class="goods-name-desc" style="flex:1">
             <div class="goods-name">{{refundGoods.goodsName}}</div>
             <div class="goods-desc">{{refundGoods.goodsDesc}}</div>
+            <div class="goods-price red">￥{{refundGoods.goodsPrice}}</div>
+            <div class="goods-num">数量：X{{refundGoods.goodsNum}}</div>
           </div>
         </div>
       </div>
@@ -65,6 +67,7 @@ export default {
       reasonId: -1,
       imgstring: "",
       refundInfo: {},
+      refundGoods: {},
       express: [],
       expressId: -1,
       reasonList: [
@@ -209,23 +212,23 @@ export default {
           })
           .then(function(res) {
             console.log(res, "success");
+            var goodsinfo = {
+              goodsImg: _self.refundGoods.goodsImg,
+              goodsName: _self.refundGoods.goodsName,
+              goodsDesc: _self.refundGoods.goodsDesc,
+              reson: _self.reason,
+              money: _self.total_money,
+              refundTradeNo: _self.refundInfo.orderNo,
+              requestTime: new Date()
+            };
+            _self.$router.push({
+              name: "refundDetail",
+              params: { goods: goodsinfo }
+            });
           })
           .catch(function(err) {
             console.log(err);
           });
-        var goodsinfo = {
-          img: _self.refundGoods.goodsImg,
-          name: _self.refundGoods.goodsName,
-          desc: _self.refundGoods.goodsDesc,
-          reason: _self.reason,
-          money: _self.total_money,
-          orderId: _self.refundInfo.orderNo,
-          requestTime: new Date()
-        };
-        _self.$router.push({
-          name: "refundDetail",
-          params: { goods: goodsinfo }
-        });
       }
     }
   }
@@ -301,5 +304,8 @@ export default {
   height: 44px;
   line-height: 44px;
   border-radius: 44px;
+}
+.goods-name-desc > div {
+  margin: 4px;
 }
 </style>

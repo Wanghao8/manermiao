@@ -57,15 +57,21 @@
               <div class="order-list-item-bottom-cancel fz13" @click="chooseSurvice(1)">挑选服务</div>
               <div class="order-list-item-bottom-pay fz13" @click="lookDetail(1)">查看详情</div>
             </div>-->
+            <div class="order-list-item-bottom" v-if="item.status=='已取消'">
+              <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,2)">删除订单</div>
+            </div>
             <div class="order-list-item-bottom" v-if="item.status=='待付款'">
-              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">取消订单</div>
+              <div
+                class="order-list-item-bottom-cancel fz13"
+                @click="dealOrder(item,1,-1,'取消')"
+              >取消订单</div>
               <div class="order-list-item-bottom-pay fz13" @click="toPay(item)">去支付</div>
             </div>
             <div class="order-list-item-bottom" v-if="item.status=='待发货'">
               <div class="order-list-item-bottom-pay fz13" @click="remindOrder">提醒发货</div>
             </div>
             <div class="order-list-item-bottom" v-if="item.status=='待收货'">
-              <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2)">确认收货</div>
+              <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2,'确认收货')">确认收货</div>
             </div>
             <div class="order-list-item-bottom" v-if="item.status=='已完成'">
               <!-- <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">删除订单</div> -->
@@ -121,7 +127,10 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="dealOrder(item,2)">取消订单</div>
+              <div
+                class="order-list-item-bottom-cancel fz13"
+                @click="dealOrder(item,1,-1,'取消')"
+              >取消订单</div>
               <div class="order-list-item-bottom-pay fz13" @click="toPay(item)">去支付</div>
             </div>
           </div>
@@ -228,7 +237,7 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2)">确认收货</div>
+              <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2,'确认收货')">确认收货</div>
             </div>
           </div>
         </div>
@@ -298,7 +307,6 @@ export default {
     console.log("订单状态码是" + this.orderStatus);
   },
   mounted() {
-    console.log("order is", this.orderStatus);
     if (this.orderStatus != "undefined") {
       this.getInfo(parseInt(this.orderStatus));
     } else {
@@ -309,11 +317,12 @@ export default {
     onClickLeft() {
       this.$router.back(-1);
     },
-    dealOrder(e, type, status) {
+    dealOrder(e, type, status, content) {
       var _self = this;
       var id = _self.orderStatus;
       if (type == 2) {
-        _self.$toast("取消成功");
+        _self.$toast("删除成功");
+        content = "删除";
       }
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       _self
@@ -325,11 +334,10 @@ export default {
             orderId: e.id,
             type: type,
             status: status,
-            content: "shanchu"
+            content: content
           }
         })
         .then(function(res) {
-          console.log(res, "success");
           _self.$router.go(0);
         })
         .catch(function(error) {
@@ -341,7 +349,6 @@ export default {
     },
 
     onClick(name, title) {
-      console.log("name is", name, "-----", "title is", title);
       this.empty = false;
       this.getInfo(name);
     },
@@ -359,7 +366,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res.data.data);
           if (res.data.data.length == 0) {
             _self.empty = true;
             _self.list1 = [];
@@ -368,6 +374,9 @@ export default {
               switch (item.orderStatus) {
                 case -2:
                   item.status = "待付款";
+                  break;
+                case -1:
+                  item.status = "已取消";
                   break;
                 case 0:
                   item.status = "待发货";
@@ -473,7 +482,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res, "tixing");
           _self.$toast("提醒成功");
         })
         .catch(function(error) {
@@ -600,5 +608,6 @@ export default {
   border-radius: 3px;
   padding: 2px;
   width: 20%;
+  text-align: center;
 }
 </style>

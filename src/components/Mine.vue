@@ -97,30 +97,28 @@ export default {
     _self.userInfo = JSON.parse(window.localStorage.getItem("userinfo"));
     switch (_self.userInfo.level) {
       case 0:
-        _self.userInfo.level = '游客'
+        _self.userInfo.level = "游客";
         break;
       case 1:
-        _self.userInfo.level = '代理'
+        _self.userInfo.level = "代理";
         break;
       case 2:
-        _self.userInfo.level = '初级'
+        _self.userInfo.level = "初级";
         break;
       case 3:
-        _self.userInfo.level = '中级'
+        _self.userInfo.level = "中级";
         break;
       case 4:
-        _self.userInfo.level = '高级'
+        _self.userInfo.level = "高级";
         break;
       case 5:
-        _self.userInfo.level = '总代理'
+        _self.userInfo.level = "总代理";
         break;
       default:
         break;
     }
     _self.wxuserInfo = JSON.parse(window.localStorage.getItem("wxinfo"));
-    // _self.dingshi = setInterval(() => {
-    //   _self.getuserInfo();
-    // }, 1000);
+    _self.getuserInfo();
   },
   destroyed() {
     this.dingshi = null;
@@ -162,7 +160,14 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
+          if (res.data.code == 1) {
+            var userinfo = JSON.parse(window.localStorage.getItem("userinfo"));
+            var resinfo = res.data.data;
+            window.localStorage.setItem(
+              "userinfo",
+              JSON.stringify(resinfo.userinfo)
+            );
+          }
         })
         .catch(function(error) {
           console.log(error);

@@ -72,7 +72,7 @@ export default {
     }
   },
   mounted() {
-    // this.login();
+    this.login();
     var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
     this.getSwiper(token);
     this.getHot(token);
@@ -94,9 +94,7 @@ export default {
           }
         })
         .then(function(res) {
-          _self.$toast('denglu')
           if (res.data.code == 1) {
-            _self.$toast('denglu2')
             var userInfo = JSON.stringify(res.data.data.userinfo);
             window.localStorage.setItem("userinfo", userInfo);
           } else {
@@ -108,16 +106,13 @@ export default {
         });
     },
     navigate() {
-      console.log(123);
       this.$router.push({ path: "/list" });
     },
     gotoDetail() {
-      console.log("123detail");
       this.$router.push({ path: "/detail" });
     },
     getSwiper(token) {
       var _self = this;
-      console.log(token);
       _self
         .$axios({
           url: "/api/index/focus",
@@ -127,7 +122,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res.data.data);
           _self.swiperImages = res.data.data;
         })
         .catch(function(err) {
@@ -145,7 +139,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res.data.data, 123);
           var hotSell = res.data.data;
           hotSell.forEach(item => {
             var timestamp = new Date(item.createTime * 1000);
@@ -179,35 +172,10 @@ export default {
           url: "/api/index/tips",
         })
         .then(function(res) {
-          console.log(res);
           _self.tips = res.data.data
         })
         .catch(function(error) {
           console.log(error);
-        });
-    },
-    login() {
-      var _self = this;
-      var radio = parseInt(_self.radio);
-      _self
-        .$axios({
-          method: "post",
-          url: "/api/user/login",
-          params: {
-            account: "aaaaa",
-            password: "123456"
-          }
-        })
-        .then(function(res) {
-          console.log(res);
-          var userInfo = JSON.stringify(res.data.data.userinfo);
-          window.localStorage.setItem("userinfo", userInfo);
-          var token = res.data.data.userinfo.token;
-          // _self.getSwiper(token);
-          // _self.getHot(token);
-        })
-        .catch(function(err) {
-          console.log(err);
         });
     },
   }

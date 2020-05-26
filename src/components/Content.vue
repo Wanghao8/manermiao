@@ -79,7 +79,6 @@ export default {
       var _self = this;
       var id = this.packageIndex;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
-      console.log("diaoyongjiekou");
       this.$axios({
         method: "post",
         url: "/api/goods/goodslist",
@@ -89,7 +88,6 @@ export default {
         }
       })
         .then(function(response) {
-          console.log(response.data.data);
           _self.list = response.data.data;
         })
         .catch(function(error) {

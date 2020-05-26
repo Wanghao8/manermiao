@@ -59,18 +59,14 @@ export default {
       this.$router.back(-1);
     },
     navigate() {
-      console.log(123);
       this.$router.replace({ path: "/list" });
     },
     gotoDetail() {
-      console.log("123detail");
       this.$router.replace({ path: "/detail" });
     },
     onClick(name, title) {
-      console.log("点击tab");
       var _self = this;
       this.$toast(title);
-      console.log(name, title);
       this.packageIndex = name;
       this.timeout = null;
       this.timeout = setTimeout(function() {

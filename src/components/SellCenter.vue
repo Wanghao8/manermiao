@@ -7,9 +7,9 @@
         <div class="username">{{userInfo.username}}</div>
         <div class="user-info-level-box flexr0c fz12 white">
           <div class="level fz12">等级：{{level}}</div>
-          <div class="recommend fz12">推荐人：{{userInfo.referrer}}</div>
+          <!-- <div class="recommend fz12">推荐人：{{userInfo.referrer}}</div> -->
         </div>
-        <div class="upgrade-time fz11 white">升级时间：{{userInfo.upgradeTime}}</div>
+        <!-- <div class="upgrade-time fz11 white">升级时间：{{userInfo.upgradeTime}}</div> -->
       </div>
     </div>
     <div class="order-card-box">
@@ -88,9 +88,32 @@ export default {
     };
   },
   created() {
-    this.avatar = JSON.parse(window.localStorage.getItem("wxinfo")).headimgurl;
-    this.level = JSON.parse(window.localStorage.getItem("userinfo")).level;
-    this.canWithdraw = JSON.parse(
+    var _self = this;
+    _self.avatar = JSON.parse(window.localStorage.getItem("wxinfo")).headimgurl;
+    _self.level = JSON.parse(window.localStorage.getItem("userinfo")).level;
+    switch (_self.level) {
+      case 0:
+        _self.level = "游客";
+        break;
+      case 1:
+        _self.level = "代理";
+        break;
+      case 2:
+        _self.level = "初级";
+        break;
+      case 3:
+        _self.level = "中级";
+        break;
+      case 4:
+        _self.level = "高级";
+        break;
+      case 5:
+        _self.level = "总代理";
+        break;
+      default:
+        break;
+    }
+    _self.canWithdraw = JSON.parse(
       window.localStorage.getItem("userinfo")
     ).commmoney;
   },

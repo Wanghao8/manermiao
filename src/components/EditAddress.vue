@@ -32,7 +32,6 @@ export default {
     } else {
       this.info = this.$route.params.info;
       this.isDefault = this.info.isDefault;
-      console.log(this.info, 555);
     }
   },
   mounted() {},
@@ -45,7 +44,6 @@ export default {
       }
     },
     onSave(content) {
-      console.log(content, "表单信息");
       if (this.$route.params.id < 0) {
         this.$toast("保存成功");
       } else {
@@ -96,7 +94,6 @@ export default {
           }
         })
         .then(function(response) {
-          console.log(response);
           _self.$router.back();
           // _self.$router.go({
           //   name: "myAddress",
@@ -138,7 +135,6 @@ export default {
           }
         })
         .then(function(response) {
-          console.log(response);
           _self.$router.back();
         })
         .catch(function(error) {

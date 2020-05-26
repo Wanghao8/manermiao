@@ -117,11 +117,9 @@ export default {
     },
     onClickRight() {
       if (!this.isDelete) {
-        console.log(123);
         this.isDelete = true;
         this.operate = "完成";
       } else {
-        console.log(321);
         this.isDelete = false;
         this.operate = "编辑";
       }
@@ -143,7 +141,6 @@ export default {
           }
         })
         .then(function(response) {
-          console.log(response);
           _self.getInfo();
         })
         .catch(function(error) {
@@ -188,7 +185,6 @@ export default {
           }
         })
         .then(function(response) {
-          console.log(response);
           if (response.data.data.length === 0) {
             _self.empty = true;
           }
@@ -201,7 +197,6 @@ export default {
     chooseGoods() {
       this.timeout = null;
       this.timeout = setTimeout(() => {
-        console.log(this.choosed.length, this.choosed);
         if (this.choosed.length == this.list.length) {
           this.allChecked = true;
         } else {
@@ -213,7 +208,6 @@ export default {
       var _self = this;
       this.editCart();
       this.$toast("点击删除按钮");
-      // console.log(this.choosed);
       // _self.choosed.forEach(item2 => {
       //   _self.list.splice(item2,1)
       // });

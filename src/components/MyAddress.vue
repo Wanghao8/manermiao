@@ -32,13 +32,10 @@ export default {
   created() {
     var aaa = this.$route.params.from;
     this.from = this.$route.params.from;
-    console.log(this.from)
     if(this.$route.params.from == 'confirmOrder'){
       window.localStorage.setItem('fromC',true)
-      console.log('asdasd')
     }
     this.goods = this.$route.params.goods;
-    console.log(aaa);
   },
   mounted() {
     if (this.$route.params.isDefault) {
@@ -59,7 +56,6 @@ export default {
       this.$router.push({ name: "editAddress", params: { id: -1 } });
     },
     onEdit(item, index) {
-      console.log('edit')
       window.localStorage.setItem('edit',true)
       this.$router.push({
         name: "editAddress",
@@ -71,11 +67,9 @@ export default {
         window.localStorage.removeItem('edit')
         return
       }
-      console.log('test')
       var from = this.from;
       var _self = this;
       var fromc = window.localStorage.getItem('fromC')
-      console.log("index is", item.id);
       this.chosenAddressId = item.id
       this.$toast("选择此条地址");
       if (from) {

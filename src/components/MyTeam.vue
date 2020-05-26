@@ -78,11 +78,34 @@ export default {
     };
   },
   created() {
-    this.avatar = JSON.parse(window.localStorage.getItem("wxinfo")).headimgurl;
-    this.username = JSON.parse(
+    var _self = this;
+    _self.avatar = JSON.parse(window.localStorage.getItem("wxinfo")).headimgurl;
+    _self.username = JSON.parse(
       window.localStorage.getItem("userinfo")
     ).username;
-    this.level = JSON.parse(window.localStorage.getItem("userinfo")).level;
+    _self.level = JSON.parse(window.localStorage.getItem("userinfo")).level;
+    switch (_self.level) {
+      case 0:
+        _self.level = "游客";
+        break;
+      case 1:
+        _self.level = "代理";
+        break;
+      case 2:
+        _self.level = "初级";
+        break;
+      case 3:
+        _self.level = "中级";
+        break;
+      case 4:
+        _self.level = "高级";
+        break;
+      case 5:
+        _self.level = "总代理";
+        break;
+      default:
+        break;
+    }
   },
   mounted() {
     this.getInfo();

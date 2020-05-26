@@ -93,7 +93,6 @@ export default {
     var _self = this;
 
     if (this.$route.params.goods) {
-      console.log(this.$route.params.goods, 88888888888);
       _self.goods = this.$route.params.goods;
       var orderinfo = JSON.stringify(_self.goods);
       window.localStorage.setItem("confirmorder", orderinfo);
@@ -118,9 +117,7 @@ export default {
       var num = 0;
       _self.goods.forEach(function(item) {
         num += parseInt(item.cartNum);
-        console.log(item, item.cartNum, 7777777, num);
       });
-      console.log("num is", num);
       return num;
     },
     total_money: function() {
@@ -128,9 +125,7 @@ export default {
       var money = 0;
       _self.goods.forEach(function(item) {
         money += parseInt(item.goodsPrice) * item.cartNum;
-        console.log(item, item.goodsPrice, 88888888);
       });
-      console.log("money is", money);
       return money;
     }
   },
@@ -190,7 +185,6 @@ export default {
         goodsId = _self.goods[0].goodsId;
         num = _self.goods[0].cartNum;
       }
-      console.log("type is ", type, "cartId is ", cartId);
       _self
         .$axios({
           method: "post",
@@ -253,7 +247,6 @@ export default {
         good2.goodsattrNames = item.goodsattrNames;
         return good2;
       });
-      console.log("userADD IS", userAddress);
       if (!_self.addrInfo.name) {
         var userAddress =
           _self.addrInfo.areaIdPath + _self.addrInfo.userAddress;
@@ -265,7 +258,6 @@ export default {
         var userPhone = _self.addrInfo.tel;
       }
 
-      console.log(goods, 5454);
       _self.$toast("提交订单");
       if (payType == 2) {
         _self
@@ -342,8 +334,6 @@ export default {
         })
         .then(function(res) {
           var params = res.data.data;
-          console.log(params, "canshu");
-
           window.WeixinJSBridge.invoke(
             "getBrandWCPayRequest",
             {
@@ -355,7 +345,6 @@ export default {
               paySign: params.paySign // 微信签名
             },
             function(res) {
-              console.log(res, "支付回调");
               _self.$toast(res, "支付回调");
               if (res.err_msg == "get_brand_wcpay_request:ok") {
                 _self.$router.push({ name: "mine" });
@@ -381,7 +370,6 @@ export default {
     //       }
     //     })
     //     .then(function(res) {
-    //       console.log(res.data.data, "wuliu");
     //       var list = res.data.data;
     //       list.forEach(function(item) {
     //         item.name = item.expressName;

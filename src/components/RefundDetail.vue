@@ -7,10 +7,10 @@
         <div class="time fz14">还剩2天12时59分</div>
       </div>
       <div class="status fz14">您已成功发起退款申请，请耐心等待商家处理。</div>
-      <div class="flexrec btn-box">
+      <!-- <div class="flexrec btn-box">
         <div class="cancel-btn fz12" @click="cancel">撤销申请</div>
         <div class="edit-btn fz12" @click="edit">修改申请</div>
-      </div>
+      </div> -->
     </div>
     <div class="refund-goods-box">
       <div class="refund-title bold">退款信息</div>
@@ -27,7 +27,8 @@
       </div>
       <div class="refund-money flexr0c">
         <div class="label">退款金额：</div>
-        <div class="refund-money-item">￥{{goodsinfo.goodsPrice*goodsinfo.goodsNum}}</div>
+        <div class="refund-money-item" v-if="gotid">￥{{goodsinfo.goodsPrice*goodsinfo.goodsNum}}</div>
+        <div class="refund-money-item" v-if="!gotid">￥{{goodsinfo.money}}</div>
       </div>
       <div class="refund-time flexr0c">
         <div class="label">申请时间：</div>
@@ -45,14 +46,16 @@
 export default {
   data() {
     return {
-      goodsinfo: {goodsImg:''},
-      time: ""
+      goodsinfo: {},
+      time: "",
+      gotid:false
     };
   },
   created() {
     this.goodsinfo = this.$route.params.goods;
     if (this.$route.params.id) {
       this.goodsId = this.$route.params.id;
+      this.gotid = true
     }
   },
   mounted() {
@@ -74,6 +77,21 @@ export default {
     getDeatil() {
       var _self = this;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      if(!_self.goodsId){
+        var time = _self.goodsinfo.requestTime
+          var dateTime =
+            time.getFullYear() +
+            "." +
+            (time.getMonth() + 1 + "").padStart(2, "0") +
+            "." +
+            (time.getDate() + "").padStart(2, "0") +
+            " " +
+            (time.getHours() + "").padStart(2, "0") +
+            ":" +
+            (time.getMinutes() + "").padStart(2, "0");
+          _self.time = dateTime;
+        return
+      }
       _self
         .$axios({
           method: "post",

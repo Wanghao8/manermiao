@@ -55,7 +55,6 @@ export default {
   },
   created() {
     var goodsId = this.$route.params.id;
-    console.log(goodsId);
     this.goodsId = goodsId;
     if (goodsId) {
       window.localStorage.setItem("goodsDetail", goodsId);
@@ -74,7 +73,6 @@ export default {
       var goodsId = _self.goodsId
         ? _self.goodsId
         : window.localStorage.getItem("goodsDetail");
-      console.log(window.localStorage.getItem("goodsDetail"), "ididididi");
       _self
         .$axios({
           method: "post",
@@ -85,7 +83,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res.data.data);
           _self.imglist = res.data.data.goodsImgs.split(",");
           _self.info = res.data.data;
           _self.goods.picture = res.data.data.goodsImg;
@@ -122,7 +119,6 @@ export default {
           }
         })
         .then(function(response) {
-          console.log(response);
           _self.$router.push("cart");
         })
         .catch(function(error) {

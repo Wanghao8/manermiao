@@ -182,8 +182,6 @@ export default {
         })
         .then(function(res) {
           var params = res.data.data;
-          console.log(params, "canshu");
-
           window.WeixinJSBridge.invoke(
             "getBrandWCPayRequest",
             {
