@@ -18,6 +18,10 @@
               </div>
               <div class="order-list-item-top-right col9 fz11">{{item.status}}</div>
             </div>
+            <div class="order-list-item-top-left fz11 col3" v-if="item.status=='待收货'">
+                物流编号：
+                <span class="col9">{{item.orderNo}}</span>
+              </div>
             <div class="order-list-item-content" v-for="item1 in item.ordergoods" :key="item1.id">
               <img :src="item1.goodsImg" alt class="goods-img" />
               <div class="order-list-item-content-right">
@@ -71,6 +75,7 @@
               <div class="order-list-item-bottom-pay fz13" @click="remindOrder">提醒发货</div>
             </div>
             <div class="order-list-item-bottom" v-if="item.status=='待收货'">
+              <div class="order-list-item-bottom-cancel fz13" @click="lookDelivery">查看物流</div>
               <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2,'确认收货')">确认收货</div>
             </div>
             <div class="order-list-item-bottom" v-if="item.status=='已完成'">
@@ -150,7 +155,7 @@
                 订单编号：
                 <span class="col9">{{item.orderNo}}</span>
               </div>
-              <div class="order-list-item-top-right col9 fz11">待收货</div>
+              <div class="order-list-item-top-right col9 fz11">待发货</div>
             </div>
             <div class="order-list-item-content" v-for="item1 in item.ordergoods" :key="item1.id">
               <img :src="item1.goodsImg" alt class="goods-img" />
@@ -205,6 +210,10 @@
               </div>
               <div class="order-list-item-top-right col9 fz11">待收货</div>
             </div>
+            <div class="order-list-item-top-left fz11 col3">
+                物流编号：
+                <span class="col9">{{item.orderNo}}</span>
+              </div>
             <div class="order-list-item-content" v-for="item1 in item.ordergoods" :key="item1.id">
               <img :src="item1.goodsImg" alt class="goods-img" />
               <div class="order-list-item-content-right">
@@ -237,6 +246,7 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
+              <div class="order-list-item-bottom-cancel fz13" @click="lookDelivery">查看物流</div>
               <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2,'确认收货')">确认收货</div>
             </div>
           </div>
@@ -438,6 +448,9 @@ export default {
       var _self = this;
       this.$toast("点击查看详情");
     },
+    lookDelivery(){
+      this.$toast('查看物流')
+    },
     buyAgain(item) {
       var _self = this;
       // var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
@@ -464,7 +477,6 @@ export default {
         name: "confirmOrder",
         params: { goods: item.ordergoods, from: "myOrder" }
       });
-      this.$toast("点击再次购买");
     },
     chooseSurvice(e) {
       var _self = this;

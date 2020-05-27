@@ -12,6 +12,7 @@
       <div class="goods-price red fz24">￥{{info.goodsPrice}}</div>
       <div class="goods-name fz18">{{info.goodsName}}</div>
       <div class="goods-intro fz14">{{info.goodsDesc}}</div>
+      <div class="goods-intro fz14" v-html="info.goodsDetail"></div>
     </div>
     <van-sku
       v-model="show"
@@ -132,7 +133,6 @@ export default {
     buy() {
       this.show = true;
       var _self = this;
-      _self.$toast("购买");
     }
   }
 };

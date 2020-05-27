@@ -111,7 +111,7 @@ export default {
 #content {
   background-color: #e4e4e4;
   overflow: auto;
-  height: 80vh;
+  height: 86vh;
   width: 100%;
 }
 .van-grid {

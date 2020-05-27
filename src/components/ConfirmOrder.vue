@@ -345,7 +345,6 @@ export default {
               paySign: params.paySign // 微信签名
             },
             function(res) {
-              _self.$toast(res, "支付回调");
               if (res.err_msg == "get_brand_wcpay_request:ok") {
                 _self.$router.push({ name: "mine" });
               } else if (res.err_msg == "get_brand_wcpay_request:fail") {

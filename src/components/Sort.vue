@@ -1,33 +1,10 @@
 <template>
   <div id="sort">
-    <!-- <div class="topNav">
-      <div class="leftIcon" @click="goback">
-        <van-icon name="arrow-left" />
-      </div>
-      <van-search
-        class="search"
-        :value="searchContent"
-        shape="round"
-        background="#FF49BD"
-        placeholder="搜索您想要的商品"
-        use-action-slot
-        left-icon="none"
-        right-icon="search"
-        bind:change="onChange"
-        bind:search="onSearch"
-      ></van-search>
-      <div class="rightIcon" @click="navigate">
-        <div class="iconfont">&#xe623;</div>
-      </div>
-    </div>-->
+
     <van-nav-bar title="商品列表" />
 
     <div class="top-tab">
-      <!-- <van-tabs color="#ff49bd" @click="onClick">
-        <van-tab v-for="index in taocan" :title="index" :key="index"> -->
-          <detail ref="detail" :packageIndex="packageIndex"></detail>
-        <!-- </van-tab>
-      </van-tabs> -->
+      <detail ref="detail" :packageIndex="packageIndex"></detail>
     </div>
   </div>
 </template>
@@ -166,6 +143,5 @@ export default {
 .top-tab {
   position: relative;
   top: 0px;
-  /* line-height: 40px; */
 }
 </style>
