@@ -77,7 +77,7 @@
         label="邮箱"
         placeholder="请输入您的邮箱"
         :rules="[{required: true, pattern:  emailRE, message: '请填写正确的邮箱号' }]"
-      /> -->
+      />-->
       <van-field
         :value="location"
         name="位置"
@@ -93,6 +93,9 @@
 
       <div class="signuped" @click="login2">已有账号</div>
     </van-form>
+    <div class="backup">
+      <a href="https://www.beian.miit.gov.cn" class="fz15 col9">豫ICP备20010924号</a>
+    </div>
   </div>
 </template>
 <script>
@@ -117,8 +120,8 @@ export default {
       currentDate: new Date(),
       radio: "1",
       value: "",
-      lon: "113.665412",
-      lat: "34.757993",
+      lon: "",
+      lat: "",
       showDate: false,
       phoneRE: /^1[3456789]\d{9}$/,
       emailRE: /^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/
@@ -188,40 +191,38 @@ export default {
     },
     getLocation() {
       var _self = this;
-      AMap.plugin("AMap.CitySearch", function() {
-        var citySearch = new AMap.CitySearch();
-        citySearch.getLocalCity(function(status, result) {
-          if (status === "complete" && result.info === "OK") {
+
+      _self.location = "正在获取位置中......";
+      AMap.plugin("AMap.Geolocation", function() {
+        var geolocation = new AMap.Geolocation({
+          // 是否使用高精度定位，默认：true
+          enableHighAccuracy: true,
+          // 设置定位超时时间，默认：无穷大
+          timeout: 5000,
+          // 定位按钮的停靠位置的偏移量，默认：Pixel(10, 20)
+          buttonOffset: new AMap.Pixel(10, 20),
+          //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+          zoomToAccuracy: true,
+          //  定位按钮的排放位置,  RB表示右下
+          buttonPosition: "RB"
+        });
+
+        geolocation.getCurrentPosition(function(status, result) {
+          if (status === "complete" && result.info === "LOCATE_SUCCESS") {
             // 查询成功，result即为当前所在城市信息
             console.log("通过ip获取当前城市：", result);
-            _self.lnglat = result.rectangle.split(";")[0];
-            _self.lnglat = _self.lnglat.split(",");
-            _self.lon = parseFloat(_self.lnglat[0]);
-            _self.lat = parseFloat(_self.lnglat[1]);
+            // _self.lnglat = result.position.split(";")[0];
+            // _self.lnglat = _self.lnglat.split(",");
+            _self.lon = parseFloat(result.position.KL);
+            _self.lat = parseFloat(result.position.kT);
+            console.log(_self.lon, _self.lat);
+            _self.nijiexi();
           }
         });
       });
-
-      // AMap.plugin('AMap.Geolocation', function () {
-      //   var geolocation = new AMap.Geolocation({
-      //     // 是否使用高精度定位，默认：true
-      //     enableHighAccuracy: true,
-      //     // 设置定位超时时间，默认：无穷大
-      //     timeout: 5000,
-      //   })
-      //   geolocation.getCurrentPosition()
-      //   AMap.event.addListener(geolocation, 'complete', onComplete);
-      //   AMap.event.addListener(geolocation, 'error', onError);
-      //   // data是具体的定位信息
-      //   function onComplete(data) {
-      //     console.log('具体的定位信息',data)
-      //   }
-      //   function onError(data) {
-      //     // 失败 启用 ip定位
-
-      //   }
-      // })
-
+    },
+    nijiexi() {
+      var _self = this;
       // 高德地图逆地址解析
       AMap.plugin("AMap.Geocoder", function() {
         var geocoder = new AMap.Geocoder({
@@ -249,37 +250,42 @@ export default {
     upload() {
       var _self = this;
       var radio = parseInt(_self.radio);
-      _self
-        .$axios({
-          method: "post",
-          url: "/api/user/register",
-          params: {
-            pid: 0,
-            username: _self.username,
-            password: "123456",
-            // email: _self.email,
-            mobile: _self.phoneNum,
-            areaPath: _self.location,
-            gender: radio,
-            birthday: _self.value,
-            lon: _self.lon,
-            lat: _self.lat,
-            openid: window.localStorage.getItem("openid"),
-            avatar:JSON.parse(window.localStorage.getItem("wxinfo")).headimgurl
-          }
-        })
-        .then(function(res) {
-          if (res.data.code == 1) {
-            _self.token = res.data;
-            _self.show = true;
-            _self.login();
-          } else {
-            _self.$toast(res.data.msg);
-          }
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
+      if (_self.location != "正在获取位置中......") {
+        _self
+          .$axios({
+            method: "post",
+            url: "/api/user/register",
+            params: {
+              pid: 0,
+              username: _self.username,
+              password: "123456",
+              // email: _self.email,
+              mobile: _self.phoneNum,
+              areaPath: _self.location,
+              gender: radio,
+              birthday: _self.value,
+              lon: _self.lon,
+              lat: _self.lat,
+              openid: window.localStorage.getItem("openid"),
+              avatar: JSON.parse(window.localStorage.getItem("wxinfo"))
+                .headimgurl
+            }
+          })
+          .then(function(res) {
+            if (res.data.code == 1) {
+              _self.token = res.data;
+              _self.show = true;
+              _self.login();
+            } else {
+              _self.$toast(res.data.msg);
+            }
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+      } else {
+        _self.$toast("正在获取位置，稍后点击注册");
+      }
     },
     login() {
       var _self = this;
@@ -454,5 +460,11 @@ export default {
   border-radius: 44px;
   width: 90%;
   margin: 10px 0 10px 5%;
+}
+.backup {
+  width: 100%;
+  bottom: 10px;
+  text-align: center;
+  margin-top: 40px;
 }
 </style>
