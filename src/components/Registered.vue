@@ -155,7 +155,7 @@ export default {
           url: "/api/wei/getcode"
         })
         .then(function(res) {
-          window.location.href = res.data.data;
+          // window.location.href = res.data.data;
         })
         .catch(function(err) {
           console.log(err);

@@ -50,29 +50,13 @@ new Vue({
 })
 
 // 全局路由守卫
-// router.beforeEach((to, from, next) => {
-//   const nextRoute = ['mine', 'cart','home','sort'] // 需要登录的页面
-//   let isLogin = window.localStorage.getItem('isSignup')  // 判断是否登录，本地存储有用户数据则视为已经登录
-//   // 未登录状态；当路由到 nextRoute 指定页时，跳转至 UserLogIn
-//   if (nextRoute.indexOf(to.name) >= 0) { // 检测是否登录的页面
-//     if (!isLogin) { // 如果未登录（本地存储无用户数据），并且要跳到登录页面
-//       if (from.name === 'registered') {
-//         next('/')
-//         return
-//       }
-//       // 登录后，跳到到当前页面
-//       router.push({
-//         name: 'registered',
-//         params: { redirect: to.fullPath }
-//       })
-//     }
-//   }
-//   // 已登录状态；当路由到 UserLogIn 时，跳转至 Home
-//   if (to.name === 'registered'||to.name === 'index') {
-//     if (isLogin) {
-//       next('/home')
-//       return
-//     }
-//   }
-//   next() // 必须使用 next ,执行效果依赖 next 方法的调用参数
-// })
+router.beforeEach((to, from, next) => {
+  var token = window.localStorage.getItem("userinfo")
+  // 未登录状态；当路由到 nextRoute 指定页时，跳转至 UserLogIn
+  if (token) {
+    next();
+  } else {
+    next("/registered");
+  }
+  next() // 必须使用 next ,执行效果依赖 next 方法的调用参数
+})

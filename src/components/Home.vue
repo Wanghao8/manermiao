@@ -99,6 +99,7 @@ export default {
             window.localStorage.setItem("userinfo", userInfo);
           } else {
             _self.$toast(res.data.msg);
+            _self.$router.replace('/registered')
           }
         })
         .catch(function(err) {

@@ -1,6 +1,14 @@
 <template>
   <div id="myOrder">
     <van-nav-bar title="我的订单" left-arrow @click-left="onClickLeft" />
+    <van-overlay :show="showOverlay" @click="showOverlay = false" />
+    <div class="deliver-box" v-if="showOverlay">
+      <div class="deliver-item" v-for="item in deliverMsg" :key="item.time">
+        <div class="deliver-text">{{item.context}}</div>
+        <div class="deliver-status">{{item.status}}</div>
+        <div class="deliver-time" style="margin-top:10px;font-size:12px">{{item.time}}</div>
+      </div>
+    </div>
     <van-tabs v-model="orderStatus" sticky color="#ff48bd" @click="onClick">
       <van-tab title="全部" name="3">
         <van-empty
@@ -19,9 +27,9 @@
               <div class="order-list-item-top-right col9 fz11">{{item.status}}</div>
             </div>
             <div class="order-list-item-top-left fz11 col3" v-if="item.status=='待收货'">
-                物流编号：
-                <span class="col9">{{item.orderNo}}</span>
-              </div>
+              物流编号：
+              <span class="col9">{{item.orderNo}}</span>
+            </div>
             <div class="order-list-item-content" v-for="item1 in item.ordergoods" :key="item1.id">
               <img :src="item1.goodsImg" alt class="goods-img" />
               <div class="order-list-item-content-right">
@@ -75,7 +83,7 @@
               <div class="order-list-item-bottom-pay fz13" @click="remindOrder">提醒发货</div>
             </div>
             <div class="order-list-item-bottom" v-if="item.status=='待收货'">
-              <div class="order-list-item-bottom-cancel fz13" @click="lookDelivery">查看物流</div>
+              <div class="order-list-item-bottom-cancel fz13" @click="lookDelivery(item)">查看物流</div>
               <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2,'确认收货')">确认收货</div>
             </div>
             <div class="order-list-item-bottom" v-if="item.status=='已完成'">
@@ -211,9 +219,9 @@
               <div class="order-list-item-top-right col9 fz11">待收货</div>
             </div>
             <div class="order-list-item-top-left fz11 col3">
-                物流编号：
-                <span class="col9">{{item.orderNo}}</span>
-              </div>
+              物流编号：
+              <span class="col9">{{item.orderNo}}</span>
+            </div>
             <div class="order-list-item-content" v-for="item1 in item.ordergoods" :key="item1.id">
               <img :src="item1.goodsImg" alt class="goods-img" />
               <div class="order-list-item-content-right">
@@ -246,7 +254,7 @@
             </div>
             <van-divider />
             <div class="order-list-item-bottom">
-              <div class="order-list-item-bottom-cancel fz13" @click="lookDelivery">查看物流</div>
+              <div class="order-list-item-bottom-cancel fz13" @click="lookDelivery(item)">查看物流</div>
               <div class="order-list-item-bottom-pay fz13" @click="dealOrder(item,1,2,'确认收货')">确认收货</div>
             </div>
           </div>
@@ -308,8 +316,10 @@ export default {
   data() {
     return {
       empty: false,
+      showOverlay: false,
       orderStatus: -1,
-      list1: []
+      list1: [],
+      deliverMsg: []
     };
   },
   created() {
@@ -448,8 +458,30 @@ export default {
       var _self = this;
       this.$toast("点击查看详情");
     },
-    lookDelivery(){
-      this.$toast('查看物流')
+    lookDelivery(info) {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+      _self
+        .$axios({
+          method: "post",
+          url: "/api/order/getlogistics",
+          params: {
+            token: token,
+            orderId: info.id,
+            orderGoodsId: info.ordergoods[0].goodsId
+          }
+        })
+        .then(function(res) {
+          if (res.data.code == 1) {
+            _self.deliverMsg = res.data.data;
+            _self.showOverlay = true;
+          }else{
+            _self.$toast(res.data.msg)
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     },
     buyAgain(item) {
       var _self = this;
@@ -621,5 +653,22 @@ export default {
   padding: 2px;
   width: 20%;
   text-align: center;
+}
+.deliver-box {
+  z-index: 3;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  width: 80vw;
+  height: 60vh;
+  overflow: scroll;
+}
+.deliver-item {
+  padding: 20px;
+}
+.deliver-item>div {
+  line-height: 20px;
 }
 </style>
