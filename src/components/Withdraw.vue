@@ -55,11 +55,12 @@
     <div class="pop-box" v-if="showOverlay">
       <div class="pop-content">
         <van-field v-model="money" type="number" label="提现金额" />
-        <van-field v-model="account" type="digit" label="提现账户" />
+        <van-field v-model="account" type="number" label="提现账户" />
         <van-field v-model="remark" label="备注" />
-        <div class="submit-btn" @click="submit">确定提现</div>
+        <div class="submit-btn" @click="declear">确定提现</div>
       </div>
     </div>
+    <van-action-sheet v-model="showtype" :actions="actions" @select="onSelect" />
   </div>
 </template>
 <script>
@@ -68,23 +69,17 @@ export default {
     return {
       empty: false,
       showOverlay: false,
+      showtype: false,
+      payType: -1,
       money: "",
       account: "",
       remark: "",
       income: "0",
       canWithdraw: "",
       withdrawed: "0",
-      userInfo: {
-        overage: "8690.20",
-        income: "300.20",
-        withdrawed: "253.20",
-        canWithdraw: "47.00"
-      },
-      list: [
-        { userName: "王包子", time: "2019-02-03", money: "2.30", id: 0 },
-        { userName: "王包子", time: "2019-02-03", money: "2.30", id: 1 },
-        { userName: "王包子", time: "2019-02-03", money: "2.30", id: 2 }
-      ]
+      actions: [{ name: "银行卡" }, { name: "支付宝" }, { name: "微信" }],
+      userInfo: {},
+      list: []
     };
   },
   created() {
@@ -99,6 +94,17 @@ export default {
   methods: {
     onClickLeft() {
       this.$router.back(-1);
+    },
+    onSelect(item) {
+      this.showtype = false;
+      this.showOverlay = true;
+      if (item.name == "银行卡") {
+        this.payType = 1;
+      } else if (item.name == "支付宝") {
+        this.payType = 2;
+      } else if (item.name == "微信") {
+        this.payType = 3;
+      }
     },
     getWithDrawList() {
       var _self = this;
@@ -132,9 +138,8 @@ export default {
           console.log(err);
         });
     },
-    submit() {
+    declear() {
       var _self = this;
-      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       if (_self.money === "") {
         _self.$toast("请输入提现金额");
         return;
@@ -142,6 +147,23 @@ export default {
         _self.$toast("请输入提现账户");
         return;
       }
+      _self.$dialog
+        .confirm({
+          title: "免责声明",
+          message:
+            "一经确认佣金将打到你写的指定账户上，确认之前请务必保持账户真实有效，，如有错误本公司概不负责；如有疑问请联系 18603835531"
+        })
+        .then(() => {
+          _self.submit();
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    submit() {
+      var _self = this;
+      var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
+
       _self
         .$axios({
           method: "post",
@@ -150,7 +172,8 @@ export default {
             token: token,
             money: _self.money,
             accTargetName: _self.account,
-            cashRemarks: _self.remark
+            cashRemarks: _self.remark,
+            accType: _self.payType
           }
         })
         .then(function(res) {
@@ -174,8 +197,7 @@ export default {
     },
     withdraw() {
       var _self = this;
-      _self.showOverlay = true;
-      _self.$toast("点击提现按钮");
+      _self.showtype = true;
     },
     getMoney() {
       var _self = this;

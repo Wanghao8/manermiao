@@ -93,8 +93,13 @@ export default {
             isDefault: isDefault
           }
         })
-        .then(function(response) {
-          _self.$router.back();
+        .then(function(res) {
+          if(res.data.code==1){
+            _self.$router.back();
+          }else{
+            _self.$toast(res.data.msg)
+          }
+          
           // _self.$router.go({
           //   name: "myAddress",
           //   params: { isDefault: _self.isDefault, defaultId: _self.info.id }

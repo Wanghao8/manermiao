@@ -105,6 +105,7 @@ export default {
     if (this.$route.params.info) {
       this.defaultAdd = false;
       this.addrInfo = this.$route.params.info;
+      this.getGoods();
     } else {
       this.defaultAdd = true;
       this.getGoods();
@@ -167,6 +168,7 @@ export default {
       var num = 0;
       if (from === "c") {
         type = "cart";
+        num = _self.goods[0].cartNum;
         cartId = _self.goods.map(function(item) {
           return item.id;
         });
@@ -183,7 +185,7 @@ export default {
         num = _self.goods[0].num;
       } else {
         goodsId = _self.goods[0].goodsId;
-        num = _self.goods[0].cartNum;
+        num = _self.goods[0].num;
       }
       _self
         .$axios({
@@ -230,6 +232,10 @@ export default {
       var _self = this;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       var payType = 2;
+      var isStages = 0;
+      if(JSON.parse(window.localStorage.getItem("userinfo")).level==4){
+        isStages = 1
+      }
       if (_self.payType === "线上支付") {
         payType = 1;
       } else {
@@ -245,6 +251,7 @@ export default {
         good2.goodsImg = item.goodsImg;
         good2.goodsDesc = item.goodsDesc;
         good2.goodsattrNames = item.goodsattrNames;
+        good2.goodsUse = item.goodsUse;
         return good2;
       });
       if (!_self.addrInfo.name) {
@@ -279,7 +286,8 @@ export default {
               userPhone: userPhone,
               orderRemarks: "testAPI",
               goods: goods,
-              realTotalMoney: _self.total_money + 0
+              realTotalMoney: _self.total_money + 0,
+              isStages:isStages
             }
           })
           .then(function(res) {
@@ -309,7 +317,8 @@ export default {
               userPhone: userPhone,
               orderRemarks: "testAPI",
               goods: goods,
-              realTotalMoney: _self.total_money + 0
+              realTotalMoney: _self.total_money + 0,
+              isStages:isStages
             }
           })
           .then(function(res) {

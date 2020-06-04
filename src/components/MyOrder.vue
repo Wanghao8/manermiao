@@ -468,7 +468,7 @@ export default {
           params: {
             token: token,
             orderId: info.id,
-            orderGoodsId: info.ordergoods[0].goodsId
+            orderGoodsId: info.ordergoods[0].id
           }
         })
         .then(function(res) {

@@ -155,7 +155,7 @@ export default {
           url: "/api/wei/getcode"
         })
         .then(function(res) {
-          // window.location.href = res.data.data;
+          window.location.href = res.data.data;
         })
         .catch(function(err) {
           console.log(err);
@@ -198,7 +198,7 @@ export default {
           // 是否使用高精度定位，默认：true
           enableHighAccuracy: true,
           // 设置定位超时时间，默认：无穷大
-          timeout: 5000,
+          timeout: 1000,
           // 定位按钮的停靠位置的偏移量，默认：Pixel(10, 20)
           buttonOffset: new AMap.Pixel(10, 20),
           //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
@@ -208,9 +208,9 @@ export default {
         });
 
         geolocation.getCurrentPosition(function(status, result) {
-          if (status === "complete" && result.info === "LOCATE_SUCCESS") {
+          // console.log(status,result)
+          if (status === "complete") {
             // 查询成功，result即为当前所在城市信息
-            console.log("通过ip获取当前城市：", result);
             // _self.lnglat = result.position.split(";")[0];
             // _self.lnglat = _self.lnglat.split(",");
             _self.lon = parseFloat(result.position.KL);
@@ -308,7 +308,8 @@ export default {
               _self.$router.push({ name: "mine" });
             }, 2000);
           } else {
-            _self.$toast(res.data.msg);
+            // _self.$toast(res.data.msg);
+            console.log(res)
           }
         })
         .catch(function(err) {

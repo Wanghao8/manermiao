@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="write-refund-box">
-        <div class="goods-stauts-box flexrbc" @click="showStatusFun">
+        <div class="goods-stauts-box flexrbc" v-if="refundType=='退货退款'" @click="showStatusFun">
           <div class="goods-stauts-label">退货物流</div>
           <div class="goods-stauts-icon flexr0c">
             <div class="goods-stauts">{{expressName}}</div>
@@ -183,52 +183,89 @@ export default {
       var _self = this;
       var type = _self.refundType == "申请退款" ? 1 : 2;
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
-      if (_self.expressName === "请选择") {
-        _self.$toast("请选择物流");
-      } else if (_self.reason === "请选择") {
+      if (_self.reason === "请选择") {
         _self.$toast("请选择退货原因");
       } else if (_self.fileList.length === 0) {
         _self.$toast("请上传凭证");
       } else {
-        // return;
-        _self
-          .$axios({
-            method: "post",
-            url: "/api/order/addrefund",
-            params: {
-              token: token,
-              type: type,
-              orderGoodsId: _self.refundGoods.orderId,
-              resonId: _self.reasonId,
-              reson: _self.reason,
-              refundimg: _self.imgstring,
-              backMoney: _self.total_money,
-              refundExpress: _self.refundInfo.orderNo,
-              refundRemark: _self.refundRemark,
-              expressId: _self.expressId,
-              expressCode: _self.expressCode,
-              orderId: _self.refundInfo.id
-            }
-          })
-          .then(function(res) {
-            console.log(res, "success");
-            var goodsinfo = {
-              goodsImg: _self.refundGoods.goodsImg,
-              goodsName: _self.refundGoods.goodsName,
-              goodsDesc: _self.refundGoods.goodsDesc,
-              reson: _self.reason,
-              money: _self.total_money,
-              refundTradeNo: _self.refundInfo.orderNo,
-              requestTime: new Date()
-            };
-            _self.$router.push({
-              name: "refundDetail",
-              params: { goods: goodsinfo }
+        if (type == "退货退款") {
+          // return;
+          _self
+            .$axios({
+              method: "post",
+              url: "/api/order/addrefund",
+              params: {
+                token: token,
+                type: type,
+                orderGoodsId: _self.refundGoods.orderId,
+                resonId: _self.reasonId,
+                reson: _self.reason,
+                refundimg: _self.imgstring,
+                backMoney: _self.total_money,
+                refundExpress: _self.refundInfo.orderNo,
+                refundRemark: _self.refundRemark,
+                expressId: _self.expressId,
+                expressCode: _self.expressCode,
+                orderId: _self.refundInfo.id
+              }
+            })
+            .then(function(res) {
+              console.log(res, "success");
+              var goodsinfo = {
+                goodsImg: _self.refundGoods.goodsImg,
+                goodsName: _self.refundGoods.goodsName,
+                goodsDesc: _self.refundGoods.goodsDesc,
+                reson: _self.reason,
+                money: _self.total_money,
+                refundTradeNo: _self.refundInfo.orderNo,
+                requestTime: new Date()
+              };
+              _self.$router.push({
+                name: "refundDetail",
+                params: { goods: goodsinfo }
+              });
+            })
+            .catch(function(err) {
+              console.log(err);
             });
-          })
-          .catch(function(err) {
-            console.log(err);
-          });
+        } else {
+          _self
+            .$axios({
+              method: "post",
+              url: "/api/order/addrefund",
+              params: {
+                token: token,
+                type: type,
+                orderGoodsId: _self.refundGoods.orderId,
+                resonId: _self.reasonId,
+                reson: _self.reason,
+                refundimg: _self.imgstring,
+                backMoney: _self.total_money,
+                refundExpress: _self.refundInfo.orderNo,
+                refundRemark: _self.refundRemark,
+                orderId: _self.refundInfo.id
+              }
+            })
+            .then(function(res) {
+              console.log(res, "success");
+              var goodsinfo = {
+                goodsImg: _self.refundGoods.goodsImg,
+                goodsName: _self.refundGoods.goodsName,
+                goodsDesc: _self.refundGoods.goodsDesc,
+                reson: _self.reason,
+                money: _self.total_money,
+                refundTradeNo: _self.refundInfo.orderNo,
+                requestTime: new Date()
+              };
+              _self.$router.push({
+                name: "refundDetail",
+                params: { goods: goodsinfo }
+              });
+            })
+            .catch(function(err) {
+              console.log(err);
+            });
+        }
       }
     }
   }

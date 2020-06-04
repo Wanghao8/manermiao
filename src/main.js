@@ -10,12 +10,12 @@ import 'vant/lib/index.css';
 import './assets/css/common.css';
 import '../static/iconfont.css';
 import wx from 'weixin-js-sdk'
-import { Lazyload, Toast, RadioGroup, Radio } from 'vant';
+import { Lazyload, Toast, RadioGroup, Radio, Dialog } from 'vant';
 import VueJsonp from 'vue-jsonp'
 import AMapLoader from '@amap/amap-jsapi-loader';
 
 
-Vue.use(Vant).use(Lazyload).use(Toast).use(RadioGroup).use(Radio)
+Vue.use(Vant).use(Lazyload).use(Toast).use(RadioGroup).use(Radio).use(Dialog)
 Vue.prototype.$axios = Axios
 Vue.prototype.$common = Common
 Vue.prototype.wx = wx
