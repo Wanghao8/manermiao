@@ -206,7 +206,7 @@ export default {
                 refundRemark: _self.refundRemark,
                 expressId: _self.expressId,
                 expressCode: _self.expressCode,
-                orderId: _self.refundInfo.id
+                orderId: _self.refundGoods.id
               }
             })
             .then(function(res) {
@@ -243,7 +243,7 @@ export default {
                 backMoney: _self.total_money,
                 refundExpress: _self.refundInfo.orderNo,
                 refundRemark: _self.refundRemark,
-                orderId: _self.refundInfo.id
+                orderId: _self.refundGoods.id
               }
             })
             .then(function(res) {

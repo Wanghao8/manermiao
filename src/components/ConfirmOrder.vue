@@ -58,11 +58,19 @@
           <div class="iconfont right-row">&#xe605;</div>
         </div>
       </div>
+      <div class="deliver flexrbc" @click="deposit(1)">
+        <div class="deliver-title col3 bold fz14">定金使用</div>
+        <div class="deliver-options flexr0c">
+          <div class="deliver-txt col9 fz14">{{isdeposit}}</div>
+          <div class="iconfont right-row">&#xe605;</div>
+        </div>
+      </div>
     </div>
 
     <!-- 底部弹出组件 -->
     <van-action-sheet v-model="show" :actions="actions" @select="onSelect" />
     <van-action-sheet v-model="showPay" :actions="actions" @select="onSelectPay" />
+    <van-action-sheet v-model="showDeposit" :actions="actions" @select="onSelectDeposit" />
 
     <div class="bottom flexrbc">
       <div class="msg col3">
@@ -80,18 +88,23 @@ export default {
     return {
       addrInfo: {},
       goods: [],
+      isHign: false,
       defaultAdd: true,
       show: false, //配送方式底部弹出控制器
       showPay: false, //支付方式底部弹出控制器
+      showDeposit:false,
       actions: [],
       deliverType: "快递配送",
       payType: "线下支付",
+      isdeposit: "使用定金",
       express: []
     };
   },
   created() {
     var _self = this;
-
+    if (JSON.parse(window.localStorage.getItem("userinfo")).level == 4) {
+      _self.isHign = true;
+    }
     if (this.$route.params.goods) {
       _self.goods = this.$route.params.goods;
       var orderinfo = JSON.stringify(_self.goods);
@@ -142,6 +155,10 @@ export default {
       this.showPay = false;
       this.payType = item.name;
     },
+    onSelectDeposit(item) {
+      this.showDeposit = false;
+      this.isdeposit = item.name;
+    },
     deliver(type) {
       if (type == 0) {
         this.actions = this.express;
@@ -150,6 +167,10 @@ export default {
         this.actions = [{ name: "线下支付" }, { name: "线上支付" }];
         this.showPay = true;
       }
+    },
+    deposit() {
+      this.actions = [{ name: "使用定金" }, { name: "全额支付" }];
+      this.showDeposit = true;
     },
     gotoAdd() {
       var _self = this;
@@ -233,8 +254,8 @@ export default {
       var token = JSON.parse(window.localStorage.getItem("userinfo")).token;
       var payType = 2;
       var isStages = 0;
-      if(JSON.parse(window.localStorage.getItem("userinfo")).level==4){
-        isStages = 1
+      if (JSON.parse(window.localStorage.getItem("userinfo")).level == 4) {
+        isStages = 1;
       }
       if (_self.payType === "线上支付") {
         payType = 1;
@@ -287,12 +308,12 @@ export default {
               orderRemarks: "testAPI",
               goods: goods,
               realTotalMoney: _self.total_money + 0,
-              isStages:isStages
+              isStages: isStages
             }
           })
           .then(function(res) {
             _self.$toast("提交成功，等待线下付款");
-            _self.$router.push({name:'home'})
+            _self.$router.push({ name: "home" });
           })
           .catch(function(error) {
             console.log(error);
@@ -318,7 +339,7 @@ export default {
               orderRemarks: "testAPI",
               goods: goods,
               realTotalMoney: _self.total_money + 0,
-              isStages:isStages
+              isStages: isStages
             }
           })
           .then(function(res) {

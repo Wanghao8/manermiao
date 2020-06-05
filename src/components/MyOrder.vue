@@ -48,12 +48,19 @@
                   class="order-list-item-content-right-time col9 fz10"
                   v-if="item.status!='待发货'&&item.status!='待收货'"
                 >订单时间：{{item.saveTime}}</div>
-                <div class="flexrbc" v-if="item.status=='待发货'||item.status=='待收货'">
+                <div class="flexrbc" v-if="item.status=='待发货'">
                   <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
                   <div
                     class="order-list-item-bottom-refund fz13"
                     @click="requestRefund('申请退款',item,item1)"
                   >申请退款</div>
+                </div>
+                <div class="flexrbc" v-if="item.status=='待收货'">
+                  <div class="order-list-item-content-right-time col9 fz10">订单时间：{{item.saveTime}}</div>
+                  <div
+                    class="order-list-item-bottom-refund fz13"
+                    @click="requestRefund('退货退款',item,item1)"
+                  >退货退款</div>
                 </div>
               </div>
             </div>
@@ -241,7 +248,7 @@
                   <div
                     class="order-list-item-bottom-refund fz13"
                     @click="requestRefund('退货退款',item,item1)"
-                  >申请退款</div>
+                  >退货退款</div>
                 </div>
               </div>
             </div>
@@ -448,7 +455,7 @@ export default {
         name: "requestRefund",
         params: { refundType: e, info: info, goods: goods }
       });
-      this.$toast("点击申请退款");
+      // this.$toast("点击申请退款");
     },
     confirmRecive(e) {
       var _self = this;
